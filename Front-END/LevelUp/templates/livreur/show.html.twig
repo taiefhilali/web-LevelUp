@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Livreur{% endblock %}
+
+{% block body %}
+    <h1>Livreur</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Cin</th>
+                <td>{{ livreur.cin }}</td>
+            </tr>
+            <tr>
+                <th>Vehicule</th>
+                <td>{{ livreur.vehicule }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_livreur_index') }}">back to list</a>
+
+    <a href="{{ path('app_livreur_edit', {'idUser': livreur.idUser}) }}">edit</a>
+
+    {{ include('livreur/_delete_form.html.twig') }}
+{% endblock %}

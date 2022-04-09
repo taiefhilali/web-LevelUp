@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Livreur index{% endblock %}
+
+{% block body %}
+    <h1>Livreur index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Cin</th>
+                <th>Vehicule</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for livreur in livreurs %}
+            <tr>
+                <td>{{ livreur.cin }}</td>
+                <td>{{ livreur.vehicule }}</td>
+                <td>
+                    <a href="{{ path('app_livreur_show', {'idUser': livreur.idUser}) }}">show</a>
+                    <a href="{{ path('app_livreur_edit', {'idUser': livreur.idUser}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_livreur_new') }}">Create new</a>
+{% endblock %}
