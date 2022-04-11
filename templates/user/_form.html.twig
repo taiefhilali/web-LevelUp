@@ -1,0 +1,64 @@
+
+{% extends 'backbase.html.twig' %}
+
+
+
+{% block contentback %}
+
+ 	<link href="{{asset ('/css/formedit.css')}}" media="screen" rel="stylesheet">
+	 
+<link href="{{asset ('/css/inscri.css')}}" media="screen" rel="stylesheet">
+<div class="registration-form">
+      
+            {{ form_start(form,{attr:{novalidate:'novalidate'}}) }}
+					
+			<div class="form-group">
+                	<label for="inputText" class="col-sm-5 col-form-label"><b>Email</b></label>
+					{{ form_widget(form.email) }}
+
+				</div>
+				{{ form_errors(form.email,{'attr':{'class':'text-danger'}}) }}
+
+
+				
+				<div class="form-group">
+                <label for="inputText" class="col-sm-5 col-form-label">Nom</label>
+					{{ form_widget(form.nom) }}
+
+				</div>
+				{{ form_errors(form.nom,{'attr':{'class':'text-danger'}}) }}
+
+
+			
+				<div class="form-group">
+                	<label for="inputText" class="col-sm-5 col-form-label">Prenom</label>
+					{{ form_widget(form.prenom) }}
+				</div>
+				{{ form_errors(form.prenom,{'attr':{'class':'text-danger'}}) }}
+                
+                
+				<div class="form-group">
+                <label  class="col-sm-5 col-form-label">Password</label>
+					{{ form_widget(form.password) }}
+				</div>
+				{{ form_errors(form.password,{'attr':{'class':'text-danger'}}) }}
+                
+                
+				<div class="form-group">
+                <label class="col-sm-5 col-form-label">Role</label>
+					{{ form_widget(form.role) }}
+				</div>
+				</br>
+            <div class="form-group">
+				<button class="btn btn-block create-account">{{ button_label|default('Ajouter') }}</button>
+                
+            </div>
+			
+{{ form_end(form) }}
+        
+       
+    </div>
+
+
+
+{% endblock %}

@@ -1,0 +1,5 @@
+<form method="post" action="{{ path('app_user_delete', {'idUser': user.idUser}) }}" onsubmit="return confirm('Voulez-vous vraiment le supprimer? ?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.idUser) }}">
+    <button class="btn"> <i class="fa fa-trash" aria-hidden="true" style="font-size: 16px;
+												  margin-right: 5px;"></i>Supprimer</button>
+</form>

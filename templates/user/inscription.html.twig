@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block content %}
+
+
+<link href="{{asset ('/css/inscri.css')}}" media="screen" rel="stylesheet">
+	<body>
+		<div class="container cont">
+		<h3 style="text-align:center;">Inscription</h3>
+			<div class="content ">
+				{{ form_start(form,{attr:{novalidate:'novalidate'}}) }}
+				<div class="user-details">
+					<div class="input-box">
+						<span class="details">Prenom</span>
+						{{ form_widget(form.prenom,{'attr':{'class':'form-control'}}
+						)}}
+						{{ form_errors(form.prenom,{'attr':{'class':'text-danger'}}) }}
+					</div>
+					<div class="input-box">
+						<span class="details">Nom</span>
+						{{ form_widget(form.nom,{'attr':{'class':'form-control'}}) }}
+						{{ form_errors(form.nom,{'attr':{'class':'text-danger'}}) }}
+					</div>
+					<div class="input-box">
+						<span class="details">Email</span>
+						{{ form_widget(form.email,{'attr':{'class':'form-control'}}) }}
+						{{ form_errors(form.email,{'attr':{'class':'text-danger'}}) }}
+					</div>
+					<div class="input-box">
+						<span class="details">Telephone</span>
+						{{ form_widget(form.tel,{'attr':{'class':'form-control'}}) }}
+						{{ form_errors(form.tel,{'attr':{'class':'text-danger'}}) }}
+					</div>
+					<div class="input-box">
+						<span class="details">Password</span>
+						{{ form_widget(form.password,{'attr':{'class':'form-control'}}) }}
+						{{ form_errors(form.password,{'attr':{'class':'text-danger'}}) }}
+					</div>
+					<div class="input-box">
+						<span class="details">Date de naissance</span>
+						{{ form_widget(form.dns,{'attr':{'class':'form-control'}}) }}
+						{{ form_errors(form.dns,{'attr':{'class':'text-danger'}}) }}
+					</div>
+
+					<div class="input-box">
+						<span class="details">Adresse</span>
+						{{ form_widget(form.adresse,{'attr':{'class':'form-control'}}) }}
+						{{ form_errors(form.adresse,{'attr':{'class':'text-danger'}}) }}
+					</div>
+					<div class="input-box">
+						<span class="details">Sexe</span>
+						{{ form_widget(form.sexe,{'attr':{'class':'form-control'}}) }}
+						
+					</div>
+					<div class="input-box">
+						<span class="details">Image</span>
+						{{ form_widget(form.imageFile,{'attr':{'class':'form-control'}}) }}
+						
+					</div>
+					
+				</div>
+			</div>
+			<div >
+				<button class="btn">{{ button_label|default('Enregistrer') }}</button>
+			</div>
+			{{ form_end(form) }}
+		</div>
+</body>
+{% endblock %}

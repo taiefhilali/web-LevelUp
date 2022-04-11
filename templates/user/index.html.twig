@@ -1,0 +1,83 @@
+{% extends 'backbase.html.twig' %}
+
+
+{% block contentback %}
+
+	<div class="main">
+		<div class="table-title">
+			<div class="row">
+				<div class="col-xs-6">
+					<h1 style="margin-left:5%;">Liste des utilisateurs</h1>
+				</div>
+
+				<div class="col-xs-6">
+
+					<form action="{{ path('app_user_new') }}">
+						<button class="btn" style="width:40%; margin-top:28px; margin-left:45%;"> <i class="fa fa-plus-circle" aria-hidden="true" style="font-size: 16px;
+												  margin-right: 5px;"></i> Ajouter utilisateur</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		<br>
+		<link href="{{asset ('/css/card.scss')}}" media="screen" rel="stylesheet">
+
+
+		<div class="wrapper">
+
+			<div class="cards_wrap">
+
+				{% for user in users %}
+					<div class="card_item">
+						<div class="card_inner">
+
+							<div class="container">
+								<img src="{{ asset('uploads/images/products/'~user.image~'')}} " alt="" class="profile-img">
+
+								<div class="content">
+									<div class="sub-content">
+										<h3>{{user.nom ~ ' ' ~ user.prenom}}</h3>
+										<p >{{user.role}}</p>
+
+										<span>
+											<i class="fa fa-envelope-square" aria-hidden="true" style="font-size: 16px;
+												  margin-right: 5px;"></i>
+											<b>{{user.email}}</b>
+										</span>
+										  <span class="location">
+											<i class="fa fa-map-marker" aria-hidden="true"></i>
+											<b>{{user.adresse}}</b></span>
+										   <p>
+											<i class="fa fa-phone" aria-hidden="true" style="font-size: 16px;
+												  margin-right: 5px;"></i>
+											{{user.tel}}</p>
+										<table class="center">
+											<td>
+												<form action="{{ path('app_user_edit', {'idUser': user.idUser}) }}">
+													<button class="btn"> <i class="fa fa-pencil" aria-hidden="true" style="font-size: 16px;
+												  margin-right: 5px;"></i>Modifier</button>
+												</form>
+											</td>
+											<td>
+
+												{{ include('user/_delete_form.html.twig') }}
+											</td>
+										</table>
+									</div>
+
+								</div>
+
+							</div>
+
+						</div>
+					</div>
+				{% endfor  %}
+			
+			</div>
+		<div class="navigation text-center">
+        {{ knp_pagination_render(users) }}
+    </div>
+	    
+		
+	</div>
+</div>{% endblock %}

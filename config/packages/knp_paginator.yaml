@@ -1,0 +1,5 @@
+# From http://stackoverflow.com/a/23035644/228648
+# Update pagination config in config.yml as:
+knp_paginator:
+    template:
+         pagination: "paginator-bootstrap.html.twig"
