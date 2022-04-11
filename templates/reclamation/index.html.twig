@@ -1,0 +1,37 @@
+{% extends 'backbase.html.twig' %}
+
+{% block title %}Reclamation index{% endblock %}
+
+{% block contentback %}
+    <h1>Reclamation index</h1>
+
+    <table class="table">
+        <thead class="thead" style="background: cadetblue;color:white;">
+            <tr>
+                <th>IdReclamation</th>
+                <th>Description</th>
+                <th>Warn</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for reclamation in reclamations|reverse %}
+            <tr>
+                <td>{{ reclamation.idReclamation }}</td>
+                <td>{{ reclamation.description }}</td>
+                <td>{{ reclamation.warn ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_reclamation_show', {'idReclamation': reclamation.idReclamation}) }}">show</a>
+                    <a href="{{ path('app_reclamation_edit', {'idReclamation': reclamation.idReclamation}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href="{{ path('app_reclamation_new') }}">Create new</a>
+{% endblock %}

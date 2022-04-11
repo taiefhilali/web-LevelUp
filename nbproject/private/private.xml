@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/Users/User/Desktop/Levelup/src/gui/LivreurReclamationZONE.fxml</file>
+            <file>file:/C:/Users/User/Desktop/Levelup/src/gui/LivadminController.java</file>
+            <file>file:/C:/Users/User/Desktop/Levelup/src/models/User.java</file>
+            <file>file:/C:/Users/User/Desktop/Levelup/src/utils/Emailer.java</file>
+            <file>file:/C:/Users/User/Desktop/Levelup/src/levelup/Levelupmain.java</file>
+            <file>file:/C:/Users/User/Desktop/Levelup/src/gui/livadmin.fxml</file>
+            <file>file:/C:/Users/User/Desktop/Levelup/src/gui/GestionReclmationController.java</file>
+            <file>file:/C:/Users/User/Desktop/Levelup/src/utils/sendSMS.java</file>
+            <file>file:/C:/Users/User/Desktop/Levelup/src/interfaces/Ireclamation.java</file>
+            <file>file:/C:/Users/User/Desktop/Levelup/src/services/ServiceUser.java</file>
+            <file>file:/C:/Users/User/Desktop/Levelup/src/models/Livreur.java</file>
+            <file>file:/C:/Users/User/Desktop/Levelup/src/gui/SendSmsController.java</file>
+            <file>file:/C:/Users/User/Desktop/Levelup/src/gui/LivreurReclamationZONEController.java</file>
+            <file>file:/C:/Users/User/Desktop/Levelup/src/gui/ClientReclamationController.java</file>
+            <file>file:/C:/Users/User/Desktop/Levelup/src/levelup/Levelup.java</file>
+            <file>file:/C:/Users/User/Desktop/Levelup/src/gui/sendSms.fxml</file>
+        </group>
+    </open-files>
+</project-private>

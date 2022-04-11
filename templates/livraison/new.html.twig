@@ -1,0 +1,11 @@
+{% extends 'backbase.html.twig' %}
+
+{% block title %}New Livraison{% endblock %}
+
+{% block contentback %}
+    <h1>Create new Livraison</h1>
+
+    {{ include('livraison/_form.html.twig') }}
+
+    <a href="{{ path('app_livraison_index') }}">back to list</a>
+{% endblock %}
