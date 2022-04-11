@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administrateur index{% endblock %}
+
+{% block body %}
+    <h1>Administrateur index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Cin</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for administrateur in administrateurs %}
+            <tr>
+                <td>{{ administrateur.cin }}</td>
+                <td>
+                    <a href="{{ path('app_administrateur_show', {'idUser': administrateur.idUser}) }}">show</a>
+                    <a href="{{ path('app_administrateur_edit', {'idUser': administrateur.idUser}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_administrateur_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'backbase.html.twig' %}
+
+{% block title %}Table des Produits{% endblock %}
+
+{% block contentback %}
+    <h1 style="text-align:center ;font-weight: bold; color:  #00A9CC">Gestion des Produits</h1>
+    <form action="{{ path('Recherche') }}">
+        <input type="text" placeholder="Chercher un produit ..." name="nom" size="167" style="margin-bottom:1.5em" height=50 >
+        <input type="submit" value="Chercher" class="btn btn-primary m-2" >
+<div><td> <a href="{{ path('app_produit_new') }}" class="btn rounded-pill btn-success" size="150" aria-setsize="150" class="btn btn-primary m-2" style="display:block ; margin-bottom: 2.5em;">Ajouter un Produit</a></td></div>
+
+    </form>
+
+    <table class="table" border="2" >
+
+        <thead>
+            <tr>
+              {#                <th>ID_Produit</th>  #}{#to be hidden #}
+                <th>Nom</th>
+                <th>Réference</th>
+                <th>Prix</th>
+                <th style="text-align:center">Description</th>
+                <th style="text-align:center">Fournisseur</th>
+                <th>Promotion</th>
+                <th style="text-align:center">Image</th>
+                <th>Prix Final</th>
+                <th>Catégorie</th>
+                <th style="text-align:center">Modification</th>
+                <th style="text-align:center">Suppression</th>
+{#           EMPLACEMENT METIER PRIX FINAL     <th>Actions Button</th>#}
+            </tr>
+        </thead>
+        <tbody>
+        {% for produit in produits|reverse %}
+            <tr>
+{#                <td>{{ produit.idProduit }}</td>#}
+                <td>{{ produit.nom }}</td>
+                <td>{{ produit.reference }}</td>
+                <td>{{ produit.prix }}</td>
+                <td>{{ produit.description }}</td>
+                {# Usr input here #}
+                <td>{{ produit.idUser.email }}</td>
+                <td>{{ produit.promotion }}</td>
+                <td> <img src="{{ asset('uploads/images/products/' ~ produit.getImage())}}" height="120" width="120"></td>
+                <td>{{ produit.prixFinal }}</td>
+                <td>{{ produit.idCategorie.nomCategorie }}</td>
+                <td><a href="{{ path('app_produit_edit', {'idProduit': produit.idProduit}) }}" class="btn rounded-pill btn-primary">Modifier le Produit</a></td>
+                <td><a href="{{ path('app_produit_show', {'idProduit': produit.idProduit}) }}" class="btn rounded-pill btn-danger">Supprimer le Produit</a></td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
