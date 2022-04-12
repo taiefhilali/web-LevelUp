@@ -45,7 +45,7 @@ class Post
      *
      * @ORM\Column(name="content", type="text", length=65535, nullable=false)
      * @Assert\NotBlank(message= " Description obligatoire" )
-     * @Assert\Length(min=10,max=60,minMessage="La Description doit faire au moins {{ limit }} caractères.")
+     * @Assert\Length(min=10,minMessage="La Description doit faire au moins {{ limit }} caractères.")
 
 
 
@@ -57,6 +57,8 @@ class Post
      * @var \DateTime
      *
      * @ORM\Column(name="datep", type="date", nullable=false)
+
+
      */
     private $datep;
 

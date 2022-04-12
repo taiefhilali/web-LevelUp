@@ -15,7 +15,6 @@ class Comment
 {
     /**
      * @var int
-     *
      * @ORM\Column(name="idc", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
@@ -48,8 +47,9 @@ class Comment
      *
      * @ORM\Column(name="resp", type="integer", nullable=false)
      * @Assert\NotBlank(message= "Rate obligatoire" )
+     * @Assert\LessThan(5)
+     * @Assert\GreaterThan(0)
 
-     *  @Assert\Length(max=5, minMessage="Le Rate doit faire au plus {{ limit }} caractères.")
 
      */
     private $resp;
@@ -59,7 +59,7 @@ class Comment
      *
      * @ORM\ManyToOne(targetEntity="Post")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_post", referencedColumnName="id")
+     * @ORM\JoinColumn(name="id_post", referencedColumnName="id")
      * })
      */
     private $idPost;
@@ -97,6 +97,7 @@ class Comment
     {
         return $this->resp;
     }
+
 
     public function setResp(int $resp): self
     {

@@ -1,0 +1,37 @@
+{% extends 'backbase.html.twig' %}
+
+
+
+{% block contentback %}
+    <h1  class="text-info"align="center" >Commmentaire </h1>
+    <a href="{{ path('app_comment_new') }}" class="btn btn-outline-info"  > COMMENTER  </a>
+    <table  class="table table-sm table-dark">
+        <thead>
+        <tr>
+
+            <th>Review</th>
+            <th>Commentaire</th>
+            <th>Rate</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for comment in comments %}
+            <tr>
+
+                <td>{{ comment.label }}</td>
+                <td>{{ comment.contenu }}</td>
+                <td>{{ comment.resp }}</td>
+
+                <td>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

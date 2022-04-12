@@ -24,6 +24,16 @@ class CommentController extends AbstractController
             'comments' => $commentRepository->findBy([],['idc'=>'desc']),
         ]);
     }
+    /**
+     * @Route("/b", name="app_comment_index_back", methods={"GET"})
+     */
+    public function indexback(CommentRepository $commentRepository): Response
+    {
+        return $this->render('comment/back.html.twig', [
+            'comments' => $commentRepository->findBy([],['idc'=>'desc']),
+        ]);
+    }
+
 
     /**
      * @Route("/new", name="app_comment_new", methods={"GET", "POST"})
@@ -44,7 +54,6 @@ class CommentController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
     /**
      * @Route("/{idc}", name="app_comment_show", methods={"GET"})
      */
@@ -54,6 +63,7 @@ class CommentController extends AbstractController
             'comment' => $comment,
         ]);
     }
+
 
     /**
      * @Route("/{idc}/edit", name="app_comment_edit", methods={"GET", "POST"})
@@ -67,12 +77,12 @@ class CommentController extends AbstractController
             $commentRepository->add($comment);
             return $this->redirectToRoute('app_comment_index', [], Response::HTTP_SEE_OTHER);
         }
-
         return $this->render('comment/edit.html.twig', [
             'comment' => $comment,
             'form' => $form->createView(),
         ]);
     }
+
 
     /**
      * @Route("/{idc}", name="app_comment_delete", methods={"POST"})
@@ -85,4 +95,8 @@ class CommentController extends AbstractController
 
         return $this->redirectToRoute('app_comment_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
+
+
 }

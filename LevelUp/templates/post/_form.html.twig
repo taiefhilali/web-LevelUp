@@ -1,3 +1,5 @@
+
+
 {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
 {{ form_row(form.title, {'label': 'Sujet de la publication'}) }}
 {{ form_row(form.content, {'label': 'Description de la publication'}) }}
@@ -7,5 +9,11 @@
 
     {{ form_widget(form) }}
 
-    <button class="btn btn-outline-info" style="align-content: baseline">{{ button_label|default('Save') }}</button>
+<style>
+    button.btn {
+        align-content: baseline;
+        solid-color: #1b6d85;
+    }
+</style>
+<button class="btn btn-outline-info">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

@@ -20,6 +20,7 @@ class CommentType extends AbstractType
             ->add('resp')
             ->add('idPost',EntityType::class,['class'=>Post::class,'choice_label'=>'title'])
         ;
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void
