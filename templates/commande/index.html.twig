@@ -1,0 +1,38 @@
+{% extends 'backbase.html.twig' %}
+
+{% block title %}Commande index{% endblock %}
+
+{% block contentback %}
+    <h1>Affecter Commandes</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom et Prenom</th>
+                <th>PrixLivraison</th>
+                <th>DateCommande</th>
+                <th>PrixProduits</th>
+                <th>PrixTotal</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for commande in commandes  | reverse %}
+            <tr>
+                <td>{{ commande.idUser.nom }} {{ commande.idUser.prenom }} </td>
+                <td>{{ commande.prixLivraison }}</td>
+                <td>{{ commande.dateCommande ? commande.dateCommande|date('Y-m-d') : '' }}</td>
+                <td>{{ commande.prixProduits }}</td>
+                <td>{{ commande.prixTotal }}</td>
+                <td>
+                    <a href="#">Affecter</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New DetailCommande{% endblock %}
+
+{% block body %}
+    <h1>Create new DetailCommande</h1>
+
+    {{ include('detail_commande/_form.html.twig') }}
+
+    <a href="{{ path('app_detail_commande_index') }}">back to list</a>
+{% endblock %}

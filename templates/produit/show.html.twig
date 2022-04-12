@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produit{% endblock %}
+
+{% block body %}
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading">Details produit</h1>
+     </div>
+</section>
+
+    <section style="background-color: #eee;">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6 col-xl-4">
+        <div class="card text-black">
+          <i class="fab fa-apple fa-lg pt-3 pb-1 px-3"></i>
+          <img
+            src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/3.webp"
+            class="card-img-top"
+            alt="Apple Computer"
+          />
+          <div class="card-body">
+            <div class="text-center">
+              <h5 class="card-title">{{produit.nom}}</h5>
+              <p class="text-muted mb-4">{{produit.description}}</p>
+            </div>
+    
+              <div class="d-flex justify-content-between">
+                <span>Categorie : </span><span>{{produit.idCategorie.nomCategorie}}</span>
+              </div>
+            <div class="d-flex justify-content-between total font-weight-bold mt-4">
+              <span>Prix : </span><span>{{produit.prix}} $</span>
+            </div>
+            <form action="{{ path('app_panier_elem_new',{'idProduit' : produit.idProduit , 'idUser': 1}) }}">
+              <span>Quantite : </span><input type="number" name="quantite" value="1" min="1" max="20" step="1"/>
+            <button class="btn btn-main" style="margin-left : 80px ; margin-top: 30px" type="submit">Ajouter au panier</a>  
+          </form>
+           
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+   
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produit index{% endblock %}
+
+{% block content %}
+    <h1 style = "margin-left : 590px ; margin-top : 40px">Produits</h1>
+   
+<section class="pricing-table section" id="pricing">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                        <div class="row">
+                         {% for produit in produits %}
+                            <div class="col-md-4 col-sm-6 col-xs-12">
+                                <div class="pricing-item">
+                                    <h3>{{ produit.nom }}</h3>
+                                    <div class="pricing-body">
+                                        <div class="price">
+                                            <span>Prix  : {{ produit.prix }} $</span>
+                                        </div>
+                                        <div class="progress" data-percent="45%">
+                                            <div class="progress-bar"></div>
+                                        </div>
+                                        <p>{{ produit.description }}</p>
+                                        <a class="btn btn-main" href="{{ path('app_produit_show',{'idProduit': produit.idProduit}) }}">Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                             {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- End container -->
+</section>
+ 
+                  
+{% endblock %}
