@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}Edit Comment{% endblock %}
+
+{% block content %}
+    <h1> Comment</h1>
+
+    {{ include('comment/_form.html.twig', {'button_label': 'Update'}) }}
+    <input type="button"  class="btn btn-info" onclick="window.location.href={{ path('app_comment_index') }};" value="RETOUR" />
+
+    {{ include('comment/_delete_form.html.twig') }}
+{% endblock %}

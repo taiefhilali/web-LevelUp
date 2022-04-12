@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Comment{% endblock %}
+
+{% block content %}
+    <h1>Comment</h1>
+
+    <table class="table table-success table-striped">
+        <tbody>
+
+            <tr>
+                <th>Contenue</th>
+                <td>{{ comment.contenu }}</td>
+            </tr>
+            <tr>
+                <th>Review</th>
+                <td>{{ comment.label }}</td>
+            </tr>
+            <tr>
+                <th>Rate</th>
+                <td>{{ comment.resp }}</td>
+            </tr>
+            <tr>
+                <th>Titre publication</th>
+                <td>{{ comment.idPost.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_comment_index') }}">back to list</a>
+
+    <a href="{{ path('app_comment_edit', {'idc': comment.idc}) }}">edit</a>
+
+    {{ include('comment/_delete_form.html.twig') }}
+{% endblock %}

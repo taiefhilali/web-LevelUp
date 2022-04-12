@@ -1,0 +1,49 @@
+{% extends 'backbase.html.twig' %}
+
+{% block title %}**Publication**{% endblock %}
+
+{% block contentback %}
+    <h1  class="text-info"align="center" >Publication </h1>
+
+    <a href="{{ path('app_post_new') }}" class="btn btn-outline-info"  > AJOUTER  </a>
+
+    <table class="table table-sm table-dark">
+        <span class="border border-warning">
+
+        <thead>
+            <tr class="bg-info">
+                <th scope="col">Title</th>
+                <th scope="col">Content</th>
+                <th scope="col">Datep</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        {% for post in posts %}
+            <tr>
+
+                <td>{{ post.title }}</td>
+                <td>{{ post.content }}</td>
+                <td>{{ post.datep ? post.datep|date('Y-m-d') : '' }}</td>
+
+                <td>
+
+                    <a href="{{ path('app_post_show', {'id': post.id}) }}"  class="btn btn-outline-info" >DETAILS</a>
+                    <a href="{{ path('app_post_edit', {'id': post.id}) }}"  class="btn btn-outline-info">MODIFER</a>
+
+
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+
+                <th scope="row">1</th>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+            </span>
+    </table>
+
+{% endblock %}

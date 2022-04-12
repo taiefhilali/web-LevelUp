@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}Comment index{% endblock %}
+
+{% block content %}
+    <h1  class="text-info"align="center" >Commmentaire </h1>
+    <a href="{{ path('app_comment_new') }}" class="btn btn-outline-info"  > COMMENTER  </a>
+    <table  class="table table-sm table-dark">
+        <thead>
+            <tr>
+                <th>Contenu</th>
+                <th>Label</th>
+                <th>Resp</th>
+                <th>Publication</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for comment in comments %}
+            <tr>
+                <td>{{ comment.contenu }}</td>
+                <td>{{ comment.label }}</td>
+                <td>{{ comment.resp }}</td>
+                <td>{{ comment.idPost.id}}</td>
+
+                <td>
+                    <a href="{{ path('app_comment_show', {'idc': comment.idc}) }}" class="btn btn-outline-info">show</a>
+                    <a href="{{ path('app_comment_edit', {'idc': comment.idc}) }}" class="btn btn-outline-info">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
