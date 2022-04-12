@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Comment index{% endblock %}
+
+{% block body %}
+    <h1>Comment index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Idc</th>
+                <th>Contenu</th>
+                <th>Label</th>
+                <th>Resp</th>
+                <th>Post</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for comment in comments %}
+            <tr>
+                <td>{{ comment.idc }}</td>
+                <td>{{ comment.contenu }}</td>
+                <td>{{ comment.label }}</td>
+                <td>{{ comment.resp }}</td>
+                <td>{{ comment.idPost.idPost }}</td>
+
+                <td>
+                    <a href="{{ path('app_comment_show', {'idc': comment.idc}) }}">show</a>
+                    <a href="{{ path('app_comment_edit', {'idc': comment.idc}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_comment_new') }}">Create new</a>
+{% endblock %}
