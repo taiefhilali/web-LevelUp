@@ -1,0 +1,13 @@
+{% extends 'backbase.html.twig' %}
+
+{% block title %}Edit Livraison{% endblock %}
+
+{% block contentback %}
+    <h3 style="color: #00AA88" align="center" >Edit Livraison</h3>
+
+    {{ include('livraison/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_livraison_index') }}">back to list</a>
+
+    {{ include('livraison/_delete_form.html.twig') }}
+{% endblock %}

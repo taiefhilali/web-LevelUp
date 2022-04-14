@@ -1,0 +1,39 @@
+{% extends 'backbase.html.twig' %}
+
+{% block title %}Livraison index{% endblock %}
+
+{% block contentback %}
+    <h3 style="color: #00AA88" align="center" >Livraison</h3>
+
+    <table class="table" border="1">
+        <thead class="thead" style="background: cadetblue;color:white;">
+            <tr>
+                <th>Commande</th>
+                <th>IdUser</th>
+                <th>Date</th>
+                <th>EtatLivraison</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for livraison in livraisons|reverse %}
+            <tr>
+                <td>{{ livraison.idCommande }}</td>
+                <td>{{ livraison.idUser }}</td>
+                <td>{{ livraison.date }}</td>
+                <td>{{ livraison.etatLivraison }}</td>
+                <td>
+                    <a class="btn btn-primary" href="{{ path('app_livraison_show', {'idLivraison': livraison.idLivraison}) }}">show</a>
+                    <a class="btn btn-primary" href="{{ path('app_livraison_edit', {'idLivraison': livraison.idLivraison}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href="{{ path('app_livraison_new') }}">Create new</a>
+{% endblock %}
