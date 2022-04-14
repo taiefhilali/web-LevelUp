@@ -40,6 +40,7 @@ class Livraison
     /**
      * @var string
      * @Assert\NotBlank
+     * @Assert\GreaterThan("yesterday UTC")
      * @ORM\Column(name="date", type="string", length=50, nullable=false)
      */
     private $date;

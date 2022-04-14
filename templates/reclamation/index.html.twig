@@ -3,12 +3,11 @@
 {% block title %}Reclamation index{% endblock %}
 
 {% block contentback %}
-    <h1>Reclamation index</h1>
+    <h3 style="color: #00AA88" align="center" >Reclamation</h3>
 
-    <table class="table">
+    <table class="table" border="1">
         <thead class="thead" style="background: cadetblue;color:white;">
             <tr>
-                <th>IdReclamation</th>
                 <th>Description</th>
                 <th>Warn</th>
                 <th>actions</th>
@@ -17,12 +16,11 @@
         <tbody>
         {% for reclamation in reclamations|reverse %}
             <tr>
-                <td>{{ reclamation.idReclamation }}</td>
                 <td>{{ reclamation.description }}</td>
                 <td>{{ reclamation.warn ? 'Yes' : 'No' }}</td>
                 <td>
-                    <a href="{{ path('app_reclamation_show', {'idReclamation': reclamation.idReclamation}) }}">show</a>
-                    <a href="{{ path('app_reclamation_edit', {'idReclamation': reclamation.idReclamation}) }}">edit</a>
+                    <a class="btn btn-primary" href="{{ path('app_reclamation_show', {'idReclamation': reclamation.idReclamation}) }}">show</a>
+                    <a class="btn btn-primary" href="{{ path('app_reclamation_edit', {'idReclamation': reclamation.idReclamation}) }}">edit</a>
                 </td>
             </tr>
         {% else %}

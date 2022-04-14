@@ -3,9 +3,9 @@
 {% block title %}Livraison index{% endblock %}
 
 {% block contentback %}
-    <h1>Livraison index</h1>
+    <h3 style="color: #00AA88" align="center" >Livraison</h3>
 
-    <table class="table">
+    <table class="table" border="1">
         <thead class="thead" style="background: cadetblue;color:white;">
             <tr>
                 <th>Commande</th>
@@ -23,8 +23,8 @@
                 <td>{{ livraison.date }}</td>
                 <td>{{ livraison.etatLivraison }}</td>
                 <td>
-                    <a href="{{ path('app_livraison_show', {'idLivraison': livraison.idLivraison}) }}">show</a>
-                    <a href="{{ path('app_livraison_edit', {'idLivraison': livraison.idLivraison}) }}">edit</a>
+                    <a class="btn btn-primary" href="{{ path('app_livraison_show', {'idLivraison': livraison.idLivraison}) }}">show</a>
+                    <a class="btn btn-primary" href="{{ path('app_livraison_edit', {'idLivraison': livraison.idLivraison}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
