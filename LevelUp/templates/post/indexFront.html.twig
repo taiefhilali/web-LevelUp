@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}**Post**{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" href="{{asset('css/cardPost.css')}}">
+    <div class="wrapper">
+
+        {% for post in posts %}
+            <br>
+
+            <div class="blog_post">
+                <div class="img_pod">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsY-URPHt28kwUo6IlZW_0P8_bQVvEQXRi4cOrs1EYa9q5IBeb4KPRlS5h6qOYCOpYtgU&usqp=CAU" alt="random image">
+                </div>
+                <div class="container_copy">
+                    <h5>{{ post.idUser.email}}</h5>
+
+                    <h1>{{ post.datep ? post.datep|date('Y-m-d') : '' }}</h1>
+                    <br>
+
+                    <h3>{{ post.title }}</h3>
+                    <br>
+
+                    <p>{{ post.content }}</p>
+
+
+                </div>
+                <br>
+                <br>
+
+                <a href="" class="btn btn-outline-info btn-sm">Detail</a>
+                <a href="" class="btn btn-outline-danger btn-sm"class="fa-solid fa-heart">Like</a>
+                <a href="" class="btn btn-outline-dark btn-sm"class="fa-solid fa-heart">Dislike</a>
+
+            </div>
+        {% endfor%}
+        <br>
+
+    </div>
+{% endblock  %}
+
