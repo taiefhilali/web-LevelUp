@@ -4,10 +4,14 @@
 
 {% block content %}
     <link rel="stylesheet" href="{{asset('css/cardPost.css')}}">
-    <div class="wrapper">
+    <link rel="stylesheet" href="{{asset('css/font-awesome.css')}}">
+
+    <div class="wrapper" >
 
         {% for post in posts %}
             <br>
+            <div class="container">
+
 
             <div class="blog_post">
                 <div class="img_pod">
@@ -29,14 +33,42 @@
                 <br>
                 <br>
 
-                <a href="" class="btn btn-outline-info btn-sm">Detail</a>
-                <a href="" class="btn btn-outline-danger btn-sm"class="fa-solid fa-heart">Like</a>
-                <a href="" class="btn btn-outline-dark btn-sm"class="fa-solid fa-heart">Dislike</a>
 
+                <a class="btn btn-outline-info btn-sm" href="{{ path('app_post_showback', {'id': post.id}) }}">Detail</a>
+                <button class="like__btn" >
+                    <span id="icon"></span>
+                    <span id="count">0</span> j'aime
+                </button>
+                <a href="{{ path('app_comment_index')}}"class="btn btn-outline-success btn-sm"class="fa-solid fa-heart" >Commentaires</a>
+
+
+            </div>
             </div>
         {% endfor%}
         <br>
 
     </div>
+
+    <script >
+
+        const likeBtn = document.querySelector(".like__btn");
+        let likeIcon = document.querySelector("#icon"),
+            count = document.querySelector("#count");
+
+        let clicked = false;
+
+
+        likeBtn.addEventListener("click", () => {
+            if (!clicked) {
+                clicked = true;
+                likeIcon.innerHTML = `<i class="fa fa-heart"></i>`;
+                count.textContent++;
+            } else {
+                clicked = false;
+                likeIcon.innerHTML = `<i class="fa fa-heart"></i>`;
+                count.textContent--;
+            }
+        });
+    </script>
 {% endblock  %}
 

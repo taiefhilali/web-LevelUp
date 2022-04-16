@@ -1,4 +1,7 @@
 {
+    "cmen/google-charts-bundle": {
+        "version": "5.0.0"
+    },
     "doctrine/annotations": {
         "version": "1.13",
         "recipe": {
@@ -96,6 +99,15 @@
         "files": [
             "./config/packages/fos_ckeditor.yaml"
         ]
+    },
+    "helios-ag/fm-elfinder-bundle": {
+        "version": "12.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "10.0",
+            "ref": "addd79a9903ee92664f4cff61eb6cdd1b95945e7"
+        }
     },
     "knplabs/knp-components": {
         "version": "v3.4.0"
@@ -233,6 +245,9 @@
         "files": [
             "./config/packages/sensio_framework_extra.yaml"
         ]
+    },
+    "studio-42/elfinder": {
+        "version": "2.1.61"
     },
     "symfony/asset": {
         "version": "v4.4.40"

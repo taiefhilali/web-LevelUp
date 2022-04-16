@@ -9,12 +9,88 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
+
 
 /**
  * @Route("/comment")
  */
 class CommentController extends AbstractController
 {
+
+
+
+
+
+    /**
+     * @param CommentRepository $Repository
+     * @return Response
+     * @Route ("/statss", name="stat")
+     */
+
+    public function statistiques(CommentRepository $commentRepository){
+        $comment = $commentRepository->countByResp();
+        $resp = [];
+        $commentsCount = [];
+        foreach($comment as $comments){
+
+            $resp [] = $comments['resp'];
+            $commentsCount[] = $comments['count'];
+        }
+        return $this->render('comment/stats.html.twig', [
+            'resp' => $resp,
+            'commentsCount' => $commentsCount
+        ]);
+    }
+    /**
+     * @Route("/statistique", name="statistique")
+     */
+    public function stat(){
+
+        $repository = $this->getDoctrine()->getRepository(Comment::class);
+        $Comment = $repository->findAll();
+
+        $em = $this->getDoctrine()->getManager();
+
+
+        $pr1=0;
+        $pr2=0;
+
+
+
+        foreach ($Comment as $Comment)
+        {
+            if ( $Comment->getresp()=="5")  :
+
+                $pr1+=1;
+            else:
+
+                $pr2+=1;
+
+
+            endif;
+
+        }
+
+        $pieChart = new PieChart();
+        $pieChart->getData()->setArrayToDataTable(
+            [['resp', 'label'],
+                ['5', $pr1],
+                ['50', $pr2],
+            ]
+        );
+        $pieChart->getOptions()->setTitle('STATISTIQUE DU MEILLEUR POST SELON RATE');
+        $pieChart->getOptions()->setHeight(500);
+        $pieChart->getOptions()->setWidth(900);
+        $pieChart->getOptions()->getTitleTextStyle()->setBold(true);
+        $pieChart->getOptions()->getTitleTextStyle()->setColor('#91b59f');
+        $pieChart->getOptions()->getTitleTextStyle()->setItalic(true);
+        $pieChart->getOptions()->getTitleTextStyle()->setFontName('Arial');
+        $pieChart->getOptions()->getTitleTextStyle()->setFontSize(20);
+
+        return $this->render('comment/stats.html.twig', array('piechart' => $pieChart));
+    }
+
     /**
      * @Route("/", name="app_comment_index", methods={"GET"})
      */
@@ -24,6 +100,7 @@ class CommentController extends AbstractController
             'comments' => $commentRepository->findBy([],['idc'=>'desc']),
         ]);
     }
+
     /**
      * @Route("/b", name="app_comment_index_back", methods={"GET"})
      */
@@ -54,6 +131,7 @@ class CommentController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
     /**
      * @Route("/{idc}", name="app_comment_show", methods={"GET"})
      */
@@ -95,8 +173,6 @@ class CommentController extends AbstractController
 
         return $this->redirectToRoute('app_comment_index', [], Response::HTTP_SEE_OTHER);
     }
-
-
 
 
 }
