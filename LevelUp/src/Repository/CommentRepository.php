@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
 
 /**
  * @method Comment|null find($id, $lockMode = null, $lockVersion = null)
@@ -72,5 +73,15 @@ class CommentRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
     */
+
+    public function countByResp(){
+        $query = $this->createQueryBuilder('a')
+            ->select('SUBSTRING(a.resp, 1, 10) as resp, COUNT(a) as count')
+            ->groupBy('resp');
+        return $query->getQuery()->getResult();
+
+    }
+
 }

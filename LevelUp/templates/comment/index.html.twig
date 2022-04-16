@@ -1,40 +1,48 @@
 {% extends 'base.html.twig' %}
 
 
-{% block title %}Comment index{% endblock %}
-
 {% block content %}
-    <h1  class="text-info"align="center" >Commmentaire </h1>
-    <a href="{{ path('app_comment_new') }}" class="btn btn-outline-info"  > COMMENTER  </a>
-    <table  class="table table-sm table-dark">
-        <thead>
-            <tr>
+    <link rel="stylesheet" href="{{asset('css/cardComment.css')}}">
 
-                <th>Review</th>
-                <th>Commentaire</th>
-                <th>Rate</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
+<div class="container bootstrap snippets bootdey">
+    <div class="row">
         {% for comment in comments %}
-            <tr>
 
-                <td>{{ comment.label }}</td>
-                <td>{{ comment.contenu }}</td>
-                <td>{{ comment.resp }}</td>
+        <div class="col-md-12">
+            <div class="blog-comment">
+                <h3 class="text-success">Comments</h3>
+                <hr/>
+                <ul class="comments">
+                    <li class="clearfix">
+                        <img src="https://bootdey.com/img/Content/user_1.jpg" class="avatar" alt="">
+                        <div class="post-comments">
 
-                <td>
-                    <a href="{{ path('app_comment_show',{'idc': comment.idc}) }}" class="btn btn-outline-info">Detail</a>
-                    <a href="{{ path('app_comment_edit',{'idc': comment.idc}) }}" class="btn btn-outline-info">Modifier</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                            <p class="meta" ><a  id="date"  href="#">{{ comment.label  }}</a>  : <i class="pull-right">   <a class="btn btn-clear btn-sm"  href="{{ path('app_comment_show', {'idc': comment.idc}) }}" class="pull-right" class="fa fa-heart" aria-hidden="true">Supprimer</a><a class="btn btn-clear-g btn-sm"  href="{{ path('app_comment_edit', {'idc': comment.idc}) }}" class="pull-right"> Modifier</a></i></p>
+                            <p>
+                                {{ comment.contenu }}
+                            </p>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endfor%}
+    <script>
+        var date = new Date();
+        var currentDate = date.toISOString().slice(0,10);
+        var currentTime = date.getHours() + ':' + date.getMinutes();
+
+        document.getElementById('date').value = currentDate;
+    </script>
+</div>
 
 {% endblock %}
+
+
+
+
+
+
+

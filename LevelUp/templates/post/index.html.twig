@@ -1,14 +1,11 @@
-{% extends 'base.html.twig' %}
+{% extends 'backbase.html.twig' %}
 
-{% block title %}**Publication**{% endblock %}
-
-{% block content %}
+{% block bodyback %}
     <h1  class="text-info"align="center" >Publication </h1>
 
-    <a href="{{ path('app_post_new') }}" class="btn btn-outline-info"  > AJOUTER  </a>
 
-    <table class="table table-sm table-dark">
-        <span class="border border-warning">
+    <table class="table table-sm table-hover" >
+        <span class="border border-dark">
 
         <thead>
             <tr class="bg-info">
@@ -29,9 +26,8 @@
 
                 <td>
 
-                    <a href="{{ path('app_post_show', {'id': post.id}) }}"  class="btn btn-outline-info" >DETAILS</a>
-                    <a href="{{ path('app_post_edit', {'id': post.id}) }}"  class="btn btn-outline-info">MODIFER</a>
-<a href="{{ path('app_comment_index') }}" class="btn btn-outline-info"  role="button">COMMENTER</a>
+                    <a href="{{ path('app_post_delete', {'id': post.id}) }}"  class="btn btn-outline-info" >Supprimer</a>
+
 
 
                 </td>
@@ -46,5 +42,18 @@
         </tbody>
             </span>
     </table>
+    <nav aria-label="Page navigation example" >
+        <ul class="pagination justify-content-end text-align:center" >
+            <li class="page-item disabled align-content-center">
+                <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+            <li     {{ knp_pagination_render(posts) }}
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
+
 
 {% endblock %}
