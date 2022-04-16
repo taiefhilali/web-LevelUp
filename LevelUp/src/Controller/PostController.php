@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PostController extends AbstractController
 {
     /**
-     * @Route("/", name="app_post_index", methods={"GET"})
+     * @Route("/backpost", name="app_post_index", methods={"GET"})
      */
     public function index(PostRepository $postRepository): Response
     {
@@ -25,6 +25,16 @@ class PostController extends AbstractController
             'posts' => $postRepository->findBy([],['id'=>'desc']),
         ]);
     }
+    /**
+     * @Route("/indexFront", name="app_post_indexFront", methods={"GET"})
+     */
+    public function indexFront(PostRepository $postRepository): Response
+    {
+        return $this->render('post/indexFront.html.twig', [
+            'posts' => $postRepository->findBy([],['id'=>'desc']),
+        ]);
+    }
+
 
     /**
      * @Route("/new", name="app_post_new", methods={"GET", "POST"})
@@ -55,6 +65,15 @@ class PostController extends AbstractController
             'post' => $post,
         ]);
     }
+    /**
+     * @Route("/{id}showbackpost", name="app_post_showback", methods={"GET"})
+     */
+    public function showback(Post $post): Response
+    {
+        return $this->render('post/showback.html.twig', [
+            'post' => $post,
+        ]);
+    }
 
     /**
      * @Route("/{id}/edit", name="app_post_edit", methods={"GET", "POST"})
@@ -74,6 +93,18 @@ class PostController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+    /**
+     * @Route("/{id}deletebackpost", name="app_post_deleteback", methods={"POST"})
+     */
+    public function deleteback(Request $request, Post $post, PostRepository $postRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$post->getId(), $request->request->get('_token'))) {
+            $postRepository->remove($post);
+        }
+
+        return $this->redirectToRoute('app_post_index', [], Response::HTTP_SEE_OTHER);
+    }
+
 
     /**
      * @Route("/{id}", name="app_post_delete", methods={"POST"})
@@ -84,6 +115,8 @@ class PostController extends AbstractController
             $postRepository->remove($post);
         }
 
-        return $this->redirectToRoute('app_post_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_post_indexFront', [], Response::HTTP_SEE_OTHER);
     }
+
+
 }
