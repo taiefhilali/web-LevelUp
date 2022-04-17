@@ -11,7 +11,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Asserts;
-
+use Captcha\Bundle\CaptchaBundle\Form\Type\CaptchaType;
+use Captcha\Bundle\CaptchaBundle\Validator\Constraints\ValidCaptcha;
 class PostType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -21,8 +22,22 @@ class PostType extends AbstractType
             ->add('content',CKEditorType::class)
             ->add('datep')
             ->add('idUser',EntityType::class,['class'=>User::class,'choice_label'=>'email'])
+
+            ->add('captchaCode', CaptchaType::class, array(
+                'captchaConfig' => 'ExampleCaptchaUserRegistration',
+                'constraints' => [
+                    new ValidCaptcha([
+                        'message' => 'Invalid captcha, please try again',
+                    ]),
+                ],
+            ))
+
+            // ... ///
         ;
     }
+
+
+
 
     public function configureOptions(OptionsResolver $resolver): void
     {

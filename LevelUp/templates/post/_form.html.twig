@@ -5,7 +5,8 @@
 {{ form_row(form.content, {'label': 'Description de la publication'}) }}
 {{ form_row(form.datep, {'label': 'Date de la publication'}) }}
 {{ form_row(form.idUser, {'label': ' Votre Email'}) }}
-
+ {# render the captcha field to the form in the view #}
+{{ form_row(form.captchaCode) }}
 
     {{ form_widget(form) }}
 
