@@ -3,9 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Post;
+use App\Entity\User;
+use App\Entity\Vote;
 use App\Form\PostType;
 use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
+use App\Repository\UserRepository;
+use App\Repository\VoteRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,34 +24,36 @@ class PostController extends AbstractController
 {
 
 
+    /**
+     * @Route("/backpost", name="app_post_index", methods={"GET"})
+     */
+    public function index(PostRepository $postRepository,Request $request, PaginatorInterface $paginator,CommentRepository $commentrepo ): Response
+    {
+        $repository = $this->getdoctrine()->getRepository(Post::class);
+        $posts= $repository->findAll();
+        $posts = $paginator->paginate($posts, $request->query->getInt('page',1), 2);
+        return $this->render('post/index.html.twig',['posts' => $posts]);
+    }
+
 
     /**
-     * @Route("/paginatorpost", name="post_index", methods={"GET"})
+     * @Route("/paginatorpost", name="app_post_indexpaginator", methods={"GET"})
      */
     public function indexpaginator(Request $request, PaginatorInterface $paginator): Response
     {
         $repository = $this->getdoctrine()->getRepository(Post::class);
         $posts= $repository->findAll();
-        $posts = $paginator->paginate(
-            $posts,
-            $request->query->getInt('page',1),
-            2
-        );
-        return $this->render('post/index.html.twig', [
+        $posts = $paginator->paginate($posts, $request->query->getInt('page',1), 2);
+        return $this->render('post/index.html.twig',[
             'posts' => $posts,
         ]);
     }
 
 
-    /**
-     * @Route("/backpost", name="app_post_index", methods={"GET"})
-     */
-    public function index(PostRepository $postRepository): Response
-    {
-        return $this->render('post/index.html.twig', [
-            'posts' => $postRepository->findBy([], ['id' => 'desc']),
-        ]);
-    }
+
+
+
+
 
     /**
      * @Route("/indexFront", name="app_post_indexFront", methods={"GET"})
@@ -80,7 +86,32 @@ class PostController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/like", name="like")
+     */
+    public function likepost(Request $request,PostRepository $postRepo, VoteRepository  $voteRepository,UserRepository $userRepository)
+    {
 
+        $repository = $this->getdoctrine()->getRepository(Post::class);
+        $vtrepo = $this->getdoctrine()->getRepository(Vote::class);
+        $post= $postRepo->find($request->query->get('postid'));
+        $user = $userRepository->find($request->query->get('userid'));
+        $post->setIdUser($user);
+
+
+
+        $vote = new Vote();
+
+        $vote->setId($request->query->get($post->getId()));
+        $vote->setIdUser($user->getIdUser());
+        $vote->setVoteType(1);
+        $voteRepository->add($vote);
+
+
+
+
+
+        return new Response('Saved new product with id '.$vote->getId());}
     /**
      * @Route("/stats", name="stats")
      */
@@ -147,6 +178,8 @@ class PostController extends AbstractController
         ]);
     }
 
+
+
     /**
      * @Route("/{id}/edit", name="app_post_edit", methods={"GET", "POST"})
      */
@@ -190,5 +223,7 @@ class PostController extends AbstractController
 
         return $this->redirectToRoute('app_post_indexFront', [], Response::HTTP_SEE_OTHER);
     }
+
+
 
 }

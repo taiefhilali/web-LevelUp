@@ -2,8 +2,13 @@
 
 {% block bodyback %}
     <h1  class="text-info"align="center" >Publication </h1>
+    <form>
+        <input type="text" name ="title">
+        <input type="submit" value="recherche">
 
 
+
+    </form>
     <table class="table table-sm table-hover" >
         <span class="border border-dark">
 
@@ -47,7 +52,7 @@
             <li class="page-item disabled align-content-center">
                 <a class="page-link" href="#" tabindex="-1">Previous</a>
             </li>
-            <li     {{ knp_pagination_render(posts) }}
+            <li {{ knp_pagination_render(posts) }}
             </li>
             <li class="page-item">
                 <a class="page-link" href="#">Next</a>
