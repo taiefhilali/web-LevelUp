@@ -2,7 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Post;
+use App\Entity\User;
 use App\Entity\Vote;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,8 +16,8 @@ class VoteType extends AbstractType
     {
         $builder
             ->add('voteType')
-            ->add('idUser')
-            ->add('id')
+            ->add('idUser',EntityType::class,['class'=>User::class,'choice_label'=>'idUser'])
+            ->add('id',EntityType::class,['class'=>Post::class,'choice_label'=>'id'])
         ;
     }
 

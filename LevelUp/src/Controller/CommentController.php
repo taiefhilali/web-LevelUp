@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Entity\Post;
 use App\Form\CommentType;
 use App\Repository\CommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -91,15 +92,7 @@ class CommentController extends AbstractController
         return $this->render('comment/stats.html.twig', array('piechart' => $pieChart));
     }
 
-    /**
-     * @Route("/", name="app_comment_index", methods={"GET"})
-     */
-    public function index(CommentRepository $commentRepository): Response
-    {
-        return $this->render('comment/index.html.twig', [
-            'comments' => $commentRepository->findBy([],['idc'=>'desc']),
-        ]);
-    }
+
 
     /**
      * @Route("/b", name="app_comment_index_back", methods={"GET"})
@@ -129,6 +122,27 @@ class CommentController extends AbstractController
         return $this->render('comment/new.html.twig', [
             'comment' => $comment,
             'form' => $form->createView(),
+        ]);
+    }
+/*
+    /**
+     * @Route("/", name="app_comment_index", methods={"GET"})
+
+    public function index(Post $post ,Request $request ,CommentRepository $commentRepository): Response
+    {
+
+        return $this->render('comment/index.html.twig', [
+            'comments' => $commentRepository->findBy([],['idc'=>'desc']),
+        ]);
+    }
+ */
+    /**
+     * @Route("/{id}test", name="app_comment_index", methods={"GET"})
+     */
+    public function showback(Post $post,CommentRepository $commentRepository): Response
+    {
+        return $this->render('comment/index.html.twig', [
+            'comments' => $commentRepository->findBy(['idPost'=>$post->getId()],['idc'=>'desc']),
         ]);
     }
 

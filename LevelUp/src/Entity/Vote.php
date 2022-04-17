@@ -31,7 +31,7 @@ class Vote
     /**
      * @var \Post
      *
-     * @ORM\ManyToOne(targetEntity="Post")
+     * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_user", referencedColumnName="id_user")
      * })
@@ -65,12 +65,12 @@ class Vote
         return $this;
     }
 
-    public function getIdUser(): ?Post
+    public function getIdUser(): ?User
     {
         return $this->idUser;
     }
 
-    public function setIdUser(?Post $idUser): self
+    public function setIdUser(?User $idUser): self
     {
         $this->idUser = $idUser;
 
