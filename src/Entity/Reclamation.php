@@ -3,12 +3,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Reclamation
  *
- * @ORM\Table(name="reclamation", indexes={@ORM\Index(name="fk_rec_user", columns={"id_user"}), @ORM\Index(name="fk_rec_livraison", columns={"id_livraison"})})
+ * @ORM\Table(name="reclamation", indexes={@ORM\Index(name="fk_rec_livraison", columns={"id_livraison"}), @ORM\Index(name="fk_rec_user", columns={"id_user"})})
  * @ORM\Entity
  */
 class Reclamation
@@ -24,7 +23,7 @@ class Reclamation
 
     /**
      * @var string
-     * @Assert\NotBlank
+     *
      * @ORM\Column(name="description", type="string", length=254, nullable=false)
      */
     private $description;
@@ -32,20 +31,9 @@ class Reclamation
     /**
      * @var bool
      *
-     * @ORM\Column(name="WARN", type="boolean", nullable=false)
+     * @ORM\Column(name="WARN", type="boolean", nullable=true)
      */
-    private $warn = '0';
-
-    /**
-     * @var \Livraison
-     *
-     * @ORM\ManyToOne(targetEntity="Livraison")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_livraison", referencedColumnName="id_livraison")
-     * })
-     * @Assert\NotBlank
-     */
-    private $idLivraison;
+    private $warn;
 
     /**
      * @var \User
@@ -54,9 +42,18 @@ class Reclamation
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_user", referencedColumnName="id_user")
      * })
-     * @Assert\NotBlank
      */
     private $idUser;
+
+    /**
+     * @var \Livraison
+     *
+     * @ORM\ManyToOne(targetEntity="Livraison")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_livraison", referencedColumnName="id_livraison")
+     * })
+     */
+    private $idLivraison;
 
     public function getIdReclamation(): ?int
     {
@@ -87,18 +84,6 @@ class Reclamation
         return $this;
     }
 
-    public function getIdLivraison(): ?Livraison
-    {
-        return $this->idLivraison;
-    }
-
-    public function setIdLivraison(?Livraison $idLivraison): self
-    {
-        $this->idLivraison = $idLivraison;
-
-        return $this;
-    }
-
     public function getIdUser(): ?User
     {
         return $this->idUser;
@@ -107,6 +92,18 @@ class Reclamation
     public function setIdUser(?User $idUser): self
     {
         $this->idUser = $idUser;
+
+        return $this;
+    }
+
+    public function getIdLivraison(): ?Livraison
+    {
+        return $this->idLivraison;
+    }
+
+    public function setIdLivraison(?Livraison $idLivraison): self
+    {
+        $this->idLivraison = $idLivraison;
 
         return $this;
     }

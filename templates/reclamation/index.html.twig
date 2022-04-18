@@ -17,10 +17,13 @@
         {% for reclamation in reclamations|reverse %}
             <tr>
                 <td>{{ reclamation.description }}</td>
-                <td>{{ reclamation.warn ? 'Yes' : 'No' }}</td>
+                <td>{{ reclamation.warn ? 'Yes' : 'No' }}
+                {% if reclamation.warn == false  %}
+                    <a class="btn btn-warning" href="{{ path('warn_reclamation',{'idReclamation':reclamation.idReclamation}) }}">WARN </a>
+                    {% endif %}
+                </td>
                 <td>
                     <a class="btn btn-primary" href="{{ path('app_reclamation_show', {'idReclamation': reclamation.idReclamation}) }}">show</a>
-                    <a class="btn btn-primary" href="{{ path('app_reclamation_edit', {'idReclamation': reclamation.idReclamation}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -31,5 +34,4 @@
         </tbody>
     </table>
 
-    <a class="btn btn-primary" href="{{ path('app_reclamation_new') }}">Create new</a>
 {% endblock %}

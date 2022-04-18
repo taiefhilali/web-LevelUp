@@ -15,8 +15,10 @@ class LivraisonType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('idCommande')
-            ->add('idUser')
+            ->add('idCommande',EntityType::class,['class'=> Commande::class, 'choice_label'=>'idCommande'
+            ])
+            ->add('idUser',EntityType::class,['class'=> User::class, 'choice_label'=>'idUser'
+            ])
             ->add('date')
             ->add('date', DateType::class, [
                 'widget' => 'single_text',

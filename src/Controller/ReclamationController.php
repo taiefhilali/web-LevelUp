@@ -3,12 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\Reclamation;
+use App\Entity\User;
 use App\Form\ReclamationType;
 use App\Repository\ReclamationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+
 
 /**
  * @Route("/reclamation")
@@ -24,19 +28,34 @@ class ReclamationController extends AbstractController
             'reclamations' => $reclamationRepository->findAll(),
         ]);
     }
+    /**
+     * @Route("/indexFront", name="app_reclamation_indexFront", methods={"GET"})
+     */
+    public function indexFront(ReclamationRepository $reclamationRepository): Response
+    { $CLIENTID=200;
+        $RecUser=$reclamationRepository->findBy(['idUser'=>$CLIENTID]);
+
+
+        return $this->render('reclamation/indexFront.html.twig', [
+            'reclamations' => $RecUser,
+        ]);
+    }
+
 
     /**
      * @Route("/new", name="app_reclamation_new", methods={"GET", "POST"})
      */
     public function new(Request $request, ReclamationRepository $reclamationRepository): Response
-    {
+    {$CLIENTID=200;
+        $User=$this->getDoctrine()->getRepository(User::class)->find($CLIENTID);
         $reclamation = new Reclamation();
+        $reclamation->setIdUser($User);
         $form = $this->createForm(ReclamationType::class, $reclamation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $reclamationRepository->add($reclamation);
-            return $this->redirectToRoute('app_reclamation_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_reclamation_indexFront', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('reclamation/new.html.twig', [
@@ -55,6 +74,7 @@ class ReclamationController extends AbstractController
         ]);
     }
 
+
     /**
      * @Route("/{idReclamation}/edit", name="app_reclamation_edit", methods={"GET", "POST"})
      */
@@ -65,7 +85,7 @@ class ReclamationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $reclamationRepository->add($reclamation);
-            return $this->redirectToRoute('app_reclamation_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_reclamation_indexFront', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('reclamation/edit.html.twig', [
@@ -83,6 +103,37 @@ class ReclamationController extends AbstractController
             $reclamationRepository->remove($reclamation);
         }
 
+        return $this->redirectToRoute('app_reclamation_indexFront', [], Response::HTTP_SEE_OTHER);
+    }
+    /**
+     * @Route("/deleteBack/{idReclamation}", name="app_reclamation_delete_back", methods={"POST"})
+     */
+    public function deleteBack(Request $request, Reclamation $reclamation, ReclamationRepository $reclamationRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$reclamation->getIdReclamation(), $request->request->get('_token'))) {
+            $reclamationRepository->remove($reclamation);
+        }
+
         return $this->redirectToRoute('app_reclamation_index', [], Response::HTTP_SEE_OTHER);
+    }
+    /**
+     * @Route("/warnReclamation/{idReclamation}", name="warn_reclamation")
+     */
+    public function warn_reclamation(Request $request,$idReclamation,MailerInterface $mailer): Response
+    {
+        $reclamation=$this->getDoctrine()->getRepository(Reclamation::class)->find($idReclamation);
+        $reclamation->setWarn(true);
+        $idlivreur=$reclamation->getIdLivraison()->getIdUser();
+        $livreur=$this->getDoctrine()->getRepository(User::class)->find($idlivreur);
+
+         $this->getDoctrine()->getManager()->flush();
+        $email=(new Email())
+            ->from('amal.nouira26@gmail.com')
+            ->to($livreur->getEmail())
+            ->subject('Warning ')
+            ->text($reclamation->getDescription());
+        $mailer->send($email);
+        return $this->redirectToRoute('app_reclamation_index', [], Response::HTTP_SEE_OTHER);
+
     }
 }

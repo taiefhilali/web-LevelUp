@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * PanierElem
  *
- * @ORM\Table(name="panier_elem", uniqueConstraints={@ORM\UniqueConstraint(name="id_panier", columns={"id_panier", "id"}), @ORM\UniqueConstraint(name="id_panier_2", columns={"id_panier", "id"})}, indexes={@ORM\Index(name="fk_produit1", columns={"id"}), @ORM\Index(name="IDX_B31E4D172FBB81F", columns={"id_panier"})})
+ * @ORM\Table(name="panier_elem", uniqueConstraints={@ORM\UniqueConstraint(name="id_panier_2", columns={"id_panier", "id"})}, indexes={@ORM\Index(name="fk_produit1", columns={"id"}), @ORM\Index(name="IDX_B31E4D172FBB81F", columns={"id_panier"})})
  * @ORM\Entity
  */
 class PanierElem

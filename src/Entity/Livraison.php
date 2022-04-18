@@ -3,12 +3,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use PhpParser\Node\Scalar\String_;
-use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * Livraison
  *
- * @ORM\Table(name="livraison", indexes={@ORM\Index(name="fk_liv_user", columns={"id_user"}), @ORM\Index(name="fk_commande", columns={"id_commande"})})
+ * @ORM\Table(name="livraison", indexes={@ORM\Index(name="fk_commande", columns={"id_commande"}), @ORM\Index(name="fk_liv_user", columns={"id_user"})})
  * @ORM\Entity
  */
 class Livraison
@@ -23,24 +22,8 @@ class Livraison
     private $idLivraison;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id_commande", type="integer", nullable=false)
-     * @Assert\NotBlank
-     */
-    private $idCommande;
-
-    /**
-     * @var int|null
-     * @Assert\NotBlank
-     * @ORM\Column(name="id_user", type="integer", nullable=true)
-     */
-    private $idUser;
-
-    /**
      * @var string
-     * @Assert\NotBlank
-     * @Assert\GreaterThan("yesterday UTC")
+     *
      * @ORM\Column(name="date", type="string", length=50, nullable=false)
      */
     private $date;
@@ -52,33 +35,29 @@ class Livraison
      */
     private $etatLivraison;
 
+    /**
+     * @var \User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_user", referencedColumnName="id_user")
+     * })
+     */
+    private $idUser;
+
+    /**
+     * @var \Commande
+     *
+     * @ORM\ManyToOne(targetEntity="Commande")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_commande", referencedColumnName="id_commande")
+     * })
+     */
+    private $idCommande;
+
     public function getIdLivraison(): ?int
     {
         return $this->idLivraison;
-    }
-
-    public function getIdCommande(): ?int
-    {
-        return $this->idCommande;
-    }
-
-    public function setIdCommande(int $idCommande): self
-    {
-        $this->idCommande = $idCommande;
-
-        return $this;
-    }
-
-    public function getIdUser(): ?int
-    {
-        return $this->idUser;
-    }
-
-    public function setIdUser(?int $idUser): self
-    {
-        $this->idUser = $idUser;
-
-        return $this;
     }
 
     public function getDate(): ?string
@@ -105,9 +84,28 @@ class Livraison
         return $this;
     }
 
-    public function __toString(): String
+    public function getIdUser(): ?User
     {
-        return $this->idLivraison;
+        return $this->idUser;
+    }
+
+    public function setIdUser(?User $idUser): self
+    {
+        $this->idUser = $idUser;
+
+        return $this;
+    }
+
+    public function getIdCommande(): ?Commande
+    {
+        return $this->idCommande;
+    }
+
+    public function setIdCommande(?Commande $idCommande): self
+    {
+        $this->idCommande = $idCommande;
+
+        return $this;
     }
 
 

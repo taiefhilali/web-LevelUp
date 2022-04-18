@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use PhpParser\Node\Scalar\String_;
 
 /**
  * User
@@ -83,14 +82,14 @@ class User
      *
      * @ORM\Column(name="locked", type="boolean", nullable=true)
      */
-    private $locked = '0';
+    private $locked;
 
     /**
      * @var int
      *
      * @ORM\Column(name="tentative", type="integer", nullable=false)
      */
-    private $tentative = '0';
+    private $tentative;
 
     /**
      * @var \DateTime|null
@@ -102,9 +101,9 @@ class User
     /**
      * @var string|null
      *
-     * @ORM\Column(name="image", type="string", length=254, nullable=true, options={"default"=""""})
+     * @ORM\Column(name="image", type="string", length=254, nullable=true)
      */
-    private $image = '""';
+    private $image = '"';
 
     public function getIdUser(): ?int
     {
@@ -253,10 +252,6 @@ class User
         $this->image = $image;
 
         return $this;
-    }
-
-    public function __toString():String
-    {      return $this->email;
     }
 
 

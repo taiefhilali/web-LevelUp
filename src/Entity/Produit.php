@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Produit
  *
- * @ORM\Table(name="produit", indexes={@ORM\Index(name="fk_CategorieProduit", columns={"id_categorie"}), @ORM\Index(name="fk_idFournisseur", columns={"id_user"})})
+ * @ORM\Table(name="produit", indexes={@ORM\Index(name="fk_idFournisseur", columns={"id_user"}), @ORM\Index(name="fk_CategorieProduit", columns={"id_categorie"})})
  * @ORM\Entity
  */
 class Produit
@@ -68,17 +68,7 @@ class Produit
      *
      * @ORM\Column(name="prix_final", type="float", precision=10, scale=0, nullable=false)
      */
-    private $prixFinal = '0';
-
-    /**
-     * @var \User
-     *
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_user", referencedColumnName="id_user")
-     * })
-     */
-    private $idUser;
+    private $prixFinal;
 
     /**
      * @var \Categorie
@@ -89,6 +79,16 @@ class Produit
      * })
      */
     private $idCategorie;
+
+    /**
+     * @var \User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_user", referencedColumnName="id_user")
+     * })
+     */
+    private $idUser;
 
     public function getIdProduit(): ?int
     {
@@ -179,18 +179,6 @@ class Produit
         return $this;
     }
 
-    public function getIdUser(): ?User
-    {
-        return $this->idUser;
-    }
-
-    public function setIdUser(?User $idUser): self
-    {
-        $this->idUser = $idUser;
-
-        return $this;
-    }
-
     public function getIdCategorie(): ?Categorie
     {
         return $this->idCategorie;
@@ -199,6 +187,18 @@ class Produit
     public function setIdCategorie(?Categorie $idCategorie): self
     {
         $this->idCategorie = $idCategorie;
+
+        return $this;
+    }
+
+    public function getIdUser(): ?User
+    {
+        return $this->idUser;
+    }
+
+    public function setIdUser(?User $idUser): self
+    {
+        $this->idUser = $idUser;
 
         return $this;
     }
