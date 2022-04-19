@@ -2,6 +2,40 @@
 
 {% block title %}Commande index{% endblock %}
 
+{% block  header %}
+
+{% set i=0 %}
+  {% set nbr=0 %}
+ {% set liv=0 %}
+{% set Total=0 %}
+{% for pan in panierElements | reverse %}
+{% set i=i+ (pan.quantite * pan.id.prix) %}
+{% set nbr= nbr+ 1 %}
+ {% endfor %}
+ {% if ( i <= 100) and (nbr != 0) %}
+{% set liv=10 %}
+{% set Total=i+liv %}
+{% else %}
+{% set liv=0 %}
+{% set Total=liv+i %}
+{% endif %}  
+      <li class="nav-item" style="margin-top : -30px; margin-bottom:30px">
+               <div class="site-branding-area">
+                 <div class="container">
+                <div class="row">
+                <div class="col-lg-12">
+               <div class="shopping-item">
+                  <a href="{{ path('app_panier_elements') }}">Cart - <span class="cart-amunt">{{Total}} DN</span> <i class="fa fa-shopping-cart"></i> <span class="product-count">{{nbr}}</span></a>
+                </div>
+                 </div>
+          </div>
+            </div>
+          </li>
+                           
+ {% endblock  %}
+
+
+
 {% block body %}
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -53,5 +87,7 @@
         </div>
     </div>
 </div>
-
+<div style="margin :20px 0 20px 660px " class="pag">
+    <a id="link">{{knp_pagination_render(commandes) }}</a>
+ </div>
 {% endblock %}

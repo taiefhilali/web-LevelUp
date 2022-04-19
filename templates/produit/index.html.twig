@@ -2,6 +2,39 @@
 
 {% block title %}Produit index{% endblock %}
 
+{% block  header %}
+
+{% set i=0 %}
+  {% set nbr=0 %}
+ {% set liv=0 %}
+{% set Total=0 %}
+{% for pan in panierElements | reverse %}
+{% set i=i+ (pan.quantite * pan.id.prix) %}
+{% set nbr= nbr+ 1 %}
+ {% endfor %}
+ {% if ( i <= 100) and (nbr != 0) %}
+{% set liv=10 %}
+{% set Total=i+liv %}
+{% else %}
+{% set liv=0 %}
+{% set Total=liv+i %}
+{% endif %}  
+      <li class="nav-item" style="margin-top : -30px; margin-bottom:30px">
+               <div class="site-branding-area">
+                 <div class="container">
+                <div class="row">
+                <div class="col-lg-12">
+               <div class="shopping-item">
+                  <a href="{{ path('app_panier_elements') }}">Cart - <span class="cart-amunt">{{Total}} DN</span> <i class="fa fa-shopping-cart"></i> <span class="product-count">{{nbr}}</span></a>
+                </div>
+                 </div>
+          </div>
+            </div>
+          </li>
+                           
+ {% endblock  %}
+
+
 {% block content %}
     <h1 style = "margin-left : 590px ; margin-top : 40px">Produits</h1>
    
@@ -22,7 +55,7 @@
                                         </div>
                                         <div class="progress" data-percent="45%">
                                             <div class="progress-bar"></div>
-                                        </div>
+                                        </div> 
                                         <p>{{ produit.description }}</p>
                                         <a class="btn btn-main" href="{{ path('app_produit_show',{'idProduit': produit.idProduit}) }}">Details</a>
                                     </div>

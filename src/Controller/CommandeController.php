@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Controller;
-
+use Knp\Component\Pager\PaginatorInterface;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use App\Entity\Commande;
 use App\Entity\DetailCommande;
+use App\Repository\DetailCommandeRepository;
 use App\Entity\User;
 use App\Entity\Panier;
 use App\Entity\PanierElem;
@@ -35,18 +38,29 @@ class CommandeController extends AbstractController
    /**
      * @Route("/commandes", name="app_conde_index", methods={"GET"})
      */
-    public function indexx(CommandeRepository $commandeRepository): Response
+    public function indexx(Request $request,PaginatorInterface $paginator,PanierRepository $panier,UserRepository $user,PanierElemRepository $panierElemRepository,CommandeRepository $commandeRepository): Response
     {
+        $pan = new Panier();
+        $usr = new User();
+        $usr = $user->find(1);
+        $cmd = $commandeRepository->findAll();
+        $pan = $panier->findBy(['idUser' => $usr]);
+        $commande = $paginator->paginate(
+            $cmd,
+            $request->query->getInt('page', 1),
+            5
+        );
         return $this->render('commande/clientCommande.html.twig', [
-            'commandes' => $commandeRepository->findAll(),
+            'commandes' => $commande,
+            'panierElements' => $panierElemRepository->findBy(['idPanier' => $pan]),
         ]);
     }
 
     /**
      * @Route("/Add/{idUser}/{prixProduits}/{Livraison}/{prixTotal}", name="app_commande_new", methods={"GET", "POST"})
      */
-    public function new(Request $request,$idUser,$prixProduits,
-    PanierElemRepository $panElem,PanierRepository $panier
+    public function new( \Swift_Mailer $mailer ,Request $request,$idUser,$prixProduits,
+    PanierElemRepository $panElem,PanierRepository $panier,DetailCommandeRepository $detail
     ,$Livraison,$prixTotal ,CommandeRepository $commandeRepository ,UserRepository $user): Response
     {   
         
@@ -57,7 +71,8 @@ class CommandeController extends AbstractController
         $usr = $user->find($idUser);
         $pan = $panier->findOneBy(['idUser'=> $usr]);
         $panierElements = $panElem->findBy(['idPanier' => $pan]);
-       
+        
+
         $commande = new Commande();
         $commande->setIdUser($usr);
         $commande->setDateCommande(new \DateTime());
@@ -66,21 +81,43 @@ class CommandeController extends AbstractController
         $commande->setPrixTotal($prixTotal);
         $em = $this->getDoctrine()->getManager();
             $em->persist($commande);
-            $em->flush(); 
+            $em->flush();
             $cmd = $commandeRepository->findOneBy(['idCommande'=> $commande->getIdCommande()]);
+             
     foreach($panierElements as $Elem)
     {   $Detailcmd = new DetailCommande();
         $Detailcmd->setIdCommande($cmd);
         $Detailcmd->setQuantite($Elem->getQuantite());
         $Detailcmd->setId($Elem->getId());
         $em->persist($Detailcmd);
-        $em->flush();
     }
+    $em->flush();
     foreach($panierElements as $Elem)
     {
         $em->remove($Elem);
     }
-        $em->flush();
+    $em->flush();
+
+    $pdfOptions = new Options();
+    $pdfOptions->set('defaultFont', 'Arial');
+    $dompdf = new Dompdf($pdfOptions);
+    $panierEle = $detail->findBy(['idCommande' => $cmd]);
+    $html = $this->renderView('commande/mypdf.html.twig', [
+        'user' => $usr ,
+        'panierElements' => $panierEle,
+        'cmd' => $cmd,
+    ]);
+    $dompdf->loadHtml($html);
+    $dompdf->render();
+    $output = $dompdf->output();
+    $message = (new \Swift_Message('Nouveau Contact'))
+    ->setFrom('hazembayoudh886@gmail.com')
+    ->setTo('hazembayoudh886@gmail.com')
+    ->setsubject('Votre Facture !!');
+    $attachement = new \Swift_Attachment($output, "Facture.pdf", 'application/pdf' );
+    $message->attach($attachement);
+
+        $mailer->send($message);        
         return $this->redirectToRoute('app_produit_index', [], Response::HTTP_SEE_OTHER);
         
     }

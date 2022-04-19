@@ -4,8 +4,13 @@ namespace App\Controller;
 
 use App\Entity\DetailCommande;
 use App\Entity\Commande;
+use App\Entity\User;
+use App\Entity\Panier;
 use App\Form\DetailCommandeType;
 use App\Repository\DetailCommandeRepository;
+use App\Repository\PanierRepository;
+use App\Repository\UserRepository;
+use App\Repository\PanierElemRepository;
 use App\Repository\CommandeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,13 +35,18 @@ class DetailCommandeController extends AbstractController
      /**
      * @Route("/{idCommande}", name="app_detail_commande_index", methods={"GET"})
      */
-    public function indexx(DetailCommandeRepository $detailCommandeRepository,CommandeRepository $commande, $idCommande): Response
+    public function indexx( PanierRepository $panier,UserRepository $user,PanierElemRepository $panierElemRepository, DetailCommandeRepository $detailCommandeRepository,CommandeRepository $commande, $idCommande): Response
     {    
+        $pan = new Panier();
+        $usr = new User();
+        $usr = $user->find(1);
+        $pan = $panier->findBy(['idUser' => $usr]);
         $cmd = new Commande();
         $cmd = $commande->find($idCommande);
         $details = $detailCommandeRepository->findBy(['idCommande' => $cmd]);
         return $this->render('detail_commande/index.html.twig', [
             'detail_commandes' => $details,
+            'panierElements' => $panierElemRepository->findBy(['idPanier' => $pan]),
         ]);
     }
 

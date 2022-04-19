@@ -1,2 +1,0 @@
-# web-LevelUp
-gaming store

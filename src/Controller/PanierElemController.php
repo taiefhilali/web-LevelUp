@@ -41,7 +41,8 @@ class PanierElemController extends AbstractController
         $usr = $user->find(1);
         $pan = $panier->findBy(['idUser' => $usr]);
         return $this->render('panier/index.html.twig', [
-            'panierElements' => $panierElemRepository->findBy(['idPanier' => $pan]),
+            'panierElements' => $panierElemRepository->findBy(['idPanier' => $pan]) ,
+        
         ]);
     }
 
@@ -62,7 +63,7 @@ class PanierElemController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $em->persist($panierElem);
         $em->flush();
-        return $this->redirectToRoute('app_produit_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_panier_elements', [], Response::HTTP_SEE_OTHER);
     
     }
 
@@ -79,20 +80,15 @@ class PanierElemController extends AbstractController
     /**
      * @Route("/{idElem}/edit", name="app_panier_elem_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, PanierElem $panierElem, PanierElemRepository $panierElemRepository): Response
+    public function edit(Request $request, $idElem, PanierElemRepository $panierElemRepository): Response
     {
-        $form = $this->createForm(PanierElemType::class, $panierElem);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $panierElemRepository->add($panierElem);
-            return $this->redirectToRoute('app_panier_elem_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('panier_elem/edit.html.twig', [
-            'panier_elem' => $panierElem,
-            'form' => $form->createView(),
-        ]);
+         $panierElem = new PanierElem();
+         $panierElem = $panierElemRepository->find($idElem);
+         $panierElem->setQuantite($request->get('quantite'));
+        $panierElemRepository->add($panierElem);
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+        return $this->redirectToRoute('app_panier_elements', [], Response::HTTP_SEE_OTHER);
     }
 
     /**

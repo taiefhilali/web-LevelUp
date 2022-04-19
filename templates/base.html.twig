@@ -16,8 +16,12 @@
     <!-- Mobile Specific Meta
       ================================================== -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <!-- Favicon -->
+     <link rel="stylesheet" href="{{asset('css/font-awesome.min.css')}}">
     <link href="{{asset('img/favicon.png')}}">
     <link rel="stylesheet" href="{{asset('plugins/themefisher-font.v-2/style.css')}}"/>
     <!-- bootstrap.min css -->
@@ -33,9 +37,7 @@
 </head>
 {% endblock  %}
 
-
 <body id="body">
-
 <!--
  Start Preloader
  ==================================== -->
@@ -50,14 +52,14 @@ End Preloader
 <!--
 Fixed Navigation
 ==================================== -->
-
+{%  block nav %}
 <section class="header  navigation">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <nav class="navbar navbar-expand-lg">
                     <a class="navbar-brand" href="index.html">
-                        <img src="images/logo.png" alt="logo">
+                        <img style="width:100px; height: 70px" src="{{asset('images/Image1.png')}}" alt="logo">
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="tf-ion-android-menu"></span>
@@ -65,43 +67,37 @@ Fixed Navigation
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ml-auto">
                             <li class="nav-item active">
-                                <a class="nav-link" href="{{ path('app_produit_index') }}">Home <span class="sr-only">(current)</span></a>
+                              <a class="nav-link" href="{{ path('app_produit_index') }}"> <i class="fa fa-home" aria-hidden="true"></i> Home <span class="sr-only">(current)</span></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ path('app_panier_elements') }}">Panier</a>
+                                <a class="nav-link" href="{{ path('app_conde_index') }}"><i class="fa fa-address-book-o" aria-hidden="true"></i> Mes Commandes</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ path('app_conde_index') }}">Mes Commandes</a>
+                                <a class="nav-link" href="{{ path('app_produit_Top') }}"><i class="fa fa-level-up" aria-hidden="true"></i> TopProducts</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="contact.html">TopProducts</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="login.html">Sign In</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="signup.html">Sign Up</a>
-                            </li>
-
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Pages
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="team.html">Team Page</a>
-                                    <a class="dropdown-item" href="404.html">404 Page</a>
-                                    <a class="dropdown-item" href="blog.html">Blog Page</a>
+                            {% block  header %}
+                            <li class="nav-item" style="margin-top : -30px; margin-bottom:30px">
+                                   <div class="site-branding-area">
+                                 <div class="container">
+                                    <div class="row">
+                                     <div class="col-lg-12">
+                                        <div class="shopping-item">
+                                            <a href="{{ path('app_panier_elements') }}">Cart - <span class="cart-amunt">0 DN</span> <i class="fa fa-shopping-cart"></i> <span class="product-count">0</span></a>
+                                        </div>
+                                     </div>
                                 </div>
+                            </div>
                             </li>
+                            {% endblock  %}
                         </ul>
+                 </div>
                     </div>
                 </nav>
-
             </div>
         </div>
     </div>
 </section>
-
+{% endblock %}
 <!--
 Welcome Slider
 ==================================== -->
@@ -132,192 +128,6 @@ Welcome Slider
     </div>
 </section>
 
-<section class="counter section-sm">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3 col-3">
-                <div class="counters-item">
-                    <span>$50B+</span>
-                    <p>Bitcoin Served</p>
-                </div>
-            </div>
-            <div class="col-md-3 col-3">
-                <div class="counters-item">
-                    <span>10M+</span>
-                    <p>Server Build</p>
-                </div>
-            </div>
-            <div class="col-md-3 col-3">
-                <div class="counters-item">
-                    <span>68</span>
-                    <p>Countries Supported</p>
-                </div>
-            </div>
-            <div class="col-md-3 col-3">
-                <div class="counters-item kill-border">
-                    <span>10B</span>
-                    <p>Active Treades</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!--
-Start About Section
-==================================== -->
-<section class="about-2 section bg-gray" id="about">
-    <div class="container">
-        <div class="row">
-            <div class="col-12 col-md-6 align-self-center mb-4 mb-md-0">
-                <div class="align-self-center">
-                    <h2>A New Kind of Digital Currency to change the world what we think</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae deleniti ipsa labore necessitatibus culpa veritatis quo accusantium, neque enim ea ad eaque iure, quas tempore velit, quibusdam dolor illo! Explicabo.</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid quisquam maiores iste soluta, nihil dolorem?</p>
-                    <a href="#" class="btn btn-main">Learn More</a>
-                </div>
-            </div>
-            <div class="col-12 col-md-6">
-                <div id="myDiv" class="bitcoin-graph">
-                    <p>Bitcoin graphs</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="services section-xs"  id="services">
-    <div class="container">
-        <div class="row">
-            <!-- Single Service Item -->
-            <div class="col-md-4 col-sm-6 col-xs-12" >
-                <div class="service-block color-bg text-center">
-                    <div class="service-icon text-center">
-                        <img src="images/icons/bitcoin-safety-shield.png" alt="">
-                    </div>
-                    <h3>Easy & Secure</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur.. Sed id lorem eget orci dictum facilisis vel id tellus. Nullam iaculis arcu at mauris dapibus consectetur.</p>
-                </div>
-            </div>
-            <!-- End Single Service Item -->
-
-            <!-- Single Service Item -->
-            <div class="col-md-4 col-sm-6 col-xs-12" >
-                <div class="service-block text-center">
-                    <div class="service-icon text-center">
-                        <img src="images/icons/bitcoin-exchange.png" alt="">
-                    </div>
-                    <h3>Instant Exchange</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur.. Sed id lorem eget orci dictum facilisis vel id tellus. Nullam iaculis arcu at mauris dapibus consectetur.</p>
-                </div>
-            </div>
-            <!-- End Single Service Item -->
-
-            <!-- Single Service Item -->
-            <div class="col-md-4 col-sm-6 col-xs-12 mx-auto"  >
-                <div class="service-block color-bg text-center">
-                    <div class="service-icon text-center">
-                        <img src="images/icons/bitcoin-network.png" alt="">
-                    </div>
-                    <h3>Strong Network</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur.. Sed id lorem eget orci dictum facilisis vel id tellus. Nullam iaculis arcu at mauris dapibus consectetur.</p>
-                </div>
-            </div>
-            <!-- Single Service Item -->
-            <div class="col-md-4 col-sm-6 col-xs-12" >
-                <div class="service-block color-bg text-center">
-                    <div class="service-icon text-center">
-                        <img src="images/icons/bitcoin-safety-shield.png" alt="">
-                    </div>
-                    <h3>Easy & Secure</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur.. Sed id lorem eget orci dictum facilisis vel id tellus. Nullam iaculis arcu at mauris dapibus consectetur.</p>
-                </div>
-            </div>
-            <!-- End Single Service Item -->
-            <!-- Single Service Item -->
-            <div class="col-md-4 col-sm-6 col-xs-12" >
-                <div class="service-block color-bg text-center">
-                    <div class="service-icon text-center">
-                        <img src="images/icons/bitcoin-safety-shield.png" alt="">
-                    </div>
-                    <h3>Easy & Secure</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur.. Sed id lorem eget orci dictum facilisis vel id tellus. Nullam iaculis arcu at mauris dapibus consectetur.</p>
-                </div>
-            </div>
-            <!-- End Single Service Item -->
-            <!-- Single Service Item -->
-            <div class="col-md-4 col-sm-6 col-xs-12" >
-                <div class="service-block color-bg text-center">
-                    <div class="service-icon text-center">
-                        <img src="images/icons/bitcoin-safety-shield.png" alt="">
-                    </div>
-                    <h3>Easy & Secure</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur.. Sed id lorem eget orci dictum facilisis vel id tellus. Nullam iaculis arcu at mauris dapibus consectetur.</p>
-                </div>
-            </div>
-            <!-- End Single Service Item -->
-        </div> 		<!-- End row -->
-    </div>   	<!-- End container -->
-</section>   <!-- End section -->
-
-
-
-
-<!--
-Start About Section
-==================================== -->
-<section class="service-2 section bg-gray">
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <div class="title text-center">
-                    <h4>Bitcoin flow</h4>
-                    <h2>How It Works</h2>
-                    <span class="border"></span>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum reiciendis quasi itaque, obcaecati atque sit!</p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4 p-0">
-                <div class="service-item text-center">
-                    <span class="count">1.</span>
-                    <h4>Sign Up</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae risus nec dui venenatis.</p>
-                </div>
-            </div>
-            <div class="col-md-4 p-0">
-                <div class="service-item text-center">
-                    <span class="count">2.</span>
-                    <h4>Connect</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae risus nec dui venenatis.</p>
-                </div>
-            </div>
-            <div class="col-md-4 p-0">
-                <div class="service-item text-center">
-                    <span class="count">3.</span>
-                    <h4>Buy Digital Currency</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae risus nec dui venenatis.</p>
-                </div>
-            </div>
-        </div>    <!-- End row -->
-    </div>    <!-- End container -->
-</section>   <!-- End section -->
-
-<!--
-Start Call To Action
-==================================== -->
-<section class="call-to-action section-sm">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <h2>Open account for free and start trading Bitcoins now!</h2>
-                <p>Proin gravida nibh vel velit auctor aliquet. Aenean sollicudin bibendum auctor, <br> nisi elit consequat ipsum, nesagittis sem nid elit. Duis sed odio sitain elit.</p>
-                <a href="" class="btn btn-main">Get Started</a>
-            </div>
-        </div> 		<!-- End row -->
-    </div>   	<!-- End container -->
-</section>   <!-- End section -->
 
 <!-- Start Pricing section
 		=========================================== -->
@@ -688,6 +498,7 @@ Start Call To Action
 </section>   <!-- End section -->
 
 {% endblock %}
+{% block footer %}
 <footer id="footer" class="bg-one">
     <div class="top-footer">
         <div class="container">
@@ -759,7 +570,7 @@ Start Call To Action
         <h6>Design and Developed by <a href="">Themefisher</a></h6>
     </div>
 </footer> <!-- end footer -->
-
+{% endblock %}
 
 <!-- end Footer Area
 ========================================== -->

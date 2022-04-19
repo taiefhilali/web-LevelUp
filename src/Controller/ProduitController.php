@@ -1,10 +1,17 @@
 <?php
 
 namespace App\Controller;
-
+use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\Produit;
+use App\Entity\Panier;
+use App\Repository\DetailCommandeRepository;
+use App\Entity\PanierElem;
+use App\Entity\User;
 use App\Form\ProduitType;
 use App\Repository\ProduitRepository;
+use App\Repository\PanierElemRepository;
+use App\Repository\UserRepository;
+use App\Repository\PanierRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,15 +22,54 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ProduitController extends AbstractController
 {
+ 
+   /**
+     * @Route("/TopProducts", name="app_produit_Top", methods={"GET"})
+     */
+    public function Top( PaginatorInterface $paginator,Request $request,DetailCommandeRepository $detailCommandeRepository,PanierRepository $panier,UserRepository $user,PanierElemRepository $panierElemRepository,ProduitRepository $produitRepository): Response
+    {   
+        $i = 0;
+        $produit = $produitRepository->findAll();
+        $nbr = array();
+        foreach($produit as $valeur){
+        $elem = $detailCommandeRepository->findBy(['id' => $valeur]);
+        foreach($elem as $val){
+            $i = $i + 1 ; 
+        }
+        array_push($nbr, $i);
+        $i = 0;
+        }
+        $products = $paginator->paginate(
+            $produit,
+            $request->query->getInt('page', 1),
+            3
+        );
+        $pan = new Panier();
+        $usr = new User();
+        $usr = $user->find(1);
+        $pan = $panier->findBy(['idUser' => $usr]);
+        return $this->render('produit/TopProducts.html.twig', [
+            'products' => $products,
+            'panierElements' => $panierElemRepository->findBy(['idPanier' => $pan]),
+            'nbr' => $nbr,
+        ]);
+    }
     /**
      * @Route("/", name="app_produit_index", methods={"GET"})
      */
-    public function index(ProduitRepository $produitRepository): Response
-    {
+    public function index( PanierRepository $panier,UserRepository $user,PanierElemRepository $panierElemRepository,ProduitRepository $produitRepository): Response
+    {   
+       
+        $pan = new Panier();
+        $usr = new User();
+        $usr = $user->find(1);
+        $pan = $panier->findBy(['idUser' => $usr]);
         return $this->render('produit/index.html.twig', [
             'produits' => $produitRepository->findAll(),
+            'panierElements' => $panierElemRepository->findBy(['idPanier' => $pan]),
         ]);
     }
+
 
     /**
      * @Route("/new", name="app_produit_new", methods={"GET", "POST"})
@@ -48,10 +94,25 @@ class ProduitController extends AbstractController
     /**
      * @Route("/{idProduit}", name="app_produit_show", methods={"GET"})
      */
-    public function show(Produit $produit): Response
-    {
+    public function show($idProduit,Produit $produit,PanierRepository $panier,UserRepository $user,PanierElemRepository $panierElemRepository,ProduitRepository $produitRepository): Response
+    {   
+
+        $produit = new Produit();
+        $elem = new PanierElem(); 
+        $test = false;
+        $pan = new Panier();
+        $usr = new User();
+        $usr = $user->find(1);
+        $produit = $produitRepository->find($idProduit);
+        $pan = $panier->findBy(['idUser' => $usr]);
+        $elem = $panierElemRepository->findBy(['idPanier' => $pan, 'id' => $produit]);
+        if (empty($elem)){
+            $test = true;
+        }
         return $this->render('produit/show.html.twig', [
             'produit' => $produit,
+            'panierElements' => $panierElemRepository->findBy(['idPanier' => $pan]),
+            'test' => $test,
         ]);
     }
 
