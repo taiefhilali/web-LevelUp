@@ -2,10 +2,13 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+
 
 /**
  * Produit
@@ -13,6 +16,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="produit", indexes={@ORM\Index(name="fk_CategorieProduit", columns={"id_categorie"}), @ORM\Index(name="fk_idFournisseur", columns={"id_user"})})
  * @ORM\Entity
  * @Vich\Uploadable
+ * @UniqueEntity(fields={"nom"}, message="La nom du produit {{ value }} est déja existant! Veuillez choisir un autre nom.")
+ * @UniqueEntity(fields={"reference"}, message="La référence {{ value }} est déja existante! Veuillez choisir une autre réference.")
+
  */
 class Produit
 {
@@ -27,7 +33,11 @@ class Produit
 
     /**
      * @var string
-     *
+     * @Assert\Length(
+     *      min = 6,
+     *      max = 40,
+     *      minMessage = "La longueur du nom doit être supérieur à 6 et inférieur à 40!",
+     *      maxMessage =" doit etre <=40" )
      * @Assert\NotBlank(message="Le champ nom est obligatoire!")
      * @ORM\Column(name="nom", type="string", length=254, nullable=false)
      */
@@ -37,16 +47,22 @@ class Produit
     /**
      * @var string
      * @Assert\NotBlank(message="La référence est obligatoire!")
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 20,
+     *      minMessage = "La longueur du nom doit être supérieur à 2 et inférieur à 20!",
+     *      maxMessage =" doit etre <=20" )
      * @ORM\Column(name="reference", type="string", length=254, nullable=false)
      *
      */
+//    add a regex pattern constraint
     private $reference;
 
     /**
      * @var float
-     *
+     * @Assert\GreaterThan (0)
      * @Assert\NotBlank(message="Le prix est obligatoire!")
-     *
+     * @Assert\Positive(message="Le prix doit être positive!")
      * @ORM\Column(name="prix", type="float", precision=10, scale=0, nullable=false)
      */
     private $prix;
@@ -67,20 +83,19 @@ class Produit
     /**
      * @var float
      *
-     * @Assert\NotBlank(message="La promotion est obligatoire!")
+     * @Assert\NotBlank(message="Veuillez remplir le champ promotion!")
+     * @Assert\Positive (message=" La promotion doit être positive!")
      * @ORM\Column(name="promotion", type="float", precision=10, scale=0, nullable=false)
      */
     private $promotion;
 
     /**
      * @var string
-     *
      * @ORM\Column(name="image", type="string", length=254, nullable=false)
      */
     private $image;
 //    Image file attribute (bundle vich)
     /**
-     * @Assert\NotBlank(message="L'ajout de l'image est obligatoire")
      * @Vich\UploadableField(mapping="product_images", fileNameProperty="image")
      * @var File
      */
@@ -105,6 +120,7 @@ class Produit
 
     /**
      * @var \Categorie
+     *
      *
      * @ORM\ManyToOne(targetEntity="Categorie")
      * @ORM\JoinColumns({
@@ -197,7 +213,7 @@ class Produit
 
     public function setPrixFinal(float $prixFinal): self
     {
-        $this->prixFinal = $prixFinal;
+        $this->prixFinal =$prixFinal;
 
         return $this;
     }
@@ -242,6 +258,5 @@ class Produit
     {
         return $this->imageFile;
     }
-
 
 }

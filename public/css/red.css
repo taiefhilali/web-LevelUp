@@ -3701,10 +3701,12 @@ a.text-warning:focus {
 }
 .text-danger {
   color: #292929;
+  font-size: 20em;
 }
 a.text-danger:hover,
 a.text-danger:focus {
   color: #101010;
+  font-size: 20em;
 }
 .bg-primary {
   color: #fff;

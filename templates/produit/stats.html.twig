@@ -1,0 +1,31 @@
+{% block stylesheet %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/helpers.esm.min.js" integrity="sha512-urWBnIv+F027G24xDNigjxvIuwnWlWy94W2yx77VkISKLzKSohOKOubMDhtEF6LZcEH7gctmNSpxDqIW/zMmUg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% endblock %}
+
+{% block body %}
+<div class="chart-container" style="position: relative; height:60vh; width:47vw; margin: 0 auto;aspect-ratio: auto">
+    <canvas style="aspect-ratio: auto"  id="categorie"></canvas>
+</div>
+
+{% endblock %}
+
+{% block javaScript %}
+{#    To add colors#}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        let categorie = document.querySelector("#categorie")
+        let categGraph = new Chart(categorie,{
+            type:"pie",
+            data:{
+                labels:{{ categorieType|raw }},
+                datasets:[{
+                    label:"repartision produit selon prix",
+                    data: {{ prodNumber|raw }},
+                    backgroundColor:["yellow","green","blue","red","purple","pink","cyan","azure","magenta"]
+                }]
+            }
+        })
+    </script>
+{% endblock %}

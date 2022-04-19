@@ -16,7 +16,7 @@
             </tr>
         </thead>
         <tbody>
-        {% for categorie in categories %}
+        {% for categorie in categories|reverse %}
             <tr>
 {#                <td>{{ categorie.idCategorie }}</td>#}
                 <td>{{ categorie.nomCategorie }}</td>

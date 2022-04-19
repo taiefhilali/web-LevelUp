@@ -2,16 +2,20 @@
 
 {% block contentback %}
 
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+
+{#    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">#}
+
+    <br>
     {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
-    <label for="inputText" class="col-sm-5 col-form-label">Nom</label>
-    <div class="col-sm-14">
+    <div class="form-group">
+        <label for="inputText" class="col-sm-5 col-form-label">Nom</label>
+        <br>
         {{ form_widget(form.nomCategorie,{'attr':{'class':'form-control'}}) }}
     </div>
     {{ form_errors(form.nomCategorie,{'attr':{'class':'text-danger'}}) }}
-    {#    <input type="text" class="form-control" id="defaultFormControlInput" placeholder="John Doe" aria-describedby="defaultFormControlHelp">#}
-    {{ form_widget(form) }}
+    <br>
     <button class="btn">{{ button_label|default('Sauvegarder') }}</button>
+    <br>
     <a href="{{ path('app_categorie_index') }}" class="btn btn-outline-primary m-2">Retourner à la liste des Catégories</a>
     {{ form_end(form) }}
 {% endblock %}

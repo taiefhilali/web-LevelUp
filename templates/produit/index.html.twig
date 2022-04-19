@@ -7,10 +7,20 @@
     <form action="{{ path('Recherche') }}">
         <input type="text" placeholder="Chercher un produit ..." name="nom" size="167" style="margin-bottom:1.5em" height=50 >
         <input type="submit" value="Chercher" class="btn btn-primary m-2" >
-<div><td> <a href="{{ path('app_produit_new') }}" class="btn rounded-pill btn-success" size="150" aria-setsize="150" class="btn btn-primary m-2" style="display:block ; margin-bottom: 2.5em;">Ajouter un Produit</a></td></div>
+
+
+
+<div><a href="{{ path('app_produit_new') }}" class="btn rounded-pill btn-success" size="150" aria-setsize="150" class="btn btn-primary m-2" style="display:block ; margin-bottom: 2.5em;">Ajouter un Produit</a></div>
 
     </form>
 
+    {% for message in app.flashes('info') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <h3 style="font-weight: bold; margin-bottom: 2em;text-align: center"><b>Nombre totale des produits :</b> {{ produits.getTotalItemCount }}</h3>
     <table class="table" border="2" >
 
         <thead>
@@ -27,11 +37,14 @@
                 <th>Catégorie</th>
                 <th style="text-align:center">Modification</th>
                 <th style="text-align:center">Suppression</th>
-{#           EMPLACEMENT METIER PRIX FINAL     <th>Actions Button</th>#}
+                <th style="text-align:center">Code QR</th>
+
+
+                {#           EMPLACEMENT METIER PRIX FINAL     <th>Actions Button</th>#}
             </tr>
         </thead>
         <tbody>
-        {% for produit in produits|reverse %}
+        {% for produit in produits %}
             <tr>
 {#                <td>{{ produit.idProduit }}</td>#}
                 <td>{{ produit.nom }}</td>
@@ -41,11 +54,13 @@
                 {# Usr input here #}
                 <td>{{ produit.idUser.email }}</td>
                 <td>{{ produit.promotion }}</td>
-                <td> <img src="{{ asset('uploads/images/products/' ~ produit.getImage())}}" height="120" width="120"></td>
+                <td> <img src="{{ asset('uploads/images/products/' ~ produit.getImage())}}" height="120" width="120" alt="Image du Produit"></td>
                 <td>{{ produit.prixFinal }}</td>
                 <td>{{ produit.idCategorie.nomCategorie }}</td>
                 <td><a href="{{ path('app_produit_edit', {'idProduit': produit.idProduit}) }}" class="btn rounded-pill btn-primary">Modifier le Produit</a></td>
                 <td><a href="{{ path('app_produit_show', {'idProduit': produit.idProduit}) }}" class="btn rounded-pill btn-danger">Supprimer le Produit</a></td>
+                <td><a href="{{ path('qr_function', {'idProduit': produit.idProduit}) }}" class="btn rounded-pill btn-primary">Créer le code QR</a></td>
+
             </tr>
         {% else %}
             <tr>
@@ -54,4 +69,13 @@
         {% endfor %}
         </tbody>
     </table>
+
+    <div><a href="{{ path('stats') }}" class="btn btn-primary rounded-pill m-2" size="150" aria-setsize="150" class="btn btn-primary m-2" style="display:block ; margin-bottom: 2.5em;">Statistiques</a></div>
+
+    <form action="{{ path('excel') }}">
+        <input type="submit" value="excel" class="btn btn-primary rounded-pill m-2">
+    </form>
+    </div>
+    {{ knp_pagination_render(produits) }}
+{#    {{ knp_pagination_sortable(produits, 'Title A-Z', 'produit.nom', {}, {'direction': 'desc'}) }}#}
 {% endblock %}

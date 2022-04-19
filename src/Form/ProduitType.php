@@ -26,7 +26,7 @@ class ProduitType extends AbstractType
             ->add('imageFile',VichImageType::class,array('data_class' => null,'label'=>'Image produit'),['label'=>'insert image'])
 //array('empty_data' => ''),
             ->add('idUser',EntityType::class, [
-                    'label'=>'Email Fournisseur',
+                    'label'=>'E-mail du Fournisseur',
                     'class'=>User::class,
                     'choice_label'=>'email']
             )

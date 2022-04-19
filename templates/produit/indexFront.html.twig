@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+{% block title %}Produit index{% endblock %}
+
+{% block content %}
+<h1 style = "margin-top : 40px; text-align:center ;font-weight: bold; color:  #00A9CC">Liste des Produits</h1>
+{#    {{ knp_pagination_render() }}#}
+
+
+
+    <section class="pricing-table section" id="pricing">
+    <div class="container" >
+        <div class="row">
+            <div class="col-md-14" style="border-radius: 10em">
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+{#                        <form action="{{ path('sortProduit') }}">#}
+{#                            <input type="submit" value="Sort" class="btn btn-primary m-2" >#}
+                        <div class="row">
+                            {% for produit in products %}
+                                <div class="col-md-4 col-sm-6 col-xs-12"  style="border-radius: 20em">
+                                    <div class="pricing-item" style="height: 600px; border-radius: 10px">
+                                        <h3>{{ produit.nom }}</h3>
+                                        <div class="pricing-item" >
+                                            <div class="price" >
+                                                <h1 style="float: left; display: inline-block;margin-right: 1em; text-decoration: line-through">{{ produit.prix }} TND</h1>
+                                                <h1 style="float: right; display: inline-block"> {{ produit.prixFinal }} TND</h1>
+                                                <br>
+                                            </div>
+                                            <div class="progress" data-percent="45%">
+                                                <div class="progress-bar"></div>
+                                            </div>
+{#                                            <p>{{ produit.description }}</p>#}
+{#                                            <div class="progress" data-percent="45%">#}
+{#                                                <div class="progress-bar"></div>#}
+{#                                            </div>#}
+                                            <img src="{{ asset('uploads/images/products/' ~ produit.getImage())}}" height="225" width="225" alt={{ produit.nom }}>
+                                            <div class="progress" data-percent="45%">
+                                                <div class="progress-bar"></div>
+                                            </div>
+                                            <p>{{ produit.description }}</p>
+                                            <br>
+                                            <div class="progress" data-percent="45%">
+                                                <div class="progress-bar"></div>
+                                            </div>
+                                            <a class="btn btn-main" style="display:block ; margin-bottom: 2.5em; background-color: #00F9E4 ;color: #000000  " href="{{ path('app_produit_show',{'idProduit': produit.idProduit}) }}">Details</a>
+                                            <br>
+                                            <div class="progress" data-percent="45%">
+                                                <div class="progress-bar"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- End container -->
+</section>
+    <div style="text-align: center; margin-left: 55em">
+    {{ knp_pagination_render(products) }}
+    </div>
+{% endblock %}
