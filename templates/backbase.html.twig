@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="Dashboard">
     <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
-    <title>Dashio - Bootstrap Admin Template</title>
+    <title>LevelUp</title>
 
     <!-- Favicons -->
     <link href="{{asset('imgback/favicon.png')}}">
@@ -232,7 +232,7 @@
         </div>
         <div class="top-menu">
             <ul class="nav pull-right top-menu">
-                <li><a class="logout" href="login.html">Logout</a></li>
+                <li><a class="logout" href="{{ path('app_logout') }}">Logout</ahref=></li>
             </ul>
         </div>
     </header>
@@ -245,8 +245,10 @@
         <div id="sidebar" class="nav-collapse ">
             <!-- sidebar menu start-->
             <ul class="sidebar-menu" id="nav-accordion">
-                <p class="centered"><a href="profile.html"><img src="img/ui-sam.jpg" class="img-circle" width="80"></a></p>
-                <h5 class="centered">Sam Soffes</h5>
+            {% set image = app.session.get('image') %}
+
+                <p class="centered"><a href="{{ path('app_account') }}"><img src="{{ asset('uploads/images/products/'~ image ~'')}}" class="img-circle centered" style="text-align: center; display: inherit;width:70px;" ></a></p>
+                <h5 class="centered">{{app.session.get('prenom')|upper ~" "~ app.session.get('nom')|upper}}</h5>
                 <li class="mt">
                     <a class="active" href="index.html">
                         <i class="fa fa-dashboard"></i>

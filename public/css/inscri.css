@@ -15,15 +15,14 @@
   color: #fff;
   cursor: pointer;
   border-radius: 10px;
-
 }
 .cont{
-  max-width: 900px;
+  max-width: 1000px;
   width: 100%;
   background-color: #fff;
   padding: 25px 30px;
   border-radius: 5px;
-  box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+  
 }
 .cont .title{
   font-size: 25px;
@@ -48,6 +47,10 @@
 }
 form .user-details .input-box{
   margin-bottom: 15px;
+  width: calc(100% / 3 - 20px);
+}
+form .user-details .ibox{
+ 
   width: calc(100% / 2 - 20px);
 }
 form .input-box span.details{
@@ -114,9 +117,7 @@ form .input-box span.details{
  }
  
  @media(max-width: 584px){
- .container{
-  max-width: 100%;
-}
+
 form .user-details .input-box{
     margin-bottom: 15px;
     width: 100%;

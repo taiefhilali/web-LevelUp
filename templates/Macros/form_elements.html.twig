@@ -1,0 +1,8 @@
+{#app/Resources/views/Macros/form_elements.html.twig#}
+{# 
+ # The recaptcha method allow you to render a reCAPTCHA element. It expects as first parameter the site key
+ #}
+{% macro recaptcha(siteKey)%}
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <div class="g-recaptcha" data-sitekey="{{siteKey}}"></div>
+{% endmacro %}

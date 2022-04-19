@@ -3484,6 +3484,8 @@ img {
 }
 .img-circle {
   border-radius: 50%;
+  display: inherit;
+  text-align: center;
 }
 hr {
   margin-top: 22px;
