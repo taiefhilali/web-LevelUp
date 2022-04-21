@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Reclamation
  *
- * @ORM\Table(name="reclamation", indexes={@ORM\Index(name="fk_rec_livraison", columns={"id_livraison"}), @ORM\Index(name="fk_rec_user", columns={"id_user"})})
+ * @ORM\Table(name="reclamation", indexes={@ORM\Index(name="fk_rec_user", columns={"id_user"}), @ORM\Index(name="fk_rec_livraison", columns={"id_livraison"})})
  * @ORM\Entity
  */
 class Reclamation
@@ -29,7 +29,7 @@ class Reclamation
     private $description;
 
     /**
-     * @var bool
+     * @var bool|null
      *
      * @ORM\Column(name="WARN", type="boolean", nullable=true)
      */
@@ -77,7 +77,7 @@ class Reclamation
         return $this->warn;
     }
 
-    public function setWarn(bool $warn): self
+    public function setWarn(?bool $warn): self
     {
         $this->warn = $warn;
 

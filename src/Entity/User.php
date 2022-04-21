@@ -103,7 +103,7 @@ class User
      *
      * @ORM\Column(name="image", type="string", length=254, nullable=true)
      */
-    private $image = '"';
+    private $image;
 
     public function getIdUser(): ?int
     {

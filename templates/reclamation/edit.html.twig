@@ -3,6 +3,12 @@
 {% block title %}Modifier Reclamation{% endblock %}
 
 {% block content %}
+    {% for message in app.flashes('success') %}
+
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
 <link rel="stylesheet" href="{{asset('css/CardReclamation.css')}}">
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">

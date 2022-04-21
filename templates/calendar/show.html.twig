@@ -1,0 +1,50 @@
+{% extends 'backbase.html.twig' %}
+
+{% block title %}Calendar{% endblock %}
+
+{% block contentback %}
+    <h1>Calendar</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Title</th>
+                <td>{{ calendar.title }}</td>
+            </tr>
+            <tr>
+                <th>Start</th>
+                <td>{{ calendar.start ? calendar.start|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>End</th>
+                <td>{{ calendar.end ? calendar.end|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ calendar.description }}</td>
+            </tr>
+            <tr>
+                <th>AllDay</th>
+                <td>{{ calendar.allDay ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>BackgroundColor</th>
+                <td>{{ calendar.backgroundColor }}</td>
+            </tr>
+            <tr>
+                <th>BorderColor</th>
+                <td>{{ calendar.borderColor }}</td>
+            </tr>
+            <tr>
+                <th>TextColor</th>
+                <td>{{ calendar.textColor }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_calendar_index') }}">back to list</a>
+
+    <a href="{{ path('app_calendar_edit', {'title': calendar.title}) }}">edit</a>
+
+    {{ include('calendar/_delete_form.html.twig') }}
+{% endblock %}

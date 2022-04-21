@@ -199,13 +199,14 @@
                         </div>
                         <div class="col-sm-7">
                             <a href="{{ path('app_livraison_new') }}" class="btn btn-secondary"><i class="material-icons">&#xE147;</i> <span>Ajouter</span></a>
-                            <a href="#" class="btn btn-secondary"><i class="material-icons">&#xE24D;</i> <span>Export to Excel</span></a>
                         </div>
                     </div>
                 </div>
                 <table class="table table-striped table-hover">
                     <thead>
                     <tr>
+                        <th>image</th>
+
                         <th>Commande</th>
                         <th>User</th>
                         <th>Date</th>
@@ -222,9 +223,11 @@
                             <td>{{ livraison.date }}</td>
                             <td>{{ livraison.etatLivraison }}</td>
                             <td>
-                                <a  href="{{ path('app_livraison_edit', {'idLivraison': livraison.idLivraison}) }}"class="pencil" title="Pencil" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>
-                                <a class="eye" href="{{ path('app_livraison_show', {'idLivraison': livraison.idLivraison})  }}"data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>
-
+                                <button> <a href="{{ path('app_livraison_show', {'idLivraison': livraison.idLivraison})  }}"data-toggle="tooltip">show</a> </button>
+                               <br>
+                                <br>
+                                <button >   <a  href="{{ path('app_livraison_edit', {'idLivraison': livraison.idLivraison}) }}"class="pencil" title="Pencil" data-toggle="tooltip"> edit</a>
+                                </button>
                             </td>
                         </tr>
                     {% else %}
