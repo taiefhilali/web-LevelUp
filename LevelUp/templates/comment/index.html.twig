@@ -4,7 +4,8 @@
 {% block content %}
     <link rel="stylesheet" href="{{asset('css/cardComment.css')}}">
 
-<div class="container bootstrap snippets bootdey">
+    <a href="{{ path('app_comment_new') }}" class="btn btn-clear btn-sm"class="pull-right" class="fa fa-heart" aria-hidden="true"  > Ajouter  </a>
+    <div class="container bootstrap snippets bootdey">
     <div class="row">
         {% for comment in comments %}
 
@@ -17,7 +18,7 @@
                         <img src="https://bootdey.com/img/Content/user_1.jpg" class="avatar" alt="">
                         <div class="post-comments">
 
-                            <p class="meta" ><a  id="date"  href="#">{{ comment.label  }}</a>  : <i class="pull-right">   <a class="btn btn-clear btn-sm"  href="{{ path('app_comment_show', {'idc': comment.idc}) }}" class="pull-right" class="fa fa-heart" aria-hidden="true">Supprimer</a><a class="btn btn-clear-g btn-sm"  href="{{ path('app_comment_edit', {'idc': comment.idc}) }}" class="pull-right"> Modifier</a></i></p>
+                            <p class="meta" ><a   id="current_date" href="#"{{ comment.label  }}></a>  : <i class="pull-right">  <a class="btn btn-clear btn-sm"  href="{{ path('app_comment_show', {'idc': comment.idc}) }}" class="pull-right" class="fa fa-heart" aria-hidden="true">Supprimer</a><a class="btn btn-clear-g btn-sm"  href="{{ path('app_comment_edit', {'idc': comment.idc}) }}" > Modifier</a> </i></p>
                             <p>
                                 {{ comment.contenu }}
                             </p>
@@ -30,6 +31,10 @@
     </div>
     {% endfor%}
     <script>
+        document.getElementById("current_date").innerHTML = Date();
+    </script>
+    <script>
+
         var date = new Date();
         var currentDate = date.toISOString().slice(0,10);
         var currentTime = date.getHours() + ':' + date.getMinutes();

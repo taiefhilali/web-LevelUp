@@ -1,8 +1,8 @@
-{% extends 'base.html.twig' %}
+{% extends 'backbase.html.twig' %}
 
 {% block title %}Comment{% endblock %}
 
-{% block content %}
+{% block bodyback %}
     <h3 style="color: #1b6d85" align="center">Comment</h3>
 
     <table class="table table-success table-striped">
@@ -30,9 +30,10 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_comment_index') }}" class="btn btn-outline-info">Retour</a>
+    {# <a href="{{ path('app_comment_index') }}" class="btn btn-outline-info">Retour</a> #}
+    {#  <a href="{{ path('app_comment_edit', {'idc': comment.idc}) }}" class="btn btn-outline-info">Modifier</a>#}
 
-    <a href="{{ path('app_comment_edit', {'idc': comment.idc}) }}" class="btn btn-outline-info">Modifier</a>
+
 
     {{ include('comment/_delete_form.html.twig') }}
 {% endblock %}

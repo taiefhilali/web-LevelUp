@@ -4,7 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Vote;
 use App\Form\VoteType;
+use App\Repository\PostRepository;
+use App\Repository\UserRepository;
 use App\Repository\VoteRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -85,4 +89,59 @@ class VoteController extends AbstractController
 
         return $this->redirectToRoute('app_vote_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
+
+    /**
+     *
+     *
+     *@Route ("/{id}/like_dislike", name="vote")
+     */
+
+    public function like_dislike( $id ,VoteRepository $voteRepository,UserRepository $userRepository,PostRepository $postRepository,EntityManagerInterface $em){
+    $user_id=1;
+    $vote=$voteRepository->findOneBy(['idUser'=> $user_id,'id'=>$id]);
+    if($vote){
+        $voteRepository->remove($vote);
+
+
+
+
+    }else{
+       $v= new Vote();
+       $v->setIdUser($userRepository->find($user_id));
+        $v->setId($postRepository->find($id));
+        $v->setVoteType(0);
+        $em->persist($v);
+
+    }
+
+        $em->flush();
+        return $this->redirectToRoute('app_post_indexFront', [], Response::HTTP_SEE_OTHER);
+
+
+    }
+
+
+    /**
+     *
+     *
+     *@Route ("/{id}/check")
+     */
+    public function check($id,VoteRepository $voteRepository){
+        $user_id=1;
+        $vote=$voteRepository->findOneBy(['idUser'=> $user_id,'id'=>$id]);
+        if($vote){
+            $res=1;
+
+        }else {
+
+            $res=0;
+        }
+
+        return $this->json(['data'=>$res,'count'=>count($voteRepository->findBy(['id'=>$id]))]);
+
+    }
+
+
 }

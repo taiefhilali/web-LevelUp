@@ -73,4 +73,15 @@ class PostRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findBytitle($title){
+        return $this->getEntityManager()
+            ->createQuery(
+                'SELECT p
+                FROM Post p
+                WHERE p.title LIKE :str'
+            )
+            ->setParameter('str', '%'.$title.'%')
+            ->getResult();
+    }
 }

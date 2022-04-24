@@ -1,10 +1,19 @@
 {% extends 'backbase.html.twig' %}
 
 
-
-{% block contentback %}
+{% block bodyback %}
+    <br>
+    <br>
     <h1  class="text-info"align="center" >Commmentaire </h1>
-    <a href="{{ path('app_comment_new') }}" class="btn btn-outline-info"  > COMMENTER  </a>
+    <br>
+    <br>
+    <br>
+
+    <br>
+    <br>
+    <br>
+    <br>
+
     <table  class="table table-sm table-dark">
         <thead>
         <tr>
@@ -24,14 +33,25 @@
                 <td>{{ comment.resp }}</td>
 
                 <td>
+
+                    <a href="{{ path('app_comment_deletebackcomment', {'idc': comment.idc}) }}"  class="btn btn-outline-info" >Supprimer</a>
+
                 </td>
             </tr>
         {% else %}
             <tr>
                 <td colspan="5">no records found</td>
+
             </tr>
         {% endfor %}
         </tbody>
     </table>
+  <button style="color: #0c5460" >
+
+    <a href="{{ path('app_post_index') }}"  class="btn btn-outline-info" >Retour vers posts</a>
+      <a href="{{ path('app_comment_statistique') }}"  class="btn btn-outline-info" > statistique</a>
+
+
+  </button>
 
 {% endblock %}

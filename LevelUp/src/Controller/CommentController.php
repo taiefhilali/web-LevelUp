@@ -21,13 +21,12 @@ class CommentController extends AbstractController
 
 
 
-
-
+    /*
     /**
      * @param CommentRepository $Repository
      * @return Response
      * @Route ("/statss", name="stat")
-     */
+
 
     public function statistiques(CommentRepository $commentRepository){
         $comment = $commentRepository->countByResp();
@@ -43,8 +42,9 @@ class CommentController extends AbstractController
             'commentsCount' => $commentsCount
         ]);
     }
+    */
     /**
-     * @Route("/statistique", name="statistique")
+     * @Route("/statistique", name="app_comment_statistique")
      */
     public function stat(){
 
@@ -77,7 +77,7 @@ class CommentController extends AbstractController
         $pieChart->getData()->setArrayToDataTable(
             [['resp', 'label'],
                 ['5', $pr1],
-                ['50', $pr2],
+                ['>5', $pr2],
             ]
         );
         $pieChart->getOptions()->setTitle('STATISTIQUE DU MEILLEUR POST SELON RATE');
@@ -135,9 +135,9 @@ class CommentController extends AbstractController
             'comments' => $commentRepository->findBy([],['idc'=>'desc']),
         ]);
     }
- */
+*/
     /**
-     * @Route("/{id}test", name="app_comment_index", methods={"GET"})
+     * @Route("/testcommment{id}", name="app_comment_index", methods={"GET"})
      */
     public function showback(Post $post,CommentRepository $commentRepository): Response
     {
@@ -147,7 +147,7 @@ class CommentController extends AbstractController
     }
 
     /**
-     * @Route("/{idc}", name="app_comment_show", methods={"GET"})
+     * @Route("/showfrontcomment{idc}", name="app_comment_show", methods={"GET"})
      */
     public function show(Comment $comment): Response
     {
@@ -175,6 +175,17 @@ class CommentController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/{idc}", name="app_comment_deletebackcomment", methods={"POST"})
+     */
+    public function deleteback(Request $request, Comment $comment, CommentRepository $commentRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$comment->getIdc(), $request->request->get('_token'))) {
+            $commentRepository->remove($comment);
+        }
+
+        return $this->redirectToRoute('app_comment_index_back', [], Response::HTTP_SEE_OTHER);
+    }
 
     /**
      * @Route("/{idc}", name="app_comment_delete", methods={"POST"})
@@ -185,7 +196,7 @@ class CommentController extends AbstractController
             $commentRepository->remove($comment);
         }
 
-        return $this->redirectToRoute('app_comment_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_comment_indexFront', [], Response::HTTP_SEE_OTHER);
     }
 
 
