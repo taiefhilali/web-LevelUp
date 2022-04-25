@@ -9,12 +9,12 @@
 {{ form_row(form.captchaCode) }}
 
     {{ form_widget(form) }}
-
 <style>
     button.btn {
         align-content: baseline;
         solid-color: #1b6d85;
     }
+
 </style>
 <button class="btn btn-outline-info">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

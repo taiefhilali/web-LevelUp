@@ -3,41 +3,156 @@
 {% block title %}Post{% endblock %}
 
 {% block content %}
+
     <br>
     <br>
     <br>
     <h1  class="text-info"align="center" >Publication </h1>
 <br>
     <br>
-    <table class="table table-striped" border="1">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ post.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ post.title }}</td>
-            </tr>
-            <tr>
-                <th>Content</th>
-                <td>{{ post.content }}</td>
-            </tr>
-            <tr>
-                <th>Datep</th>
-                <td>{{ post.datep ? post.datep|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>User</th>
-                <td>{{ post.idUser.idUser }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_post_indexFront') }}"class="btn btn-outline-info">Annuler</a>
 
 
- {{ include('post/_delete_form.html.twig') }}
+
+
+    <div class="album py-5 bg-light">
+        <div class="container" align="center" >
+
+            <link rel="stylesheet" href="{{asset('css/cardPost.css')}}">
+
+            <div class="wrapper" >
+
+                    <br>
+                    <div class="container" >
+
+
+                        <div class="blog_post" style="background-image: -moz-linear-gradient(rgba(0,95,71,0.71),rgba(255,242,114,0.71))">
+                            <div class="img_pod">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsY-URPHt28kwUo6IlZW_0P8_bQVvEQXRi4cOrs1EYa9q5IBeb4KPRlS5h6qOYCOpYtgU&usqp=CAU" alt="random image">
+                            </div>
+                            <div class="container_copy" id={{post.id}} user={{post.idUser.email}}>
+                                <div class="rate">
+                                    <input type="radio" id="star5" name="rate" value="5" />
+                                    <label for="star5" title="text">5 stars</label>
+                                    <input type="radio" id="star4" name="rate" value="4" />
+                                    <label for="star4" title="text">4 stars</label>
+                                    <input type="radio" id="star3" name="rate" value="3" />
+                                    <label for="star3" title="text">3 stars</label>
+                                    <input type="radio" id="star2" name="rate" value="2" />
+                                    <label for="star2" title="text">2 stars</label>
+                                    <input type="radio" id="star1" name="rate" value="1" />
+                                    <label for="star1" title="text">1 star</label>
+                                    <span id="rate_value">Score :0</span>
+                                </div>
+                                <h5>{{ post.idUser.email}}</h5>
+
+                                <h1>{{ post.datep ? post.datep|date('Y-m-d') : '' }}</h1>
+                                <br>
+
+                                <h3>{{ post.title }}</h3>
+                                <br>
+
+                                <p>{{ post.content }}</p>
+
+
+                            </div>
+                            <br>
+                            <br>
+
+
+
+                            <a class="like" id={{ post.id}} data-id="{{ post.id }}" href="{{ path('vote',{'id': post.id}) }} ">
+
+                            </a>
+                            <a href="{{ path('app_post_edit',{'id': post.id}) }}"class="btn btn-outline-success btn-sm"class="fa-solid fa-heart" >Modifier</a>
+                          <br>
+
+                            {{ include('post/_delete_form.html.twig') }}
+
+                            <a href="{{ path('app_post_indexFront') }}"class="btn btn-outline-dark btn-sm">Annuler</a>
+                            <br>
+                        </div>
+                    </div>
+                <br>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <script
+
+            src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js" integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ==" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+
+
+    </script>
+
+
+    <script>
+        const idp = document.getElementsByClassName('container_copy')[0].id
+        const user = document.getElementsByClassName('container_copy')[0].getAttribute('user')
+
+        window.onload = function () {
+            console.log(idp,user)
+            axios
+                .get('http://localhost:8082/api/rating/'+idp)
+                .then(function (response) {
+                    console.log(response.data);
+                    if (response.data.Rating) {
+                        document.querySelector(
+                            'input[value="' + Math.round(response.data.Rating) + '"]'
+                        ).checked = true;
+                        document.getElementById('rate_value').textContent =
+                            'Score :' + Math.round(response.data.Rating);
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        };
+
+        let radioVal;
+        let postid;
+        let userid;
+        const radios = document.querySelectorAll('input[name="rate"]');
+        radios.forEach((radio) => {
+            radio.addEventListener('click', function () {
+                radioVal = radio.value;
+                console.log(radioVal);
+                axios
+                    .post('http://localhost:8082/api/rating/create', {
+                        id_user: user,
+                        id_post: idp,
+                        rating: radioVal,
+                    })
+                    .then((res) => {
+                        if (res.data.message) {
+                            alert(res.data.message);
+                        } else {
+                            alert(res.data);
+                        }
+                    })
+                    .catch((err) => console.error(err));
+            });
+        });
+    </script>
+
+
+    <script></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
 {#    {{ include('post/deleteback.html.twig') }}#}
 
 {% endblock %}

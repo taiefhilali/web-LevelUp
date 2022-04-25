@@ -225,7 +225,7 @@ class PostController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $postRepository->add($post);
-            return $this->redirectToRoute('app_post_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_post_indexFront', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('post/edit.html.twig', [

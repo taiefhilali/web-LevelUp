@@ -82,6 +82,11 @@
             });
         });
     </script>
+
+
+
+
+
     <link rel="stylesheet" href="{{asset('css/cardPost.css')}}">
     <link rel="stylesheet" href="{{asset('css/font-awesome.css')}}">
 
@@ -89,20 +94,28 @@
 
     <div class="album py-5 bg-light">
     <div class="container">
-
+        <div class="col-12 text-center">
+            <div class="heading">
+                <h1 class="section-title">Latest Posts</h1>
+                <h4 class="sub-title">You can also post your own thoughts</h4>
+            </div>
+        </div>
 
     <div class="wrapper" >
 
         {% for post in posts %}
             <br>
+
             <div class="container">
 
 
             <div class="blog_post">
+
+
                 <div class="img_pod">
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsY-URPHt28kwUo6IlZW_0P8_bQVvEQXRi4cOrs1EYa9q5IBeb4KPRlS5h6qOYCOpYtgU&usqp=CAU" alt="random image">
                 </div>
-                <div class="container_copy" id={{post.id}}>
+                <div class="container_copy" id={{post.id}} name={{post.idUser.email}}>
                     <h5>{{ post.idUser.email}}</h5>
 
                     <h1>{{ post.datep ? post.datep|date('Y-m-d') : '' }}</h1>
@@ -118,13 +131,16 @@
                 <br>
                 <br>
 
+                <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-                <a class="btn btn-outline-info btn-sm" href="{{ path('app_post_show', {'id': post.id}) }}">Detail</a>
-                 <a class="like" id={{ post.id}} data-id="{{ post.id }}" href="{{ path('vote',{'id': post.id}) }} ">
+                <a class="btn btn-outline-secondary btn-sm" href="{{ path('app_post_show', {'id': post.id}) }}">Detail</a>
+                 <a  href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" class="btn btn-outline-danger btn-sm" class="fa-solid fa-heart" name="like"  id={{ post.id}} data-id="{{ post.id }}" href="{{ path('vote',{'id': post.id}) }} ">
 
-                </a>
-                <a href="{{ path('app_post_delete',{'id': post.id}) }}"class="btn btn-outline-warning btn-sm"class="tf-ion-android-delete" >Supprimer</a>
-                <a href="{{ path('app_post_edit',{'id': post.id}) }}"class="btn btn-outline-danger btn-sm"class="fa-solid fa-heart" >Modifier</a>
+
+
+
+                 </a>
+
                 <a href="{{ path('app_comment_index',{'id': post.id}) }}"class="btn btn-outline-success btn-sm"class="fa-solid fa-heart" >Commentaires</a>
 
 
@@ -145,24 +161,136 @@
 
     </script>
 
+
+
     <script>
-      test= document.getElementsByClassName('like')
-      var j=-1;
-      for(var i=0;i<test.length;i++)
-      {
-varid=test[i].getAttribute("data-id")
+        window.onload = function () {
+            let post = document.getElementsByClassName("container_copy")
 
-          axios.get('/vote/'+varid+'/check').then(function (res){
-              j+=1
-              if(res['data'].data==0){
+            var j = -1;
+            for (var i = 0; i < post.length; i++) {
+                varid = post[i].getAttribute("id")
+
+                axios
+                    .get('http://localhost:8082/api/rating/' + varid)
+                    .then(function (response) {
+                        console.log(response.data);
+                        if (response.data.Rating) {
+                            document.querySelector(
+                                'input[value="' + Math.round(response.data.Rating) + '"]'
+                            ).checked = true;
+                            document.getElementById('rate_value').textContent =
+                                'Score :' + Math.round(response.data.Rating);
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
+
+        }
 
 
-                  test[j].innerText='like('+res['data'].count+')'
-          }else{
-                   test[j].innerText='dislike('+res['data'].count+')'     }
+        let radioVal;
+        let radarray=[]
+        let rating= document.getElementsByClassName('rate')
+        var j=-1;
+        for(var i=0;i<rating.length;i++) {
+            (function(){
+            let radios = rating[i].querySelectorAll('input[name="rate"]');
+            var c = -1;
+            radios.forEach((radio,index) => {
+                console.log(index)
 
-          })
-      }
+                radio.addEventListener('click', function () {
+                   /*
+                    radioVal = radio.value;
+                    console.log(rating,i,index);
+                    axios
+                        .post('http://localhost:8082/api/rating/create', {
+                            id_user: 933,
+                            id_post: 2,
+                            rating: radioVal,
+                        })
+                        .then((res) => {
+                            if (res.data.message) {
+                                alert(res.data.message);
+                            } else {
+                                alert(res.data);
+                            }
+                        })
+                        .catch((err) => console.error(err));*/
+                    c=c+1
+                    test(radio.value,rating[c])
+                });
+            });
+
+            }())
+
+
+            function test (val1,val2){
+
+                       radioVal = val1;
+                       console.log(val2.getAttribute("user-id"),val2.id);
+                       axios
+                           .post('http://localhost:8082/api/rating/create', {
+                               id_user: val2.getAttribute("user-id"),
+                               id_post: val2.id,
+                               rating: radioVal,
+                           })
+                           .then((res) => {
+                               if (res.data.message) {
+                                   alert(res.data.message);
+                               } else {
+                                   alert(res.data);
+                               }
+                           })
+                           .catch((err) => console.error(err));
+
+
+            }
+
+        }
+
+
+/*
+        radios.forEach((radio) => {
+            let  pid =rating[i].getAttribute("data-id")
+            let userid = rating[i].getAttribute("user-id")
+
+            radio.addEventListener('click', function () {
+                radioVal = radio.value;
+                console.log(i);
+
+
+            });
+        });*/
+
+
+    </script>
+
+    <script>
+
+            test= document.getElementsByName('like')
+        var j=-1;
+        for(var i=0;i<test.length;i++)
+        {
+            varid=test[i].getAttribute("data-id")
+
+            axios.get('/vote/'+varid+'/check').then(function (res){
+                j+=1
+                if(res['data'].data==0){
+
+
+                    test[j].innerText='like('+res['data'].count+')'
+
+
+
+                }else{
+                    test[j].innerText='dislike('+res['data'].count+')'     }
+
+            })
+        }
 
     </script>
 {% endblock  %}
