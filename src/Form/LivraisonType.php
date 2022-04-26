@@ -20,7 +20,7 @@ class LivraisonType extends AbstractType
             ])
             ->add('etatLivraison', ChoiceType::class,array('choices'=>['En cours'=> 'en cours', 'Confirmée'=>'confirmée', 'livrée'=>'livrée'],
                 'expanded' => true))
-            ->add('idUser',EntityType::class,['class'=> User::class, 'choice_label'=>'idUser'
+            ->add('idUser',EntityType::class,['class'=> User::class, 'choice_label'=>'email'
             ])
             ->add('date')
             ->add('date', DateType::class, [

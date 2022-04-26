@@ -14,6 +14,7 @@
     <link href="{{asset('imgback/apple-touch-icon.png' )}}"rel="apple-touch-icon">
 
     <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="{{ asset('bundles/mercuryseriesflashy/css/flashy.css') }}">
     <link href="{{asset('libback/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
     <!--external css-->
     <link href="{{asset('libback/font-awesome/css/font-awesome.css')}}" rel="stylesheet" />
@@ -25,6 +26,8 @@
     <script src="{{asset('libback/chart-master/Chart.js')}}"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.3.0/main.min.css" integrity="sha256-uq9PNlMzB+1h01Ij9cx7zeE2OR2pLAfRw3uUUOOPKdA=" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.3.0/main.min.js" integrity="sha256-DBxkGZLxKsLKhz054qUpBqtotG00r9AELGpSigJujLg=" crossorigin="anonymous"></script>
+    <script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>
+    <script src="//code.jquery.com/jquery.js"></script>
 
     <!-- =======================================================
       Template Name: Dashio
@@ -36,6 +39,7 @@
 {% endblock %}
 
 {% block bodyback %}
+    {{ include('@MercurySeriesFlashy/flashy.html.twig') }}
 <body>
 <section id="container">
     <!-- **********************************************************************************************************************************************************

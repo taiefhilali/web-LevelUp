@@ -198,7 +198,13 @@
                              <h2>Livraison</h2>
                         </div>
                         <div class="col-sm-7">
+                            {% for message in app.flashes('info') %}
+                                <div class="alert alert-success">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
                             <a href="{{ path('app_livraison_new') }}" class="btn btn-secondary"><i class="material-icons">&#xE147;</i> <span>Ajouter</span></a>
+
                         </div>
                     </div>
                 </div>
@@ -227,6 +233,11 @@
                                <br>
                                 <br>
                                 <button >   <a  href="{{ path('app_livraison_edit', {'idLivraison': livraison.idLivraison}) }}"class="pencil" title="Pencil" data-toggle="tooltip"> edit</a>
+                                    {% for message in app.flashes('info') %}
+                                        <div class="alert alert-success">
+                                            {{ message }}
+                                        </div>
+                                    {% endfor %}
                                 </button>
                             </td>
                         </tr>

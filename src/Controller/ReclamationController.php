@@ -6,12 +6,14 @@ use App\Entity\Reclamation;
 use App\Entity\User;
 use App\Form\ReclamationType;
 use App\Repository\ReclamationRepository;
+use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Knp\Component\Pager\PaginatorInterface; // Nous appelons le bundle KNP Paginator
 
 
 /**
@@ -28,16 +30,21 @@ class ReclamationController extends AbstractController
             'reclamations' => $reclamationRepository->findAll(),
         ]);
     }
+
     /**
      * @Route("/indexFront", name="app_reclamation_indexFront", methods={"GET"})
      */
-    public function indexFront(ReclamationRepository $reclamationRepository): Response
+    public function indexFront(ReclamationRepository $reclamationRepository ,Request $request, PaginatorInterface $paginator): Response
     { $CLIENTID=200;
         $RecUser=$reclamationRepository->findBy(['idUser'=>$CLIENTID]);
-
+        $reclamations = $paginator->paginate(
+            $RecUser ,
+            $request->query->getInt('page', 1),
+            2
+        );
 
         return $this->render('reclamation/indexFront.html.twig', [
-            'reclamations' => $RecUser,
+            'reclamations' => $reclamations,
         ]);
     }
 
@@ -54,6 +61,7 @@ class ReclamationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $reclamationRepository->add($reclamation);
             return $this->redirectToRoute('app_reclamation_indexFront', [], Response::HTTP_SEE_OTHER);
         }
@@ -122,7 +130,7 @@ class ReclamationController extends AbstractController
     /**
      * @Route("/warnReclamation/{idReclamation}", name="warn_reclamation")
      */
-    public function warn_reclamation(Request $request,$idReclamation,MailerInterface $mailer): Response
+    public function warn_reclamation(Request $request,$idReclamation,MailerInterface $mailer, FlashyNotifier $flashy ): Response
     {
         $reclamation=$this->getDoctrine()->getRepository(Reclamation::class)->find($idReclamation);
         $reclamation->setWarn(true);
@@ -136,6 +144,8 @@ class ReclamationController extends AbstractController
             ->subject('Warning ')
             ->text($reclamation->getDescription());
         $mailer->send($email);
+        $flashy->success('WARNING!', 'http://your-awesome-link.com');
+
         return $this->redirectToRoute('app_reclamation_index', [], Response::HTTP_SEE_OTHER);
 
     }

@@ -47,9 +47,11 @@ class LivraisonController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+
             $livraison->setEtatLivraison("en cours");
             $livraisonRepository->add($livraison);
-            return $this->redirectToRoute('app_livraison_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_calendar_new', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('livraison/new.html.twig', [
@@ -96,6 +98,11 @@ class LivraisonController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->addFlash(
+                'info',
+                'Modification avec succés!');
+
             $livraisonRepository->add($livraison);
             return $this->redirectToRoute('app_livraison_index', [], Response::HTTP_SEE_OTHER);
         }

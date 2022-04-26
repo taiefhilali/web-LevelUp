@@ -76,7 +76,7 @@ class CalendarController extends AbstractController
             $entityManager->persist($calendar);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_calendar_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_calendar_calendarIndex', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('calendar/new.html.twig', [
