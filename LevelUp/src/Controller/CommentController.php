@@ -6,6 +6,7 @@ use App\Entity\Comment;
 use App\Entity\Post;
 use App\Form\CommentType;
 use App\Repository\CommentRepository;
+use App\Repository\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,13 +22,12 @@ class CommentController extends AbstractController
 
 
 
-
-
+    /*
     /**
      * @param CommentRepository $Repository
      * @return Response
      * @Route ("/statss", name="stat")
-     */
+
 
     public function statistiques(CommentRepository $commentRepository){
         $comment = $commentRepository->countByResp();
@@ -43,8 +43,10 @@ class CommentController extends AbstractController
             'commentsCount' => $commentsCount
         ]);
     }
+    */
+public $id;
     /**
-     * @Route("/statistique", name="statistique")
+     * @Route("/statistique", name="app_comment_statistique")
      */
     public function stat(){
 
@@ -77,7 +79,7 @@ class CommentController extends AbstractController
         $pieChart->getData()->setArrayToDataTable(
             [['resp', 'label'],
                 ['5', $pr1],
-                ['50', $pr2],
+                ['>5', $pr2],
             ]
         );
         $pieChart->getOptions()->setTitle('STATISTIQUE DU MEILLEUR POST SELON RATE');
@@ -104,19 +106,21 @@ class CommentController extends AbstractController
         ]);
     }
 
-
     /**
      * @Route("/new", name="app_comment_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, CommentRepository $commentRepository): Response
+    public function new(Request $request, CommentRepository $commentRepository, PostRepository $postRepository): Response
     {
         $comment = new Comment();
+
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $commentRepository->add($comment);
-            return $this->redirectToRoute('app_comment_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_post_indexFront',[], Response::HTTP_SEE_OTHER);
+
+
         }
 
         return $this->render('comment/new.html.twig', [
@@ -124,20 +128,21 @@ class CommentController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-/*
-    /**
-     * @Route("/", name="app_comment_index", methods={"GET"})
 
-    public function index(Post $post ,Request $request ,CommentRepository $commentRepository): Response
+
+    /**
+     * @Route("/", name="app_comment_indexback", methods={"GET"})
+*/
+    public function index(Request $request ,CommentRepository $commentRepository): Response
     {
 
         return $this->render('comment/index.html.twig', [
             'comments' => $commentRepository->findBy([],['idc'=>'desc']),
         ]);
     }
- */
+
     /**
-     * @Route("/{id}test", name="app_comment_index", methods={"GET"})
+     * @Route("/testcommment{id}", name="app_comment_index", methods={"GET"})
      */
     public function showback(Post $post,CommentRepository $commentRepository): Response
     {
@@ -167,7 +172,7 @@ class CommentController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $commentRepository->add($comment);
-            return $this->redirectToRoute('app_comment_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_comment_indexback', [], Response::HTTP_SEE_OTHER);
         }
         return $this->render('comment/edit.html.twig', [
             'comment' => $comment,
@@ -185,8 +190,18 @@ class CommentController extends AbstractController
             $commentRepository->remove($comment);
         }
 
-        return $this->redirectToRoute('app_comment_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_comment_indexback', [], Response::HTTP_SEE_OTHER);
     }
+    /**
+     * @Route("/backdeletetcomment{idc}", name="app_comment_deletebackcomment", methods={"POST"})
+     */
+    public function deleteback(Request $request, Comment $comment, CommentRepository $commentRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$comment->getIdc(), $request->request->get('_token'))) {
+            $commentRepository->remove($comment);
+        }
 
+        return $this->redirectToRoute('app_comment_index_back', [], Response::HTTP_SEE_OTHER);
+    }
 
 }

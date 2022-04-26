@@ -15,8 +15,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
-
-
 /**
  * @Route("/post")
  */
@@ -36,6 +34,30 @@ class PostController extends AbstractController
     }
 
 
+
+/*
+    /**
+     * @Route("/search", name="app_post_index", methods={"GET"})
+     */
+    public function searchAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $requestString = $request->get('q');
+        $posts =  $em->getRepository(Post::class)->findBytitle($requestString);
+        if(!$posts) {
+            $result['posts']['error'] = "Post Not found :( ";
+        } else {
+            $result['posts'] = $this->getRealEntities($posts);
+        }
+        return new Response(json_encode($result));
+    }
+    public function getRealEntities($posts){
+        foreach ($posts as $posts){
+            $realEntities[$posts->getId()] = [$posts->gettitle()];
+
+        }
+        return $realEntities;
+    }
     /**
      * @Route("/paginatorpost", name="app_post_indexpaginator", methods={"GET"})
      */
@@ -43,12 +65,11 @@ class PostController extends AbstractController
     {
         $repository = $this->getdoctrine()->getRepository(Post::class);
         $posts= $repository->findAll();
-        $posts = $paginator->paginate($posts, $request->query->getInt('page',1), 2);
+        $posts = $paginator->paginate($posts, $request->query->getInt('page',1), 3);
         return $this->render('post/index.html.twig',[
             'posts' => $posts,
         ]);
     }
-
 
 
 
@@ -63,6 +84,7 @@ class PostController extends AbstractController
         return $this->render('post/indexFront.html.twig', [
             'posts' => $postRepository->findBy([], ['id' => 'desc']),
         ]);
+
     }
 
 
@@ -77,7 +99,8 @@ class PostController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $postRepository->add($post);
-            return $this->redirectToRoute('app_post_index', [], Response::HTTP_SEE_OTHER);
+
+            return $this->redirectToRoute('app_post_indexFront', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('post/new.html.twig', [
@@ -85,6 +108,9 @@ class PostController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+
+
 
     /**
      * @Route("/like", name="like")
@@ -112,6 +138,9 @@ class PostController extends AbstractController
 
 
         return new Response('Saved new product with id '.$vote->getId());}
+
+
+
     /**
      * @Route("/stats", name="stats")
      */
@@ -157,7 +186,6 @@ class PostController extends AbstractController
 
 
 
-
     /**
      * @Route("/{id}", name="app_post_show", methods={"GET"})
      */
@@ -166,6 +194,17 @@ class PostController extends AbstractController
         return $this->render('post/show.html.twig', [
             'post' => $post,
         ]);
+    }
+    /**
+     * @Route("/{id}", name="app_post_delete", methods={"POST"})
+     */
+    public function delete(Request $request, Post $post, PostRepository $postRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $post->getId(), $request->request->get('_token'))) {
+            $postRepository->remove($post);
+        }
+
+        return $this->redirectToRoute('app_post_indexFront', [], Response::HTTP_SEE_OTHER);
     }
 
     /**
@@ -178,8 +217,6 @@ class PostController extends AbstractController
         ]);
     }
 
-
-
     /**
      * @Route("/{id}/edit", name="app_post_edit", methods={"GET", "POST"})
      */
@@ -190,7 +227,7 @@ class PostController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $postRepository->add($post);
-            return $this->redirectToRoute('app_post_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_post_indexFront', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('post/edit.html.twig', [
@@ -211,18 +248,6 @@ class PostController extends AbstractController
         return $this->redirectToRoute('app_post_index', [], Response::HTTP_SEE_OTHER);
     }
 
-
-    /**
-     * @Route("/{id}", name="app_post_delete", methods={"POST"})
-     */
-    public function delete(Request $request, Post $post, PostRepository $postRepository): Response
-    {
-        if ($this->isCsrfTokenValid('delete' . $post->getId(), $request->request->get('_token'))) {
-            $postRepository->remove($post);
-        }
-
-        return $this->redirectToRoute('app_post_indexFront', [], Response::HTTP_SEE_OTHER);
-    }
 
 
 

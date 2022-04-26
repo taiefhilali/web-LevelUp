@@ -3,19 +3,16 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use PhpParser\Node\Scalar\String_;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\NotBlank;
-
+use Vangrg\ProfanityBundle\Validator\Constraints as ProfanityAssert;
 
 
 /**
  * Post
+ *
  * @ORM\Table(name="post", indexes={@ORM\Index(name="fkpost_user", columns={"id_user"})})
  * @ORM\Entity
-
-
-
  */
 class Post
 {
@@ -33,11 +30,9 @@ class Post
      *
      * @ORM\Column(name="title", type="string", length=255, nullable=false)
      * @Assert\NotBlank(message= "Titre obligatoire" )
+     * @ProfanityAssert\ProfanityCheck
      * @Assert\Length(min=7, minMessage="Le titre doit faire au moins {{ limit }} caractères.")
-
-
      */
-
     private $title;
 
     /**
@@ -45,11 +40,8 @@ class Post
      *
      * @ORM\Column(name="content", type="text", length=65535, nullable=false)
      * @Assert\NotBlank(message= " Description obligatoire" )
-     * @Assert\Length(min=10,minMessage="La Description doit faire au moins {{ limit }} caractères.")
-
-
-
-
+     * @ProfanityAssert\ProfanityCheck
+     * @Assert\Length(min=10,max=100,minMessage="La Description doit faire au moins {{ limit }} caractères.")
      */
     private $content;
 
@@ -57,8 +49,6 @@ class Post
      * @var \DateTime
      *
      * @ORM\Column(name="datep", type="date", nullable=false)
-
-
      */
     private $datep;
 
@@ -68,7 +58,6 @@ class Post
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_user", referencedColumnName="id_user")
-
      * })
      */
     private $idUser;
@@ -119,13 +108,13 @@ class Post
         return $this->idUser;
     }
 
-
     public function setIdUser(?User $idUser): self
     {
         $this->idUser = $idUser;
 
         return $this;
     }
+
     protected $captchaCode;
 
     public function getCaptchaCode()
@@ -137,5 +126,4 @@ class Post
     {
         $this->captchaCode = $captchaCode;
     }
-
 }

@@ -19,7 +19,9 @@ class PostType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('content',CKEditorType::class)
+            ->add('content',CKEditorType::class ,array(
+                'config' => array(
+        'uiColor' => '#57A883',)))
             ->add('datep')
             ->add('idUser',EntityType::class,['class'=>User::class,'choice_label'=>'email'])
 
@@ -35,6 +37,7 @@ class PostType extends AbstractType
             // ... ///
         ;
     }
+
 
 
 

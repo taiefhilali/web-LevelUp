@@ -1,0 +1,32 @@
+
+.friend-list .friend-card{
+    border-radius: 7px;
+    border-bottom: 1px solid #f1f2f2;
+    overflow: hidden;
+    margin-bottom: 20px;
+    align-content: center;
+    align-items: center;
+    align-self: center;
+    alignment-baseline: center;
+}
+
+.friend-list .friend-card .card-info{
+    padding: 0 20px 100px;
+    line-grid: revert;
+    align-content: center;
+}
+
+.friend-list .friend-card .card-info img.profile-photo-lg{
+    margin-top: -60px;
+    border: 7px solid #fff;
+}
+
+img.profile-photo-lg {
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+}
+
+.text-green {
+    color: #8dc63f;
+}

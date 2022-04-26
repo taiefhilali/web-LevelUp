@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * PanierElem
  *
- * @ORM\Table(name="panier_elem", uniqueConstraints={@ORM\UniqueConstraint(name="id_panier", columns={"id_panier", "id"}), @ORM\UniqueConstraint(name="id_panier_2", columns={"id_panier", "id"})}, indexes={@ORM\Index(name="fk_produit1", columns={"id"}), @ORM\Index(name="IDX_B31E4D172FBB81F", columns={"id_panier"})})
+ * @ORM\Table(name="panier_elem", uniqueConstraints={@ORM\UniqueConstraint(name="id_panier_2", columns={"id_panier", "id"}), @ORM\UniqueConstraint(name="id_panier", columns={"id_panier", "id"})}, indexes={@ORM\Index(name="fk_produit1", columns={"id"}), @ORM\Index(name="IDX_B31E4D172FBB81F", columns={"id_panier"})})
  * @ORM\Entity
  */
 class PanierElem
@@ -29,16 +29,6 @@ class PanierElem
     private $quantite;
 
     /**
-     * @var \Produit
-     *
-     * @ORM\ManyToOne(targetEntity="Produit")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id", referencedColumnName="id_produit")
-     * })
-     */
-    private $id;
-
-    /**
      * @var \Panier
      *
      * @ORM\ManyToOne(targetEntity="Panier")
@@ -47,6 +37,16 @@ class PanierElem
      * })
      */
     private $idPanier;
+
+    /**
+     * @var \Produit
+     *
+     * @ORM\ManyToOne(targetEntity="Produit")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id", referencedColumnName="id_produit")
+     * })
+     */
+    private $id;
 
     public function getIdElem(): ?int
     {
@@ -65,18 +65,6 @@ class PanierElem
         return $this;
     }
 
-    public function getId(): ?Produit
-    {
-        return $this->id;
-    }
-
-    public function setId(?Produit $id): self
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
     public function getIdPanier(): ?Panier
     {
         return $this->idPanier;
@@ -85,6 +73,18 @@ class PanierElem
     public function setIdPanier(?Panier $idPanier): self
     {
         $this->idPanier = $idPanier;
+
+        return $this;
+    }
+
+    public function getId(): ?Produit
+    {
+        return $this->id;
+    }
+
+    public function setId(?Produit $id): self
+    {
+        $this->id = $id;
 
         return $this;
     }

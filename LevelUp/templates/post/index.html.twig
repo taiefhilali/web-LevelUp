@@ -1,19 +1,20 @@
 {% extends 'backbase.html.twig' %}
 
 {% block bodyback %}
-    <h1  class="text-info"align="center" >Publication </h1>
-    <form>
-        <input type="text" name ="title">
-        <input type="submit" value="recherche">
+  {# #}  <br>
+    <br>
+    <h1  class="text-info"align="center" >Liste des Publications </h1>
+    <br>
+    <br> <br>
 
 
-
-    </form>
-    <table class="table table-sm table-hover" >
+    <br>
+    <table class="table table-sm table-hover"  >
         <span class="border border-dark">
 
         <thead>
             <tr class="bg-info">
+                <th></th>
                 <th scope="col">Title</th>
                 <th scope="col">Content</th>
                 <th scope="col">Datep</th>
@@ -24,14 +25,15 @@
 
         {% for post in posts %}
             <tr>
-
+<td>  <img src="https://bootdey.com/img/Content/avatar/avatar2.png" width="50" > </td>
                 <td>{{ post.title }}</td>
                 <td>{{ post.content }}</td>
                 <td>{{ post.datep ? post.datep|date('Y-m-d') : '' }}</td>
 
                 <td>
 
-                    <a href="{{ path('app_post_delete', {'id': post.id}) }}"  class="btn btn-outline-info" >Supprimer</a>
+                    <a href="{{ path('app_post_deleteback',{'id': post.id}) }}"  class="btn btn-outline-info" >Supprimer</a>
+                    <a href="{{ path('app_comment_index_back') }}"  class="btn btn-outline-info" >Commentaires</a>
 
 
 
@@ -47,14 +49,14 @@
         </tbody>
             </span>
     </table>
-    <nav aria-label="Page navigation example" >
-        <ul class="pagination justify-content-end text-align:center" >
+    <nav aria-label="Page navigation example"style="alignment: center " >
+        <ul class="pagination justify-content-end text-align:center"style="alignment: center " >
             <li class="page-item disabled align-content-center">
                 <a class="page-link" href="#" tabindex="-1">Previous</a>
             </li>
             <li {{ knp_pagination_render(posts) }}
             </li>
-            <li class="page-item">
+            <li class="page-item"style="alignment: center ">
                 <a class="page-link" href="#">Next</a>
             </li>
         </ul>

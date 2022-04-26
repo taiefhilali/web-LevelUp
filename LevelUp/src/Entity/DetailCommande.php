@@ -29,16 +29,6 @@ class DetailCommande
     private $quantite;
 
     /**
-     * @var \Produit
-     *
-     * @ORM\ManyToOne(targetEntity="Produit")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id", referencedColumnName="id_produit")
-     * })
-     */
-    private $id;
-
-    /**
      * @var \Commande
      *
      * @ORM\ManyToOne(targetEntity="Commande")
@@ -47,6 +37,16 @@ class DetailCommande
      * })
      */
     private $idCommande;
+
+    /**
+     * @var \Produit
+     *
+     * @ORM\ManyToOne(targetEntity="Produit")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id", referencedColumnName="id_produit")
+     * })
+     */
+    private $id;
 
     public function getIdElemc(): ?int
     {
@@ -65,18 +65,6 @@ class DetailCommande
         return $this;
     }
 
-    public function getId(): ?Produit
-    {
-        return $this->id;
-    }
-
-    public function setId(?Produit $id): self
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
     public function getIdCommande(): ?Commande
     {
         return $this->idCommande;
@@ -85,6 +73,18 @@ class DetailCommande
     public function setIdCommande(?Commande $idCommande): self
     {
         $this->idCommande = $idCommande;
+
+        return $this;
+    }
+
+    public function getId(): ?Produit
+    {
+        return $this->id;
+    }
+
+    public function setId(?Produit $id): self
+    {
+        $this->id = $id;
 
         return $this;
     }

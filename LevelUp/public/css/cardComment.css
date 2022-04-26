@@ -1,5 +1,5 @@
 body{
-    background:#eee;
+    background: rgba(121, 169, 147, 0.37);
 }
 
 hr {
@@ -9,7 +9,7 @@ hr {
     border-top: 1px solid #FFFFFF;
 }
 a {
-    color: #82b440;
+    color: rgb(55, 124, 90);
     text-decoration: none;
 }
 .blog-comment::before,
@@ -67,7 +67,7 @@ a {
 
 .blog-comment .meta {
     font-size: 13px;
-    color: #aaaaaa;
+    color: #dcd486;
     padding-bottom: 8px;
     margin-bottom: 10px !important;
     border-bottom: 1px solid #eee;
@@ -83,6 +83,7 @@ a {
     padding-left: 15%;
     padding-right: 15%;
     padding-top: 40px;
+    color: rgba(137,215,187,0.71);
 }
 
 .blog-comment h3,

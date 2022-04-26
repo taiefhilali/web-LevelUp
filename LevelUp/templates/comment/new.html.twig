@@ -7,6 +7,7 @@
     <h1  class="text-info"align="center" >Formulaire Commentaire</h1>
 
     {{ include('comment/_form.html.twig') }}
+{{ comment.idc }}
 
-    <a href="{{ path('app_comment_index') }}">back to list</a>
+    {# <a href="{{ path('app_comment_show',{'idc':idc}) }}">back to list</a> #}
 {% endblock %}

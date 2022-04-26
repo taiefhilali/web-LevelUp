@@ -7,6 +7,6 @@
     <h5 align="center" style="color:#1b6d85 " > Comment</h5>
 
     {{ include('comment/_form.html.twig', {'button_label': 'Update'}) }}
-    <input type="button"  class="btn btn-info" onclick="window.location.href={{ path('app_comment_index') }};" value="RETOUR" />
+    <input type="submit"  class="btn btn-info" onclick="window.location.href={{ path('app_comment_indexback',{'idc': comment.idc})}};" value="RETOUR" />
     {{ include('comment/_delete_form.html.twig', {'button_label': 'SUPPRIMER'}) }}
 {% endblock %}
