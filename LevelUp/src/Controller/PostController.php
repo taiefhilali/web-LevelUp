@@ -84,6 +84,7 @@ class PostController extends AbstractController
         return $this->render('post/indexFront.html.twig', [
             'posts' => $postRepository->findBy([], ['id' => 'desc']),
         ]);
+
     }
 
 
@@ -98,6 +99,7 @@ class PostController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $postRepository->add($post);
+
             return $this->redirectToRoute('app_post_indexFront', [], Response::HTTP_SEE_OTHER);
         }
 

@@ -36,16 +36,6 @@ class Reclamation
     private $warn = '0';
 
     /**
-     * @var \Livraison
-     *
-     * @ORM\ManyToOne(targetEntity="Livraison")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_livraison", referencedColumnName="id_livraison")
-     * })
-     */
-    private $idLivraison;
-
-    /**
      * @var \User
      *
      * @ORM\ManyToOne(targetEntity="User")
@@ -54,6 +44,16 @@ class Reclamation
      * })
      */
     private $idUser;
+
+    /**
+     * @var \Livraison
+     *
+     * @ORM\ManyToOne(targetEntity="Livraison")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_livraison", referencedColumnName="id_livraison")
+     * })
+     */
+    private $idLivraison;
 
     public function getIdReclamation(): ?int
     {
@@ -84,18 +84,6 @@ class Reclamation
         return $this;
     }
 
-    public function getIdLivraison(): ?Livraison
-    {
-        return $this->idLivraison;
-    }
-
-    public function setIdLivraison(?Livraison $idLivraison): self
-    {
-        $this->idLivraison = $idLivraison;
-
-        return $this;
-    }
-
     public function getIdUser(): ?User
     {
         return $this->idUser;
@@ -104,6 +92,18 @@ class Reclamation
     public function setIdUser(?User $idUser): self
     {
         $this->idUser = $idUser;
+
+        return $this;
+    }
+
+    public function getIdLivraison(): ?Livraison
+    {
+        return $this->idLivraison;
+    }
+
+    public function setIdLivraison(?Livraison $idLivraison): self
+    {
+        $this->idLivraison = $idLivraison;
 
         return $this;
     }

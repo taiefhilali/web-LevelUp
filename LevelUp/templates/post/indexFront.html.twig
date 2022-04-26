@@ -4,15 +4,19 @@
 
 {% block content %}
 
+<link rel="stylesheet" href="{{asset('css/font-awesome.css')}}">
 
-    <div class="sidebar-search ">
+    <div class="input-group rounded ">
 
         <div class="input-group custom-search-form">
 
             <input type="text" id="search" class="form-control" placeholder="Search here">
         </div>
+
         <!-- /input-group -->
     </div>
+    <link rel="stylesheet" href="{{asset('css/cardPost.css')}}">
+
 
     <ul class="nav" id="side-menu">
         <li>
@@ -85,21 +89,32 @@
 
 
 
+<br>
+    <br>
+
+    <br>
+    <br>
+    <br>
+    <br>
+<div class="col-12 text-center">
+    <div class="heading">
+        <h1 class="section-title">Latest Posts</h1>
+        <h4 class="sub-title">You can also post your own thoughts</h4>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
 
 
-    <link rel="stylesheet" href="{{asset('css/cardPost.css')}}">
-    <link rel="stylesheet" href="{{asset('css/font-awesome.css')}}">
 
-    <a href="{{ path('app_post_new') }}" class="btn btn-outline-info" style="color: #1b809e"  > AJOUTER  </a>
+
+
+    <a href="{{ path('app_post_new') }}" class="btn btn-outline-secondary" style="color: #1b809e"  > AJOUTER  </a>
 
     <div class="album py-5 bg-light">
     <div class="container">
-        <div class="col-12 text-center">
-            <div class="heading">
-                <h1 class="section-title">Latest Posts</h1>
-                <h4 class="sub-title">You can also post your own thoughts</h4>
-            </div>
-        </div>
+
 
     <div class="wrapper" >
 
@@ -112,8 +127,8 @@
             <div class="blog_post">
 
 
-                <div class="img_pod">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsY-URPHt28kwUo6IlZW_0P8_bQVvEQXRi4cOrs1EYa9q5IBeb4KPRlS5h6qOYCOpYtgU&usqp=CAU" alt="random image">
+                <div class="img-circle img-sm" alt="Profile Picture"  style="text-align:center;">
+                    <img  src="https://bootdey.com/img/Content/avatar/avatar2.png">
                 </div>
                 <div class="container_copy" id={{post.id}} name={{post.idUser.email}}>
                     <h5>{{ post.idUser.email}}</h5>
@@ -131,12 +146,9 @@
                 <br>
                 <br>
 
-                <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
                 <a class="btn btn-outline-secondary btn-sm" href="{{ path('app_post_show', {'id': post.id}) }}">Detail</a>
-                 <a  href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" class="btn btn-outline-danger btn-sm" class="fa-solid fa-heart" name="like"  id={{ post.id}} data-id="{{ post.id }}" href="{{ path('vote',{'id': post.id}) }} ">
-
-
+                 <a  class="btn btn-outline-danger btn-sm"  name="like"  id={{ post.id}} data-id="{{ post.id }}" href="{{ path('vote',{'id': post.id}) }} "><span><i class="fa fa-heart"></i></span>
 
 
                  </a>
@@ -293,4 +305,5 @@
         }
 
     </script>
+</div>
 {% endblock  %}

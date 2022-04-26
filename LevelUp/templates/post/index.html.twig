@@ -3,17 +3,18 @@
 {% block bodyback %}
   {# #}  <br>
     <br>
-    <h1  class="text-info"align="center" >Publication </h1>
+    <h1  class="text-info"align="center" >Liste des Publications </h1>
     <br>
     <br> <br>
 
 
     <br>
-    <table class="table table-sm table-hover" >
+    <table class="table table-sm table-hover"  >
         <span class="border border-dark">
 
         <thead>
             <tr class="bg-info">
+                <th></th>
                 <th scope="col">Title</th>
                 <th scope="col">Content</th>
                 <th scope="col">Datep</th>
@@ -24,7 +25,7 @@
 
         {% for post in posts %}
             <tr>
-
+<td>  <img src="https://bootdey.com/img/Content/avatar/avatar2.png" width="50" > </td>
                 <td>{{ post.title }}</td>
                 <td>{{ post.content }}</td>
                 <td>{{ post.datep ? post.datep|date('Y-m-d') : '' }}</td>
