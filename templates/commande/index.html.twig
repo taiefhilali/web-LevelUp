@@ -13,7 +13,7 @@
                 <th>DateCommande</th>
                 <th>PrixProduits</th>
                 <th>PrixTotal</th>
-                <th>actions</th>
+                <th >actions</th>
             </tr>
         </thead>
         <tbody>
@@ -25,7 +25,8 @@
                 <td>{{ commande.prixProduits }}</td>
                 <td>{{ commande.prixTotal }}</td>
                 <td>
-                    <a href="#">Affecter</a>
+                    <a  class="btn btn-main" href="#">Affecter</a>
+                     <a  class="btn btn-main" href="{{ path('app_commande_show',{'idCommande': commande.idCommande}) }}">Adresse</a>
                 </td>
             </tr>
         {% else %}

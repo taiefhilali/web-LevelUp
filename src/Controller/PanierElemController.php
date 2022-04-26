@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\PanierElem;
 use App\Entity\Produit;
+use App\Entity\Stock;
+use App\Repository\StockRepository;
 use App\Entity\Panier;
 use App\Repository\PanierRepository;
 use App\Repository\ProduitRepository;
@@ -34,14 +36,21 @@ class PanierElemController extends AbstractController
      /**
      * @Route("/PanierElements", name="app_panier_elements", methods={"GET"})
      */
-    public function indexx(PanierElemRepository $panierElemRepository ,PanierRepository $panier, UserRepository $user ): Response
+    public function indexx(StockRepository $stock,PanierElemRepository $panierElemRepository ,PanierRepository $panier, UserRepository $user ): Response
     {   
         $pan = new Panier();
         $usr = new User();
+        $nbr = array();
         $usr = $user->find(1);
         $pan = $panier->findBy(['idUser' => $usr]);
+        $panElem = $panierElemRepository->findBy(['idPanier' => $pan]);
+        foreach($panElem as $val){
+            $stockk = $stock->findOneBy([ 'id' => $val->getId()]);
+            array_push($nbr, $stockk->getQuantite());
+        }
         return $this->render('panier/index.html.twig', [
             'panierElements' => $panierElemRepository->findBy(['idPanier' => $pan]) ,
+            'quantite' => $nbr,
         
         ]);
     }
@@ -63,7 +72,7 @@ class PanierElemController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $em->persist($panierElem);
         $em->flush();
-        return $this->redirectToRoute('app_panier_elements', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_produit_index', [], Response::HTTP_SEE_OTHER);
     
     }
 
@@ -88,6 +97,7 @@ class PanierElemController extends AbstractController
         $panierElemRepository->add($panierElem);
         $em = $this->getDoctrine()->getManager();
         $em->flush();
+        $this->addFlash('info','Mise a jour avec succés !!'); 
         return $this->redirectToRoute('app_panier_elements', [], Response::HTTP_SEE_OTHER);
     }
 

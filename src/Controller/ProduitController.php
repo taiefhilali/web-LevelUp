@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Controller;
+use App\Repository\StockRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\Produit;
+use App\Entity\Stock;
 use App\Entity\Panier;
 use App\Repository\DetailCommandeRepository;
 use App\Entity\PanierElem;
@@ -64,7 +66,7 @@ class ProduitController extends AbstractController
         $usr = new User();
         $usr = $user->find(1);
         $pan = $panier->findBy(['idUser' => $usr]);
-        return $this->render('produit/index.html.twig', [
+        return $this->render('base.html.twig', [
             'produits' => $produitRepository->findAll(),
             'panierElements' => $panierElemRepository->findBy(['idPanier' => $pan]),
         ]);
@@ -94,7 +96,7 @@ class ProduitController extends AbstractController
     /**
      * @Route("/{idProduit}", name="app_produit_show", methods={"GET"})
      */
-    public function show($idProduit,Produit $produit,PanierRepository $panier,UserRepository $user,PanierElemRepository $panierElemRepository,ProduitRepository $produitRepository): Response
+    public function show(StockRepository $stockrepo,$idProduit,Produit $produit,PanierRepository $panier,UserRepository $user,PanierElemRepository $panierElemRepository,ProduitRepository $produitRepository): Response
     {   
 
         $produit = new Produit();
@@ -104,6 +106,7 @@ class ProduitController extends AbstractController
         $usr = new User();
         $usr = $user->find(1);
         $produit = $produitRepository->find($idProduit);
+        $stock = $stockrepo->findOneBy(['id' => $produit]);
         $pan = $panier->findBy(['idUser' => $usr]);
         $elem = $panierElemRepository->findBy(['idPanier' => $pan, 'id' => $produit]);
         if (empty($elem)){
@@ -113,6 +116,8 @@ class ProduitController extends AbstractController
             'produit' => $produit,
             'panierElements' => $panierElemRepository->findBy(['idPanier' => $pan]),
             'test' => $test,
+            'stock' => $stock,
+
         ]);
     }
 

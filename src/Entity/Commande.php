@@ -59,9 +59,52 @@ class Commande
      */
     private $idUser;
 
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="latitude", type="float",precision=14, scale=0, nullable=false)
+     */
+    private $latitude;
+
+     /**
+     * @var float
+     *
+     * @ORM\Column(name="longitude", type="float",precision=14, scale=0, nullable=false)
+     */
+    private $longitude;
+
+        /**
+     * @var string
+     *
+     * @ORM\Column(name="mode", type="string", length=255, nullable=false)
+     */
+    private $mode;
+
+    public function getMode(): ?string
+    {
+        return $this->mode;
+    }
+
+    public function setMode(string $mode): self
+    {
+        $this->mode = $mode;
+
+        return $this;
+    }
+
     public function getIdCommande(): ?int
     {
         return $this->idCommande;
+    }
+
+    public function getLatitude(): ?float
+    {
+        return $this->latitude;
+    }
+
+    public function getLongitude(): ?float
+    {
+        return $this->longitude;
     }
 
     public function getPrixLivraison(): ?float
@@ -69,6 +112,20 @@ class Commande
         return $this->prixLivraison;
     }
 
+    public function setLatitude(float $latitude): self
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function setLongitude(float $longitude): self
+    {
+        $this->longitude = $longitude;
+
+        return $this;
+    }
+    
     public function setPrixLivraison(float $prixLivraison): self
     {
         $this->prixLivraison = $prixLivraison;
