@@ -75,23 +75,35 @@ Fixed Navigation
                             <li class="nav-item">
                                 <a class="nav-link" href="contact.html">Contact</a>
                             </li>
+                            
+                            {% if is_granted('ROLE_CLIENT')  %}
+
+                            {% else %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path('app_login') }}">se connecter</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ path('app_user_inscription') }}">S'inscrire</a>
-                            </li>
+                            {% endif %}
 
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Pages
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="team.html">Team Page</a>
-                                    <a class="dropdown-item" href="404.html">404 Page</a>
-                                    <a class="dropdown-item" href="blog.html">Blog Page</a>
-                                </div>
+                            {% if is_granted('ROLE_CLIENT')  %}
+
+                            {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_inscription') }}"> S'inscrire </a>
                             </li>
+                            {% endif %}
+
+                            {% if is_granted('ROLE_CLIENT') %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_accountClient') }}">Mon Compte</a>
+                            </li>
+                            {% endif %}
+                            {% if is_granted('ROLE_CLIENT') %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_logout') }}">Decconecter</a>
+                            </li>
+                            {% endif %}
+
+                           
                         </ul>
                     </div>
                 </nav>

@@ -232,7 +232,7 @@
         </div>
         <div class="top-menu">
             <ul class="nav pull-right top-menu">
-                <li><a class="logout" href="{{ path('app_logout') }}">Logout</ahref=></li>
+                <li><a class="logout" href="{{ path('app_logout') }}">Deconnecter</ahref=></li>
             </ul>
         </div>
     </header>
@@ -247,22 +247,25 @@
             <ul class="sidebar-menu" id="nav-accordion">
             {% set image = app.session.get('image') %}
 
-                <p class="centered"><a href="{{ path('app_account') }}"><img src="{{ asset('uploads/images/products/'~ image ~'')}}" class="img-circle centered" style="text-align: center; display: inherit;width:70px;" ></a></p>
+                <p class="centered"><a href="{{ path('app_account') }}"><img src="{{ asset('uploads/images/products/'~ image ~'')}}" class="img-circle centered" style="text-align: center; display: inherit;width:70px;height:70px;" ></a></p>
                 <h5 class="centered">{{app.session.get('prenom')|upper ~" "~ app.session.get('nom')|upper}}</h5>
+                {% if is_granted('ROLE_ADMIN') %}
                 <li class="mt">
-                    <a class="active" href="index.html">
+                    <a class="active" href="{{ path('app_dash') }}">
                         <i class="fa fa-dashboard"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
+                 {% endif %}
+                {% if is_granted('ROLE_ADMIN') %}
                 <li class="sub-menu">
 
                     <a href="{{ path('app_user_index') }}">
                         <i class="fa fa-desktop"></i>
                         <span>Utilisateurs</span>
                     </a>
-
                 </li>
+                {% endif %}
                 <li class="sub-menu">
                     <a href="{{ path('app_stock_index') }}">
                         <i class="fa fa-cogs"></i>

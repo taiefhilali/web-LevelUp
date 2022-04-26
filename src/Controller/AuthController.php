@@ -16,6 +16,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use MercurySeries\FlashyBundle\FlashyNotifier;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class AuthController extends AbstractController
 {
@@ -39,9 +40,9 @@ class AuthController extends AbstractController
     /**
      * @Route("/logout", name="app_logout")
      */
-    public function logout(): void
+    public function logout(): RedirectResponse
     {     
-        
+        return $this->redirectToRoute("app_login");
     
         
     }
@@ -141,7 +142,7 @@ class AuthController extends AbstractController
             $entityManager->flush();
 
             // On crée le message flash
-            $flashy->success('Token Inconnu', 'http://your-awesome-link.com');
+            $flashy->success('Mot de passe modifié', 'http://your-awesome-link.com');
           
 
             // On redirige vers la page de connexion

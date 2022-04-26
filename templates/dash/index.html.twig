@@ -1,0 +1,231 @@
+{% extends 'backbase.html.twig' %}
+{% block headback %}
+	<head>
+
+		<title>LevelUp</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w==" crossorigin="anonymous">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
+		<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/bootstrap-extended.min.css">
+		<link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/fonts/simple-line-icons/style.min.css">
+		<link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/colors.min.css">
+		<link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/bootstrap.min.css">
+		<link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/bootstrap-extended.min.css">
+		<link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/fonts/simple-line-icons/style.min.css">
+		<link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/colors.min.css">
+		<link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/bootstrap.min.css">
+		<link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+		<!-- Favicons -->
+		<!-- Favicons -->
+		<link href="{{asset('imgback/favicon.png')}}"> <link
+		href="{{asset('imgback/apple-touch-icon.png' )}}" rel="apple-touch-icon">
+
+		<!-- Bootstrap core CSS -->
+		<link
+		href="{{asset('libback/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+		<!--external css-->
+		<link href="{{asset('libback/font-awesome/css/font-awesome.css')}}" rel="stylesheet"/>
+		<link href="{{asset('cssback/zabuto_calendar.css')}}" rel="stylesheet" type="text/css">
+		<link
+		rel="stylesheet" type="text/css" href="{{asset('back-end/lib/gritter/css/jquery.gritter.css')}}"/>
+		<!-- Custom styles for this template -->
+		<link href="{{asset('cssback/style2.css')}}" rel="stylesheet">
+		<link href="{{asset('cssback/style-responsive.css')}}" rel="stylesheet">
+		<script src="{{asset('libback/chart-master/Chart.js')}}"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w==" crossorigin="anonymous">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
+
+		<!-- =======================================================
+		      Template Name: Dashio
+		      Template URL: https://templatemag.com/dashio-bootstrap-admin-template/
+		      Author: TemplateMag.com
+		      License: https://templatemag.com/license/
+		    ======================================================= -->
+	</head>
+{% endblock %}
+
+{% block contentback %}
+
+	<br>
+		<div class="row">
+			<div class="col-xl-3 col-sm-6 col-12"><h2>Dashboard</h2>
+			</div>
+		</div>
+	<div class="grey-bg container-fluid">
+		<section id="minimal-statistics">
+
+			<div class="row">
+				<div class="col-xl-3 col-sm-6 col-12">
+					<div class="card">
+						<div class="card-content">
+							<div class="card-body">
+								<div class="media d-flex">
+									<div class="media-body text-left">
+										<h3 class="primary">{{admins}}</h3>
+										<span>Administrateur</span>
+									</div>
+									<div class="align-self-center">
+										<i class="fa fa-users primary font-large-4 float-right"></i>
+									</div>
+								</div>
+								<div class="progress mt-1 mb-0" style="height: 13px;">
+									<div class="progress-bar bg-primary" role="progressbar" style="width: {{admins}}0px" aria-valuenow="{{admins}}" aria-valuemin="0" aria-valuemax="100"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-3 col-sm-6 col-12">
+					<div class="card">
+						<div class="card-content">
+							<div class="card-body">
+								<div class="media d-flex">
+									<div class="media-body text-left">
+										<h3 class="warning">{{fournisseurs}}</h3>
+										<span>Fournisseurs</span>
+									</div>
+									<div class="align-self-center">
+										<i class="fa fa-users warning font-large-4 float-right"></i>
+									</div>
+								</div>
+								<div class="progress mt-1 mb-0" style="height: 13px;">
+									<div class="progress-bar bg-warning" role="progressbar" style="width: {{fournisseurs}}0px" aria-valuenow="{{fournisseurs}}" aria-valuemin="0" aria-valuemax="100"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-xl-3 col-sm-6 col-12">
+					<div class="card">
+						<div class="card-content">
+							<div class="card-body">
+								<div class="media d-flex">
+									<div class="media-body text-left">
+										<h3 class="success">{{livreurs}}</h3>
+										<span>Livreurs</span>
+									</div>
+									<div class="align-self-center">
+										<i class="fa fa-users success font-large-4 float-right"></i>
+									</div>
+								</div>
+								<div class="progress mt-1 mb-0" style="height: 13px;">
+									<div class="progress-bar bg-success" role="progressbar" style="width: {{livreurs}}0px" aria-valuenow="{{livreurs}}" aria-valuemin="0" aria-valuemax="100"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-3 col-sm-6 col-12">
+					<div class="card">
+						<div class="card-content">
+							<div class="card-body">
+								<div class="media d-flex">
+									<div class="media-body text-left">
+										<h3 class="danger">{{clients}}</h3>
+										<span>Clients</span>
+									</div>
+									<div class="align-self-center">
+										<i class="fa fa-users danger font-large-4 float-right"></i>
+									</div>
+								</div>
+								<div class="progress mt-1 mb-0" style="height: 13px;">
+									<div class="progress-bar bg-danger" role="progressbar" style="width: {{clients}}0px" aria-valuenow="{{clients}}" aria-valuemin="0" aria-valuemax="100"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section><br>
+
+<div class="row" >
+<div class="col-xl-4 col-sm-6 col-12">
+		<div class="card" left>
+	
+			<div class="card-content">
+			
+				<div class="card-body">
+			
+					<canvas id="myChart" width="800" height="800"></canvas>
+
+				</div>
+			</div>
+		</div>
+</div>
+<div class="col-xl-8 col-sm-6 col-12">
+		<div class="card" right>
+			<div class="card-content">
+				<div class="card-body">
+					<canvas id="chart" width="1000" height="472"></canvas>
+
+				</div>
+			</div>
+		</div>
+</div>
+</div>
+
+
+</div></div></div>
+<script>
+var ctx = document.getElementById("myChart").getContext('2d');
+var myChart = new Chart(ctx, {
+type: 'doughnut',
+data: {
+labels: [
+"Hommes", "Femmes"
+],
+datasets: [
+{
+label: '# of Votes',
+data: {{ hf|raw }},
+backgroundColor: [
+'rgba(131, 220, 46)', 'rgba(242, 115, 132)'
+
+
+],
+borderColor: [
+'rgba(131, 220, 46)', 'rgba(242, 115, 132)'
+
+
+],
+borderWidth: 1
+}
+]
+}
+
+
+});
+
+const c = document.getElementById('chart').getContext('2d');
+const chart = new Chart(c, {
+    type: 'bar',
+    data: {
+        labels: ['Administrateur', 'Fournisseur', 'Livreur', 'Client'],
+        datasets: [{
+            label: 'Les utilisateurs',
+            data: {{users|raw}},
+            backgroundColor: [
+                'rgba(255, 206, 86)',
+                'rgba(243, 49, 52)',
+                'rgba(202, 220, 46)',
+                'rgba(54, 162, 235)',
+                
+                
+         
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(243, 49, 52 , 1)',
+                'rgba(202, 220, 46, 1)',
+                'rgba(75, 192, 192, 1)',
+              
+            ],
+            borderWidth: 1
+        }]
+    },
+    
+});
+</script>{% endblock %}

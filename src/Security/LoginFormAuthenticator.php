@@ -14,12 +14,15 @@ use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
+use MercurySeries\FlashyBundle\FlashyNotifier;
+
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 use Symfony\Component\Security\Guard\PasswordAuthenticatedInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+
 
 class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements PasswordAuthenticatedInterface
 {
@@ -32,13 +35,14 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     private $csrfTokenManager;
     private $passwordEncoder;
 
-    public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder, UserRepository $userRepository)
+    public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder, UserRepository $userRepository, FlashyNotifier $flashy)
     {
         $this->entityManager = $entityManager;
         $this->urlGenerator = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->passwordEncoder = $passwordEncoder;
         $this->userRepository = $userRepository;
+        $this->flashy = $flashy;
     }
 
     public function supports(Request $request)
@@ -101,22 +105,36 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         return $credentials['password'];
     }
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey )
     {
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
         }
-        if (!empty($this->userRepository->findByEmail($request->request->get('email')))) {
-            $user = $this->userRepository->findByEmail($request->request->get('email'))[0];
-            $request->getSession()->set('id', $user->getIdUser());
-            $request->getSession()->set('password', $user->getPassword());
-            $request->getSession()->set('email', $request->request->get('email'));
-            $request->getSession()->set('nom', $user->getNom());
-            $request->getSession()->set('prenom', $user->getPrenom());
-            $request->getSession()->set('role', $user->getRole());
-            $request->getSession()->set('image', $user->getImage());
+        $user = $this->userRepository->findByEmail($request->request->get('email'))[0];
+        if($user->getActivationToken() == "NULL"){
+            if (!empty($this->userRepository->findByEmail($request->request->get('email')))) {
+                $user = $this->userRepository->findByEmail($request->request->get('email'))[0];
+                $request->getSession()->set('id', $user->getIdUser());
+                $request->getSession()->set('password', $user->getPassword());
+                $request->getSession()->set('email', $request->request->get('email'));
+                $request->getSession()->set('nom', $user->getNom());
+                $request->getSession()->set('prenom', $user->getPrenom());
+                $request->getSession()->set('role', $user->getRole());
+                $request->getSession()->set('image', $user->getImage());
+            }
+            if ($user->getRole()=="client")
+            {
+                return new RedirectResponse($this->urlGenerator->generate('app_accountClient'));
+                throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+            }
+     
+                    
         }
-
+        else{
+        
+            $this->flashy->error('Activez votre compte!', 'http://your-awesome-link.com');
+            throw new UsernameNotFoundException('Activez votre compte');
+        }
         return new RedirectResponse($this->urlGenerator->generate('app_account'));
         throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }

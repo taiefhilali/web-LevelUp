@@ -2,28 +2,20 @@
 
 namespace App\Controller;
 
-use App\Entity\Client;
-use App\Service\Mailer;
 use App\Entity\User;
 use App\Entity\Administrateur;
 use App\Entity\Livreur;
 use App\Entity\Fournisseur;
 use App\Form\EditUserType;
 use App\Form\PassType;
-use App\Form\InscriptionType;
-use App\Security\LoginFormAuthenticator;
 use App\Form\UserType;
-use App\Form\CompteType;
 use App\Repository\UserRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use ReCaptcha\ReCaptcha; 
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use MercurySeries\FlashyBundle\FlashyNotifier;
 
 
@@ -59,145 +51,19 @@ class UserController extends AbstractController
             'users' => $users,
         ]);
     }
-    /**
-     * @Route("/account", name="app_account", methods={"GET","POST"})
-     */
-    public function indexAccount(Request $request,FlashyNotifier $flashy, UserRepository $userRepository ): Response
-    {   $formpass = $this->createForm(PassType::class);
-        $formpass->handleRequest($request);
-        $user= new User();
-        $user=$userRepository->find($request->getSession()->get('id'));
-        $form = $this->createForm(CompteType::class, $user);
-        $form->handleRequest($request);
-
-        
-        if ($form->isSubmitted()) {
-            $userRepository->add($user);
-            $request->getSession()->set('id', $user->getIdUser());
-            $request->getSession()->set('email', $request->request->get('email'));
-            $request->getSession()->set('nom', $user->getNom());
-            $request->getSession()->set('prenom', $user->getPrenom());
-            $request->getSession()->set('role', $user->getRole());
-            $request->getSession()->set('password', $user->getPassword());
-            $request->getSession()->set('image', $user->getImage());
-            return $this->redirectToRoute('app_account', [], Response::HTTP_SEE_OTHER);
-        }
-        
-
-        
     
-        
-       
-        return $this->render('account.html.twig', [
-            'user' => $user,
-            'form' => $form->createView(),
-            'formpass' => $formpass->createView()]);
-   }
+   
     /**
      * @Route("/changePassword", name="changePassword", methods={"GET","POST"})
      */
-    public function changePassword(Request $request,FlashyNotifier $flashy, UserRepository $userRepository ): Response
-    {   $user=new User();
-        $formpass = $this->createForm(PassType::class,$user);
-        $formpass->handleRequest($request);
+    public function changePassword( ): Response
+    {   
         
-       if ($formpass->isSubmitted()) {
-            
-           $userPass=$userRepository->find($request->getSession()->get('id'));
-            if(strcasecmp($user->getRepeatPassword(), $userPass->getPassword() == 0))
-            {
-                $request->getSession()->set('password',$user->getPassword());
-                $user=$userRepository->find($request->getSession()->get('id'));
-                $user->setPassword(  $request->getSession()->get('password'));
-                $userRepository->add($user);
-                $flashy->success('Mot de passe modifié!', 'http://your-awesome-link.com');
-                    return $this->redirectToRoute('changePassword', [], Response::HTTP_SEE_OTHER);
-                    
-            }
-            else
-            {
-                $flashy->error('Ancien mot de passe est incorrect', 'http://your-awesome-link.com');
-                return $this->redirectToRoute('changePassword', [], Response::HTTP_SEE_OTHER);
-              
-            }
-        }
-       
-        return $this->render('changePassword.html.twig', [
+        return $this->render('user/dashboard.html.twig', [
         
-            'formpass' => $formpass->createView()]);
+            'formpass' => 3]);
    }
 
-    /**
-     * @Route("/inscription", name="app_user_inscription", methods={"GET", "POST"})
-     */
-    public function inscription(Request $request, UserRepository $userRepository, FlashyNotifier $flashy, GuardAuthenticatorHandler $guardHandler, UserPasswordEncoderInterface $encoder,LoginFormAuthenticator $authenticator, Mailer $mailer): Response
-    {
-        $user = new User();
-        $client = new Client();
-        $form = $this->createForm(InscriptionType::class, $user);
-        $form->handleRequest($request);
-        if (($form->isSubmitted() && $form->isValid())) {
-            $recaptcha = new ReCaptcha('6Lf-fLYeAAAAALntWUcfkc5ZOikC5IzZtrbtZLEA');
-            $resp = $recaptcha->verify($request->request->get('g-recaptcha-response'), $request->getClientIp());
-          
-            if (!$resp->isSuccess()) {
-              $flashy->error('Vous etes un robot, inscrption non validée!', 'http://your-awesome-link.com');
-            }
-            else{
-              
-              $user->setPassword(
-                $encoder->encodePassword(
-                    $user,
-                    $form->get('password')->getData()
-                )
-              );
-              $user->setActivationToken(md5(uniqid()));
-              $user->setRole("client");
-              $sexe = $user->getSexe();
-              $userRepository->add($user);
-              $client->setIdUser($user);
-              $client->setSexe($sexe);
-              $em = $this->getDoctrine()->getManager();
-              $em->persist($client);
-              $em->flush();
-              $user->setImageFile(null);
-              $mailer->sendEmail($user->getEmail(),$user->getActivationToken()); 
-              $this->addFlash('message','Le mesage a bien été envoyé ');
-                $flashy->success('Inscription validée, veuillez activer votre compte via le lien envoyé a votre adresse e-mail ', 'http://your-awesome-link.com');
-                return$this->redirectToRoute('app_user_inscription');
-            }
-
-           
-        }
-
-        return $this->render('user/inscription.html.twig', [
-
-            'user' => $user,
-            'form' => $form->createView(),
-        ]);
-
-    }
-    /**
-     * @Route ("/activation/{token}",name="activation")
-     */
-    public function activation($token, UserRepository $UserRepo) {
-            $user= $UserRepo->findBy(['activation_token'=>$token]) ;
-            //on verfie si un ultilisateur a ce token
-            $user = $UserRepo->findOneBy(['activation_token'=> $token]);
-            //si aucun utilisateur n'existe avec ce token
-            if(!$user){
-                //erreur 404
-                throw $this->createNotFoundException('cet utilisateur n\'existe pas');
-            }
-            //on supprime le token
-            $user->setActivationToken(null);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
-            //we send message flash
-            $this->addFlash('message','vous avez bien active votre compte');
-            return$this->redirectToRoute('app_login');
-        }
 
     /**
      * @Route("/new", name="app_user_new")
@@ -215,16 +81,16 @@ class UserController extends AbstractController
                     $form->get('password')->getData()
                 )
               );
-           
-            $user->setAdresse(" ");
-            $user->setTel(" ");
-            $user->setSexe("homme/femme");
+            $user->setActivationToken("NULL");
+          
             $user->setImage("avatar-user.png");
 
-            $userRepository->add($user);
+            
             
             if($user->getRole()=="administrateur"){
-                
+                $user->setRoles(['ROLE_ADMIN']);
+                $userRepository->add($user);
+
                 $admin= new Administrateur();
                 $admin->setIdUser($user);
                 $admin->setCin("00000000");
@@ -233,6 +99,8 @@ class UserController extends AbstractController
                 $em->flush();           
             }
             else if($user->getRole()=="livreur"){
+                $user->setRoles(['ROLE_LIVREUR']);
+                $userRepository->add($user);
                 $livreur = new Livreur();
                 $livreur->setIdUser($user);
                 $livreur->setCin("00000000");
@@ -242,6 +110,8 @@ class UserController extends AbstractController
                 $em->flush();        
             }
             else if($user->getRole()=="fournisseur"){
+                $user->setRoles(['ROLE_FOURNISSEUR']);
+                $userRepository->add($user);
                 $fourni = new Fournisseur();
                 $fourni->setIdUser($user);
                 $fourni->setCin("00000000");
@@ -279,7 +149,26 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            $userRepository->add($user);
+            if($user->getRole()=="administrateur"){
+                $user->setRoles(['ROLE_ADMIN']);
+                $userRepository->add($user);  
+            }
+            else if($user->getRole()=="livreur"){
+                $user->setRoles(['ROLE_LIVREUR']);
+               
+                $userRepository->add($user);      
+            }
+            else if($user->getRole()=="fournisseur"){
+                $user->setRoles(['ROLE_FOURNISSEUR']);
+                $userRepository->add($user);      
+                     
+            }
+            else if($user->getRole()=="client"){
+                $user->setRoles(['ROLE_CLIENT']);
+                $userRepository->add($user);      
+            }
+
+
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
 

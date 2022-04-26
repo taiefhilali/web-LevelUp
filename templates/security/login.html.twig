@@ -4,8 +4,18 @@
 {% endblock %}
 
 {% block content %}
+	
+	<script src="//code.jquery.com/jquery.js"></script>
+    <!-- Load Flashy default JavaScript -->
+    <script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>
+	{{ include('@MercurySeriesFlashy/flashy.html.twig') }}
+	<link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700' rel='stylesheet'>
+	<link rel="stylesheet" href="{{ asset('bundles/mercuryseriesflashy/css/flashy.css') }}">
 	<br>
 	<div class="container-fluid h-custom">
+	   <link href="{{asset('libback/font-awesome/css/font-awesome.css')}}" rel="stylesheet" />
+
 		<link href="{{asset ('/css/login.css')}}" media="screen" rel="stylesheet">
 		<div class="row d-flex justify-content-center align-items-center h-100">
 			<div class="col-md-9 col-lg-9 col-xl-4">
@@ -15,11 +25,24 @@
 			<div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
 				<div>
 
-					<br><br>
-					<h4 class="text-center mt-1 mb-5 pb-1" style="color:grey;">Bienvenue sur LevelUP</h4>
+					<br><br><br><br>
+				
 				</div>
 
+          <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+          <a class="btn btn-primary btn-lg btn-block" style="background-color: #E74C3C; border-color:#E74C3C;" href="{{ path('connect_google_start') }}"
+            role="button">
+            <i class="fa fa-google mr-2"></i>Connecter avec google
+          </a>
+          
 
+            
+          </div>
+
+          <div class="divider d-flex align-items-center my-4">
+            <p class="text-center fw-bold mx-3 mb-0">Ou</p>
+          </div>
+            
 				<form method="post">
 					{% if error %}
 						<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -53,12 +76,13 @@
 							              background-color:#43cdb1; border-color:#43cdb1;" type="submit">
 							Se connecter</button>
 						<p class=" justify-content-center small fw-bold mt-2 pt-1 mb-0">Avez-vous un compte?
-							<a href="{{ path('app_user_inscription') }}" class="link-danger">S'inscrire</a>
+							<a href="{{ path('app_inscription') }}" class="link-danger">S'inscrire</a>
 						</p>
 					</div>
 
 
 				</form>
+				<br><br>
 
 			</div>
 		</div>

@@ -8,6 +8,9 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+
+use Scheb\TwoFactorBundle\Model\Email\TwoFactorInterface;
+
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -18,7 +21,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
-class User implements UserInterface
+class User implements UserInterface, TwoFactorInterface
 {
     /**
      * @var int
@@ -59,28 +62,28 @@ class User implements UserInterface
     private $repeatPassword;
     /**
      * @var string
-     * @ORM\Column(name="role", type="string", length=254, nullable=false)
+     * @ORM\Column(name="role", type="string", length=254, nullable=true)
      */
     private $role;
 
     /**
      * @var string
      * @Assert\NotBlank(message=" Le nom doit etre non vide")
-     * @ORM\Column(name="nom", type="string", length=254, nullable=false)
+     * @ORM\Column(name="nom", type="string", length=254, nullable=true)
      */
     private $nom;
 
     /**
      * @var string
      * @Assert\NotBlank(message=" Le prenom doit etre non vide")
-     * @ORM\Column(name="prenom", type="string", length=254, nullable=false)
+     * @ORM\Column(name="prenom", type="string", length=254, nullable=true)
      */
     private $prenom;
 
     /**
      * @var string
      * @Assert\NotBlank(message=" L'adresse doit etre non vide")
-     * @ORM\Column(name="adresse", type="string", length=254, nullable=false)
+     * @ORM\Column(name="adresse", type="string", length=254, nullable=true)
      */
     private $adresse;
 
@@ -98,7 +101,7 @@ class User implements UserInterface
      *     pattern="/^[0-9\-\_]+$/",
      *     message=" le numero de telephone est non valid"
      * )
-     * @ORM\Column(name="tel", type="string", length=254, nullable=false)
+     * @ORM\Column(name="tel", type="string", length=254, nullable=true)
      */
     private $tel;
 
@@ -160,6 +163,13 @@ class User implements UserInterface
      * @var boolean
      */
     private $isVerified = false;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="authCode", type="string", length=255, nullable=true)
+     */
+    private $authCode;
 
     
     
@@ -436,5 +446,28 @@ class User implements UserInterface
 
         return $this;
     }
+    public function isEmailAuthEnabled(): bool
+    {
+        return true; // This can be a persisted field to switch email code authentication on/off
+    }
 
+    public function getEmailAuthRecipient(): string
+    {
+        return $this->email;
+    }
+
+    public function getEmailAuthCode(): string
+    {
+        if (null === $this->authCode) {
+            throw new \LogicException('The email authentication code was not set');
+        }
+
+        return $this->authCode;
+    }
+
+    public function setEmailAuthCode(string $authCode): void
+    {
+        $this->authCode = $authCode;
+    }
+    
 }
