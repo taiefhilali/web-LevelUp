@@ -5,6 +5,8 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Vangrg\ProfanityBundle\Validator\Constraints as ProfanityAssert;
+
 
 /**
  * Post
@@ -28,6 +30,7 @@ class Post
      *
      * @ORM\Column(name="title", type="string", length=255, nullable=false)
      * @Assert\NotBlank(message= "Titre obligatoire" )
+     * @ProfanityAssert\ProfanityCheck
      * @Assert\Length(min=7, minMessage="Le titre doit faire au moins {{ limit }} caractères.")
      */
     private $title;
@@ -37,6 +40,7 @@ class Post
      *
      * @ORM\Column(name="content", type="text", length=65535, nullable=false)
      * @Assert\NotBlank(message= " Description obligatoire" )
+     * @ProfanityAssert\ProfanityCheck
      * @Assert\Length(min=10,max=100,minMessage="La Description doit faire au moins {{ limit }} caractères.")
      */
     private $content;

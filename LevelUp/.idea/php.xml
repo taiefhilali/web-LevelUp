@@ -151,6 +151,7 @@
       <path value="$PROJECT_DIR$/vendor/martin-georgiev/social-post" />
       <path value="$PROJECT_DIR$/vendor/clue/stream-filter" />
       <path value="$PROJECT_DIR$/vendor/happyr/linkedin-api-client" />
+      <path value="$PROJECT_DIR$/vendor/vangrg/profanity-bundle" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.1" />

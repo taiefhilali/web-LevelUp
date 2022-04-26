@@ -666,6 +666,9 @@
     "twig/twig": {
         "version": "v3.3.9"
     },
+    "vangrg/profanity-bundle": {
+        "version": "v1.1.6"
+    },
     "webmozart/assert": {
         "version": "1.10.0"
     }

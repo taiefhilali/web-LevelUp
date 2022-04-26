@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9eeac77259f86f8b75a78d58c184d750",
+    "content-hash": "ecef16a86be5b231a81bfabfd1c1641e",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -8585,6 +8585,69 @@
                 }
             ],
             "time": "2022-03-25T09:37:52+00:00"
+        },
+        {
+            "name": "vangrg/profanity-bundle",
+            "version": "v1.1.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ivan-griga/ProfanityBundle.git",
+                "reference": "535323a0d1b2624c90c602630ac5e9ee8c502c3f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ivan-griga/ProfanityBundle/zipball/535323a0d1b2624c90c602630ac5e9ee8c502c3f",
+                "reference": "535323a0d1b2624c90c602630ac5e9ee8c502c3f",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/orm": ">=2.4",
+                "php": "^7.1",
+                "symfony/console": "~3.4|~4.0",
+                "symfony/framework-bundle": "^3.4|^4.0",
+                "symfony/validator": "^3.4|^4.0",
+                "symfony/yaml": "^3.4|^4.0"
+            },
+            "suggest": {
+                "doctrine/doctrine-bundle": "For integration with Doctrine",
+                "doctrine/orm": "For integration with Doctrine ORM"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Vangrg\\ProfanityBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Griga",
+                    "email": "grigaivan2@gmail.com"
+                }
+            ],
+            "description": "Checker for bad words.",
+            "keywords": [
+                "bad",
+                "bundle",
+                "censor",
+                "filter",
+                "profanity",
+                "symfony",
+                "words"
+            ],
+            "support": {
+                "issues": "https://github.com/ivan-griga/ProfanityBundle/issues",
+                "source": "https://github.com/ivan-griga/ProfanityBundle/tree/v1.1.6"
+            },
+            "time": "2019-02-20T10:35:55+00:00"
         },
         {
             "name": "webmozart/assert",
