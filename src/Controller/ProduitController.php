@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Data\SearchData;
+use App\Form\SearchFormType;
+use Picqer\Barcode\BarcodeGeneratorHTML;
 use App\Entity\Produit;
 use App\Form\ProduitType;
 use App\Repository\ProduitRepository;
@@ -48,43 +51,71 @@ class ProduitController extends AbstractController
 //        ]
 
     }
+    // Recherche Ajax
+
+    /**
+     * @param Request $request
+     * @param ProduitRepository $repo
+     * @return Response
+     * @Route ("/recherche/", name="ajax_search")
+     */
+
+    public function searchAction(Request $request, ProduitRepository $repo)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $requestString = $request->get('q');
+        $produits =  $repo->findEntitiesByString($requestString);
+        if(!$produits) {
+            $result['produits']['error'] = " ⚠   Aucun produit n'a été trouvé! Veuillez saisir une autre chose! ";
+        } else {
+            $result['produits'] = $this->getRealEntities($produits);
+        }
+        return new Response(json_encode($result));
+    }
+    public function getRealEntities($produits ){
+        foreach ($produits as $produits){
+            $realEntities[$produits->getIdProduit()] = [$produits->getNom(),$produits->getReference(),$produits->getPrix(),$produits->getDescription(),$produits->getIdUser()->getEmail(),$produits->getPromotion()
+                ,$produits->getImage(),$produits->getPrixFinal(),$produits->getIdCategorie()->getNomCategorie()];
+        }
+        return $realEntities;
+    }
+
     /**
      * @return void
      * @Route("/qrCode", name="qr_function")
      */
-    public function genQrCode(ProduitRepository $repo, BuilderInterface $builder){
-//    code QR
-        $this->builder = $builder;
-        $url = 'https://www.google.com/search?q=';
-
-        $objDateTime = new \DateTime('NOW');
-        $dateString = $objDateTime->format('d-m-Y H:i:s');
-    $query='SELECT * from Produit';
-        $path = dirname(__DIR__, 2).'/public/assets/';
-
-        // set qrcode
-        $result = $this->builder
-            ->data($query)
-            ->encoding(new Encoding('UTF-8'))
-            ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
-            ->size(400)
-            ->margin(10)
-            ->labelText($dateString)
-            ->labelAlignment(new LabelAlignmentCenter())
-            ->labelMargin(new Margin(15, 5, 5, 5))
-            ->build()
-        ;
-
-        //generate name
-        $namePng = uniqid('', '') . '.png';
-
-        //Save img png
-        $result->saveToFile($path.'qr-code/'.$namePng);
-    $result->getDataUri();
-        return $this->render('produit/qrtemp.html.twig',['produits'=>$result]);
-
-
+    public function genQrCode(ProduitRepository $repo){
+////    code QR
+//        $this->builder = $builder;
+////        $url = 'https://www.google.com/search?q=';
+//
+//        $objDateTime = new \DateTime('NOW');
+//        $dateString = $objDateTime->format('d-m-Y H:i:s');
+//    $query='$id';
+//        $path = dirname(__DIR__, 2).'/public/assets/';
+//
+//        // set qrcode
+//        $result = $this->builder
+//            ->data($query)
+//            ->encoding(new Encoding('UTF-8'))
+//            ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
+//            ->size(400)
+//            ->margin(10)
+//            ->labelText($dateString)
+//            ->labelAlignment(new LabelAlignmentCenter())
+//            ->labelMargin(new Margin(15, 5, 5, 5))
+//            ->build()
+//        ;
+//
+//        //generate name
+//        $namePng = uniqid('', '') . '.png';
+//
+//        //Save img png
+//        $result->saveToFile($path.'qr-code/'.$namePng);
+//    $result->getDataUri();
+        return $this->render('produit/qrtemp.html.twig');
     }
+
     /**
      * @Route("/stats", name="stats")
      */
@@ -97,15 +128,15 @@ class ProduitController extends AbstractController
         foreach ($produits as $produit){
 //            $categorieType[] = $produit->getIdCategorie()->getNomCategorie();
 
-            $categorieType[] = $produit->getNom();
+            $nomProd[] = $produit->getNom();
 
 //           $pr= $produit->getIdCategorie();
 //           $pr1=count($pr);
-            $prodNumber[] = $produit->getPrixFinal();
+            $prixProd[] = $produit->getPrixFinal();
         }
         return $this->render('produit/stats.html.twig',[
-            'categorieType' =>json_encode($categorieType),
-            'prodNumber'=>json_encode($prodNumber)
+            'nomProd' =>json_encode($nomProd),
+            'prixProd'=>json_encode($prixProd)
         ]);
     }
 
@@ -114,27 +145,46 @@ class ProduitController extends AbstractController
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      * @Route ("/generateExcel", name="excel")
      */
+
     public function generateExcel(ProduitRepository $prodrepo){
-        $produit = new Produit();
+//        $produit = new Produit();
         $produits = $prodrepo->findAll();
         $spreadsheet = new Spreadsheet();
 //        for
         $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setCellValue('A2', '$produit->getPrixFinal()');
-        $sheet->setCellValue('A3', 'Hello World !');
-        $sheet->setCellValue();
-        $sheet->setCellValue('A4', 'Hello World !');
-        $sheet->setCellValue('A5', 'Hello World !');
-        $sheet->setCellValue('A6', 'Hello World !');
-        $sheet->setCellValue('A7', 'Hello World !');
+        $sheet->setCellValue('A1', 'Nom');
+        $sheet->setCellValue('B1', 'Référence');
+        $sheet->setCellValue('C1', 'Prix');
+        $sheet->setCellValue('D1', 'Description');
+        $sheet->setCellValue('E1', 'Fournisseur');
+        $sheet->setCellValue('F1', 'Promotion');
+//        $sheet->setCellValue('A1', 'Prix Final');
+        $sheet->setCellValue('G1', 'Catégorie');
 
-        $sheet->setTitle("Base de données des Produits");
+//        $sheet->setTitle("products");
+
+        //for
+        $sn=1;
+        foreach ($produits as $p) {
+//         dd($p->getNom());
+            $sheet->setCellValue('A'.$sn,$p->getNom());
+            $sheet->setCellValue('B'.$sn,$p->getReference());
+            $sheet->setCellValue('C'.$sn,$p->getPrix());
+            $sheet->setCellValue('D'.$sn,$p->getDescription());
+            $sheet->setCellValue('E'.$sn,$p->getIdUser()->getEmail());
+            $sheet->setCellValue('F'.$sn,$p->getPromotion());
+            $sheet->setCellValue('G'.$sn,$p->getIdCategorie()->getNomCategorie());
+            $sheet->setCellValue('H'.$sn,$p->getPrixFinal());
+            $sn++;
+
+        }
+
 
         // Create your Office 2007 Excel (XLSX Format)
         $writer = new Xlsx($spreadsheet);
 
         // Create a Temporary file in the system
-        $fileName = 'my_first_excel_symfony4.xlsx';
+        $fileName = 'produits.xlsx';
         $temp_file = tempnam(sys_get_temp_dir(), $fileName);
 
         // Create the excel file in the tmp directory of the system
@@ -166,6 +216,8 @@ class ProduitController extends AbstractController
     }
 
 
+
+
     // AFFICHAGE FRONT - OFFICE INDEX
     /**
      * @Route("/productFront", name="app_produit_index_front", methods={"GET"})
@@ -173,14 +225,18 @@ class ProduitController extends AbstractController
 
     public function indexFront(ProduitRepository $produitRepository, PaginatorInterface  $paginator, Request  $request): Response
     {
-        $produits=$this->sort($produitRepository);
+        $data = new SearchData();
+        $form = $this->createForm(SearchFormType::class,$data);
+        $form->handleRequest($request);
+//      $produits=$this->sort($produitRepository);
+        $produits=$produitRepository ->findSearch($data);
         $products = $paginator->paginate(
             $produits,
             $request->query->getInt('page', 1),
-            3
+            4
         );
         return $this->render('produit/indexFront.html.twig', [
-            'products' => $products,]
+            'products' => $products, 'form'=>$form->createView()]
 
         );
     }
@@ -270,6 +326,7 @@ class ProduitController extends AbstractController
     }
 
 
+
     /**
      * @Route("/{idProduit}", name="app_produit_delete", methods={"POST"})
      */
@@ -282,9 +339,16 @@ class ProduitController extends AbstractController
         return $this->redirectToRoute('app_produit_index', [], Response::HTTP_SEE_OTHER);
     }
 
-
-
-
+    /**
+     * @return Response
+     * @Route("/{idProduit}/barcode", name="barcode")
+     */
+    public function generateBarcode(ProduitRepository $repo, Produit $produit): Response
+    {
+        $generator = new BarcodeGeneratorHTML();
+        echo $generator->getBarcode(($produit->getReference()), $generator::TYPE_CODE_39);
+        return $this->render('produit/testbarcode.html.twig',[$generator]);
+    }
 
 //    public function countNumberProducts()
 //    {
@@ -293,5 +357,11 @@ class ProduitController extends AbstractController
 //        $query = $entityManager->createQuery('SELECT categorie.nom_categorie, COUNT(categorie.nom_categorie) as nbr_produits FROM categorie, produit WHERE (categorie.id_categorie = produit.id_categorie) GROUP BY categorie.nom_categorie');
 //        $req=$query->getResult();
 //    }
+
+
+
+
+
+
 }
 

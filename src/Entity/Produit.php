@@ -16,8 +16,8 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
  * @ORM\Table(name="produit", indexes={@ORM\Index(name="fk_CategorieProduit", columns={"id_categorie"}), @ORM\Index(name="fk_idFournisseur", columns={"id_user"})})
  * @ORM\Entity
  * @Vich\Uploadable
- * @UniqueEntity(fields={"nom"}, message="La nom du produit {{ value }} est déja existant! Veuillez choisir un autre nom.")
- * @UniqueEntity(fields={"reference"}, message="La référence {{ value }} est déja existante! Veuillez choisir une autre réference.")
+ * @UniqueEntity(fields={"nom"}, message="⚠ Le nom du produit {{ value }} est déja existant! Veuillez choisir un autre nom.")
+ * @UniqueEntity(fields={"reference"}, message="⚠ La référence {{ value }} est déja existante! Veuillez choisir une autre réference.")
 
  */
 class Produit
@@ -46,7 +46,7 @@ class Produit
 
     /**
      * @var string
-     * @Assert\NotBlank(message="La référence est obligatoire!")
+     * @Assert\NotBlank(message="⚠ La référence est obligatoire!")
      * @Assert\Length(
      *      min = 2,
      *      max = 20,
@@ -61,8 +61,8 @@ class Produit
     /**
      * @var float
      * @Assert\GreaterThan (0)
-     * @Assert\NotBlank(message="Le prix est obligatoire!")
-     * @Assert\Positive(message="Le prix doit être positive!")
+     * @Assert\NotBlank(message="⚠ Le prix est obligatoire!")
+     * @Assert\Positive(message="⚠ Le prix doit être positive!")
      * @ORM\Column(name="prix", type="float", precision=10, scale=0, nullable=false)
      */
     private $prix;
@@ -70,11 +70,11 @@ class Produit
     /**
      * @var string
      *
-     * @Assert\NotBlank(message="La description est obligatoire!")
+     * @Assert\NotBlank(message="⚠ La description est obligatoire!")
      * @Assert\Length(
      *      min = 5,
      *      max = 100,
-     *      minMessage = "La longueur de la déscription doit être supérieur à 5",
+     *      minMessage = "⚠ La longueur de la déscription doit être supérieur à 5",
      *      maxMessage ="doit etre <=500" )
      * @ORM\Column(name="description", type="text", length=65535, nullable=false)
      */
@@ -83,8 +83,8 @@ class Produit
     /**
      * @var float
      *
-     * @Assert\NotBlank(message="Veuillez remplir le champ promotion!")
-     * @Assert\Positive (message=" La promotion doit être positive!")
+     * @Assert\NotBlank(message="⚠ Veuillez remplir le champ promotion!")
+     * @Assert\GreaterThan (-1, message="⚠ La promotion doit être positive!")
      * @ORM\Column(name="promotion", type="float", precision=10, scale=0, nullable=false)
      */
     private $promotion;
