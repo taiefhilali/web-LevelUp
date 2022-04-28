@@ -17,7 +17,7 @@
     <script>
         let categorie = document.querySelector("#categorie")
         let categGraph = new Chart(categorie,{
-            type:"bar",
+            type:"pie",
             data:{
                 labels:{{ nomProd|raw }},
                 datasets:[{

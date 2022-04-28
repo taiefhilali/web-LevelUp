@@ -38,7 +38,7 @@ class Produit
      *      max = 40,
      *      minMessage = "La longueur du nom doit être supérieur à 6 et inférieur à 40!",
      *      maxMessage =" doit etre <=40" )
-     * @Assert\NotBlank(message="Le champ nom est obligatoire!")
+     * @Assert\NotBlank(message="⚠ Le champ nom est obligatoire!")
      * @ORM\Column(name="nom", type="string", length=254, nullable=false)
      */
 
