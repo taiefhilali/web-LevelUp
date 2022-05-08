@@ -2,8 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Comment;
+
 use App\Entity\Post;
+use App\Entity\Comment;
 use App\Form\CommentType;
 use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
@@ -12,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 
 /**
@@ -20,6 +22,16 @@ use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
 class CommentController extends AbstractController
 {
 
+    /**
+     * @Route("/backcommentmobile", name="appshowcommentmobile")
+     */
+    public function mobilefindcommentt(CommentRepository $commentRepository, Request $request, NormalizerInterface $Normalizer): Response
+    {
+        $repository = $this->getdoctrine()->getRepository(Comment::class);
+        $comment = $repository->findAll();
+        $jsonContent = $Normalizer->normalize($comment, 'json', ['groups' => 'post:read']);
+        return new Response(json_encode($jsonContent));
+    }
 
 
     /*
@@ -107,7 +119,7 @@ public $id;
     }
 
     /**
-     * @Route("/new", name="app_comment_new", methods={"GET", "POST"})
+     * @Route("/addcomment", name="app_comment_new", methods={"GET","POST"})
      */
     public function new(Request $request, CommentRepository $commentRepository, PostRepository $postRepository): Response
     {
@@ -163,7 +175,7 @@ public $id;
 
 
     /**
-     * @Route("/{idc}/edit", name="app_comment_edit", methods={"GET", "POST"})
+     * @Route("/{idc}/edit", name="app_comment_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Comment $comment, CommentRepository $commentRepository): Response
     {
@@ -174,12 +186,22 @@ public $id;
             $commentRepository->add($comment);
             return $this->redirectToRoute('app_comment_indexback', [], Response::HTTP_SEE_OTHER);
         }
-        return $this->render('comment/edit.html.twig', [
+        return $this->render('comment/_form.html.twig', [
             'comment' => $comment,
             'form' => $form->createView(),
         ]);
     }
+    /**
+     * @Route("/backdeletetcomment{idc}", name="app_comment_deletebackcomment", methods={"GET","POST"})
+     */
+    public function deleteback(Request $request, Comment $comment, CommentRepository $commentRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$comment->getIdc(), $request->request->get('_token'))) {
+            $commentRepository->remove($comment);
+        }
 
+        return $this->redirectToRoute('app_comment_index_back', [], Response::HTTP_SEE_OTHER);
+    }
 
     /**
      * @Route("/{idc}", name="app_comment_delete", methods={"POST"})
@@ -192,16 +214,66 @@ public $id;
 
         return $this->redirectToRoute('app_comment_indexback', [], Response::HTTP_SEE_OTHER);
     }
-    /**
-     * @Route("/backdeletetcomment{idc}", name="app_comment_deletebackcomment", methods={"POST"})
-     */
-    public function deleteback(Request $request, Comment $comment, CommentRepository $commentRepository): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$comment->getIdc(), $request->request->get('_token'))) {
-            $commentRepository->remove($comment);
-        }
 
-        return $this->redirectToRoute('app_comment_index_back', [], Response::HTTP_SEE_OTHER);
+
+// codename one
+
+
+    /**
+     * @Route("/addCommentJSON/new",name="addCommentJSON")
+     *
+     *
+     */
+    public function addCommenttJSON(Request $request, NormalizerInterface $Normalizer)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $comment = new Comment();
+        $comment->setContenu($request->get('contenu'));
+        $comment->setLabel($request->get('label'));
+        $comment->setResp($request->get('resp'));
+        $comment->setIdPost($request->get('id_post'));
+
+
+
+        $em->persist($comment);
+        $em->flush();
+        $jsonContent = $Normalizer->normalize($comment, 'json', ['groups' => 'post:read']);
+        return new Response(json_encode($jsonContent));;
+
+    }
+
+    /**
+     * @Route("/updateCommentJSON/{id}",name="updateCommentJSON")
+     *
+     *
+     */
+    public function updateCommenttJSON(Request $request, NormalizerInterface $Normalizer, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $comment = $em->getRepository(Comment::class)->find($id);
+        $comment->setContenu($request->get('contenu'));
+        $comment->setLabel($request->get('label'));
+        $comment->setResp($request->get('resp'));
+        $em->flush();
+        $jsonContent = $Normalizer->normalize($comment, 'json', ['groups' => 'post:read']);
+        return new Response(json_encode($jsonContent));;
+
+    }
+
+    /**
+     * @Route("/deleteCommentJSON/{id}",name="deletecommentJSON")
+     *
+     *
+     */
+    public function deleteCommtJSON(Request $request,NormalizerInterface $Normalizer,$id){
+        $em=$this->getDoctrine()->getManager();
+        $comment=$em->getRepository(Comment::class)->find($id);
+        $em->remove($comment);
+        $em->flush();
+        $jsonContent=$Normalizer->normalize($comment, 'json',['groups'=>'post:read']);
+        return new Response("Commment deleted successfully".json_encode($jsonContent));;
+
+
     }
 
 }

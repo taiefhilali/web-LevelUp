@@ -8,3 +8,7 @@ captcha_routing:
 ajax_search:
   path:    /search
   defaults: { _controller: App\Controller\PostController::searchAction}
+
+
+
+

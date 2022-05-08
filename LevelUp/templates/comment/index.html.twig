@@ -1,8 +1,12 @@
 {% extends 'base.html.twig' %}
 
-
 {% block content %}
-    <a href="{{ path('app_comment_new') }}" class="btn btn-outline-secondary btn-sm"class="pull-right" class="fa fa-heart" aria-hidden="true"  > Ajouter  </a>
+
+    <form method="get" action="{{ path('app_comment_new') }}" onsubmit="return confirm('Etes-vous sure de vouloir supprimer ce produit?');">
+        <button class="btn btn-danger" style="display:block; margin: 0 auto;">ADD</button>
+    </form>
+
+     Ajouter  </a>
 
     <link rel="stylesheet" href="{{asset('css/cardComment.css')}}">
 <h1 style="color: rgba(0,95,71,0.71)" align="center">Commentaires </h1>
@@ -20,10 +24,13 @@
                         <img src="https://bootdey.com/img/Content/user_1.jpg" class="avatar" alt="">
                         <div class="post-comments">
                             <a href="{{ path('app_comment_new') }}" class="btn btn-clear btn-sm"class="pull-right" class="fa fa-heart" aria-hidden="true"  > Ajouter  </a>
+                            <form method="get" action="{{ path('app_comment_edit', {'idc': comment.idc}) }}" onsubmit="return confirm('Etes-vous sure de vouloir supprimer ce produit?');">
+                                <button class="btn btn-danger" style="display:block; margin: 0 auto;">modifier </button>
+                            </form>
 
-                            <a class="btn btn-clear btn-sm" href="{{ path('app_comment_edit', {'idc': comment.idc}) }}">Modifier</a>
                             <a class="btn btn-clear btn-sm" href="{{ path('app_post_indexFront') }}">retour</a>
-                            <a class="btn btn-clear btn-sm"  href="{{ path('app_comment_show', {'idc': comment.idc}) }}" class="pull-right" class="fa fa-heart" aria-hidden="true">Supprimer</a>
+                            {{ include('comment/_delete_form.html.twig') }}
+
                             <p class="meta"  id="current_date" > </p>
                           <h5>{{ comment.label  }}</h5>
 

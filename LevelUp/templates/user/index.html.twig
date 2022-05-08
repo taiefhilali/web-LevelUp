@@ -2,55 +2,91 @@
 
 
 {% block contentback %}
-    <h1>User index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>IdUser</th>
-                <th>Email</th>
-                <th>Password</th>
-                <th>Role</th>
-                <th>Nom</th>
-                <th>Prenom</th>
-                <th>Adresse</th>
-                <th>Tel</th>
-                <th>Dns</th>
-                <th>Locked</th>
-                <th>Tentative</th>
-                <th>Limite</th>
-                <th>Image</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-            <tr>
-                <td>{{ user.idUser }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.password }}</td>
-                <td>{{ user.role }}</td>
-                <td>{{ user.nom }}</td>
-                <td>{{ user.prenom }}</td>
-                <td>{{ user.adresse }}</td>
-                <td>{{ user.tel }}</td>
-                <td>{{ user.dns ? user.dns|date('Y-m-d') : '' }}</td>
-                <td>{{ user.locked ? 'Yes' : 'No' }}</td>
-                <td>{{ user.tentative }}</td>
-                <td>{{ user.limite ? user.limite|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ user.image }}</td>
-                <td>
-                    <a href="{{ path('app_user_show', {'idUser': user.idUser}) }}">show</a>
-                    <a href="{{ path('app_user_edit', {'idUser': user.idUser}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="14">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+	<div class="main">
+		<div style="display:flex; width:100%; align-items:center;justify-content:space-between;">
+			<div style="margin-left:3%;"><h1>Les utilisateurs</h1></div>
+			<div style="display:flex; width:40%;">
+				<form method="POST">
+						
+						<button type="submit" style="background-color:transparent; border-color:white;">
+							<i class="fa fa-search" aria-hidden="true" style="font-size: 16px;"></i>
+						</button>
+						<input type="text" name="prenom" style="height:90%; border-color:white;width:200px;border-radius:10%;">
 
-    <a href="{{ path('app_user_new') }}">Create new</a>
-{% endblock %}
+					</form>
+					<form action="{{ path('app_user_new') }}">
+						<button class="btn" style="margin-left:5%; width:200px;">
+							<i class="fa fa-plus-circle" aria-hidden="true" style="font-size: 16px;"></i>
+							Ajouter utilisateur</button>
+					</form>
+			</div>
+		</div>
+		
+
+
+	</div>
+</div>
+<br>
+<link href="{{asset ('/css/card.scss')}}" media="screen" rel="stylesheet">
+
+
+<div class="wrapper">
+
+	<div class="cards_wrap">
+
+		{% for user in users %}
+			<div class="card_item">
+				<div class="card_inner">
+
+					<div class="container">
+						<img src="{{ asset('uploads/images/products/'~user.image~'')}} " alt="" class="profile-img">
+
+						<div class="content">
+							<div class="sub-content">
+								<h3>{{user.nom ~ ' ' ~ user.prenom}}</h3>
+								<p>{{user.role}}</p>
+
+								<span>
+									<i class="fa fa-envelope-square" aria-hidden="true" style="font-size: 16px;
+																																												  margin-right: 5px;"></i>
+									<b>{{user.email}}</b>
+								</span>
+								<span class="location">
+									<i class="fa fa-map-marker" aria-hidden="true"></i>
+									<b>{{user.adresse}}</b>
+								</span>
+								<p>
+									<i class="fa fa-phone" aria-hidden="true" style="font-size: 16px;
+																																												  margin-right: 5px;"></i>
+									{{user.tel}}</p>
+								<table class="center">
+									<td>
+										<form action="{{ path('app_user_edit', {'idUser': user.idUser}) }}">
+											<button class="btn">
+												<i class="fa fa-pencil" aria-hidden="true" style="font-size: 16px;
+																																																					  margin-right: 5px;"></i>Modifier</button>
+										</form>
+									</td>
+									<td>
+
+										{{ include('user/_delete_form.html.twig') }}
+									</td>
+								</table>
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		{% endfor  %}
+
+	</div>
+	<div class="navigation text-center">
+		{{ knp_pagination_render(users) }}
+	</div>
+
+
+</div></div>{% endblock %}

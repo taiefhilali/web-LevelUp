@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Reclamation
@@ -18,6 +19,7 @@ class Reclamation
      * @ORM\Column(name="id_reclamation", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups("reclamations")
      */
     private $idReclamation;
 
@@ -25,15 +27,17 @@ class Reclamation
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=254, nullable=false)
+     * @Groups("reclamations")
      */
     private $description;
 
     /**
-     * @var bool
+     * @var bool|null
      *
-     * @ORM\Column(name="WARN", type="boolean", nullable=false)
+     * @ORM\Column(name="WARN", type="boolean", nullable=true)
+     * @Groups("reclamations")
      */
-    private $warn = '0';
+    private $warn;
 
     /**
      * @var \User
@@ -42,6 +46,8 @@ class Reclamation
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_user", referencedColumnName="id_user")
      * })
+     * @Groups("reclamations")
+
      */
     private $idUser;
 
@@ -52,6 +58,8 @@ class Reclamation
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_livraison", referencedColumnName="id_livraison")
      * })
+     * @Groups("reclamations")
+
      */
     private $idLivraison;
 
@@ -77,7 +85,7 @@ class Reclamation
         return $this->warn;
     }
 
-    public function setWarn(bool $warn): self
+    public function setWarn(?bool $warn): self
     {
         $this->warn = $warn;
 

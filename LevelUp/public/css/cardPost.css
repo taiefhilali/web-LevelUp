@@ -14,7 +14,7 @@ html {
 body {
     background: #c3c8cb;
     background: -webkit-linear-gradient(to right, #f3f3f3, #79a993);
-    background: linear-gradient(to right, #b6b6b6, #9cc4ba);
+    background: linear-gradient(to right, rgba(248, 238, 188, 0.48), #9cc4ba);
 }
 
 .wrapper {

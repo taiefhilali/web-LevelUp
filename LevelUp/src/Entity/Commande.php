@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * Commande
  *
@@ -18,6 +18,7 @@ class Commande
      * @ORM\Column(name="id_commande", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups("post:read")
      */
     private $idCommande;
 
@@ -25,6 +26,7 @@ class Commande
      * @var float
      *
      * @ORM\Column(name="prix_livraison", type="float", precision=10, scale=0, nullable=false)
+     * @Groups("post:read")
      */
     private $prixLivraison;
 
@@ -32,6 +34,7 @@ class Commande
      * @var \DateTime
      *
      * @ORM\Column(name="date_commande", type="date", nullable=false)
+     * @Groups("post:read")
      */
     private $dateCommande;
 
@@ -39,6 +42,7 @@ class Commande
      * @var float
      *
      * @ORM\Column(name="prix_produits", type="float", precision=10, scale=0, nullable=false)
+     * @Groups("post:read")
      */
     private $prixProduits;
 
@@ -46,22 +50,70 @@ class Commande
      * @var float
      *
      * @ORM\Column(name="prix_total", type="float", precision=10, scale=0, nullable=false)
+     * @Groups("post:read")
      */
     private $prixTotal;
 
     /**
-     * @var \Client
+     * @var \User
      *
-     * @ORM\ManyToOne(targetEntity="Client")
+     * @ORM\ManyToOne(targetEntity="User")
+     * @Groups("post:read")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_user", referencedColumnName="id_user")
      * })
      */
     private $idUser;
 
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="latitude", type="float",precision=14, scale=0, nullable=false)
+     * @Groups("post:read")
+     */
+    private $latitude;
+
+     /**
+     * @var float
+     *
+     * @ORM\Column(name="longitude", type="float",precision=14, scale=0, nullable=false)
+     * @Groups("post:read")
+     */
+    private $longitude;
+
+        /**
+     * @var string
+     *
+     * @ORM\Column(name="mode", type="string", length=255, nullable=false)
+     * @Groups("post:read")
+     */
+    private $mode;
+
+    public function getMode(): ?string
+    {
+        return $this->mode;
+    }
+
+    public function setMode(string $mode): self
+    {
+        $this->mode = $mode;
+
+        return $this;
+    }
+
     public function getIdCommande(): ?int
     {
         return $this->idCommande;
+    }
+
+    public function getLatitude(): ?float
+    {
+        return $this->latitude;
+    }
+
+    public function getLongitude(): ?float
+    {
+        return $this->longitude;
     }
 
     public function getPrixLivraison(): ?float
@@ -69,6 +121,20 @@ class Commande
         return $this->prixLivraison;
     }
 
+    public function setLatitude(float $latitude): self
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function setLongitude(float $longitude): self
+    {
+        $this->longitude = $longitude;
+
+        return $this;
+    }
+    
     public function setPrixLivraison(float $prixLivraison): self
     {
         $this->prixLivraison = $prixLivraison;
@@ -112,17 +178,21 @@ class Commande
         return $this;
     }
 
-    public function getIdUser(): ?Client
+    public function getIdUser(): ?User
     {
         return $this->idUser;
     }
 
-    public function setIdUser(?Client $idUser): self
+    public function setIdUser(?User $idUser): self
     {
         $this->idUser = $idUser;
 
         return $this;
     }
 
+    public function __toString()
+    {
+    return (string) $this->getPrixProduits();
+    }
 
 }

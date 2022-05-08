@@ -1,33 +1,260 @@
-{% extends 'base.html.twig' %}
-
+{% extends 'basepanier.html.twig' %}
 {% block title %}Panier index{% endblock %}
 
-{% block body %}
-    <h1>Panier index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>IdPanier</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for panier in paniers %}
-            <tr>
-                <td>{{ panier.idPanier }}</td>
-                <td>
-                    <a href="{{ path('app_panier_show', {'idPanier': panier.idPanier}) }}">show</a>
-                    <a href="{{ path('app_panier_edit', {'idPanier': panier.idPanier}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="2">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
 
-    <a href="{{ path('app_panier_new') }}">Create new</a>
+
+{% block content %}
+<style>
+.button {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #31BB9E;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 28px;
+  padding: 20px;
+  width: 310px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin-left: 69px;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+</style>
+
+
+<head>  
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+   integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+   crossorigin=""/>
+
+   <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+<link rel="stylesheet" href="{{asset('css/map.css')}}">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading">Panier</h1>
+     </div>
+</section>
+
+<div class="container mb-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col"> </th>
+                            <th scope="col">Product</th>
+                            <th scope="col">Description</th>
+                            <th scope="col" class="text-center">Quantity</th>
+                            <th scope="col" class="text-right">Price</th>
+                            <th> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% set i=0 %}
+                    {% set nbr=0 %}
+                     {% set liv=0 %}
+                     {% set nn=0 %}
+                     {% set Total=0 %}
+                    {% for pan in panierElements | reverse %}
+                        {% set i=i+ (pan.quantite * pan.id.prix) %}
+                        {% set nbr=nbr + 1 %}
+                        <tr>
+                            <td><img src="https://dummyimage.com/50x50/55595c/fff" /> </td>
+                            <td>{{pan.id.nom}}</td>
+                            <td>{{pan.id.description}}</td>
+                            <div>
+                            <td>
+                            <form method="post" action="{{ path('app_panier_elem_edit', {'idElem': pan.idElem}) }}" onsubmit="return confirm('Are you sure you want to Modify this item?');">
+                               {% for message in app.flashes('info') %}
+                                <div class="alert alert-success">
+                                {{ message }}
+                                </div>
+                                {% endfor %}
+
+                            <input type="number" name="quantite" value= {{pan.quantite}} min="1" max= {{quantite[0]}} step="1"/>
+                            <button class="btn btn-sm btn-success py-1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                            </form>
+                            </td>
+                            <td class="text-right">{{pan.id.prix}}</td>
+                            <td class="text-right">
+                            <form method="post" action="{{ path('app_panier_elem_delete', {'idElem': pan.idElem}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ pan.idElem) }}">
+                            <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+                            </form>
+                             </td>
+                            </div>
+                        </tr>
+                        {% set nn = nn + 1 %}
+                        {% endfor %}
+                        {% if ( i <= 100) and (nbr != 0) %}
+                        {% set liv=10 %}
+                        {% set Total=i+liv %}
+                        {% else %}
+                        {% set liv=0 %}
+                        {% set Total=liv+i %}
+                        {% endif %}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>Total des produits</td>
+                            <td class="text-right">{{ i }} DN</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>Livraison </td>
+                            <td class="text-right">{{ liv }} DN</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><strong>Total</strong></td>
+                            <td class="text-right"><strong>{{ Total }} DN</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+  <div  style="width : 1500px; height:700px">
+                               
+         {% if (nbr != 0) %}
+        <div id="maCarte" style="width : 1140px"></div>
+    
+        <Label for="lat" style="margin-top: 40px; margin-left: 110px">Latitude :</Label>
+        <input type="number" step="any" id="lat" name="lat" readonly />
+        
+        <Label for="lon" style="margin-left: 350px">Longitude :</Label>
+        <input type="number" step="any" id="lon" name="lon" readonly />
+         {% endif %}
+             <div class="col mb-2">
+            <div class="row" style="margin-top: 40px">
+                <div class="col-sm-8  col-md-6">
+                    <a class="btn btn-lg btn-block btn-light" href="{{ path('app_produit_index') }}">Retour</a>
+                </div>
+                {% if (nbr != 0) %}
+                <div class="col-sm-8 col-md-6 text-right"> 
+                    <a href="#" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap" class="btn btn-lg btn-block btn-success text-uppercase" >Valider Commande</a>
+                </div>
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Choisir le mode de paiement</h5>
+        <button style="border : none;" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{{ path('app_commande_new',{'idUser': 1 , 'prixProduits': i , 'Livraison':liv , 'prixTotal':Total,'mode': "Livraison"}) }}">
+            <button class="button" style="vertical-align:middle"><span>Payer au Livraison </span></button>
+          <input type="number" step="any" value=0 id="latt" name="latt"  style="visibility: hidden"  />
+          <input type="number" step="any" value =0 id="lonn" name="lonn"  style="visibility: hidden" />
+         </form>
+           <form action="{{ path('app_comm_payer',{'idUser': 1 , 'prixProduits': i , 'Livraison':liv , 'prixTotal':Total,'mode': "En ligne"})}}" > 
+          <div class="form-group">
+          <button class="button" style="vertical-align:middle"><span>Payer en ligne </span></button>
+            <input type="number" step="any" value=0 id="lattt" name="lattt"  style="visibility: hidden"  />
+          <input type="number" step="any" value =0 id="lonnn" name="lonnn"  style="visibility: hidden" />
+            </div>
+            </form>
+          <div class="modal-footer">
+            <button id="Ebutton" type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-window-close"></i> Close</button>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+   integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+   crossorigin="">
+</script>
+<script>
+let marqueur
+var carte = L.map('maCarte').setView([33.892166, 9.561555], 6);
+L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+                // Il est toujours bien de laisser le lien vers la source des données
+                attribution: 'données © <a href="//osm.org/copyright">OpenStreetMap</a>/ODbL - rendu <a href="//openstreetmap.fr">OSM France</a>',
+                minZoom: 1,
+                maxZoom: 20
+            }).addTo(carte);
+
+function onMapClick(e) {
+    let pos = e.latlng
+    addMarker(pos,carte)
+    document.querySelector("#lat").value = pos.lat
+     document.querySelector("#latt").value = pos.lat
+     document.querySelector("#lattt").value = pos.lat
+    document.querySelector("#lon").value = pos.lng
+    document.querySelector("#lonn").value = pos.lng  
+    document.querySelector("#lonnn").value = pos.lng  
+}
+carte.on('click', onMapClick);
+
+function addMarker(pos,carte){
+    if (marqueur != undefined){
+        carte.removeLayer(marqueur)
+    }
+    marqueur = L.marker(pos , {
+        draggable : true
+    })
+marqueur.on("dragend", function(e){
+    pos = e.target.getLatLng()
+    document.querySelector("#lat").value = pos.lat
+    document.querySelector("#lon").value = pos.lng 
+})
+
+    marqueur.addTo(carte)
+}
+
+</script>
+
+</div>
+
+
 {% endblock %}

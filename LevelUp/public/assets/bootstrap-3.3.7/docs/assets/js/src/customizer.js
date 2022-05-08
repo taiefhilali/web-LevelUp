@@ -69,7 +69,6 @@ window.onload = function () { // wait for load in a dumb way because B-0
       files: {
         'config.json': {
           content: configJson
-
         }
       }
     }

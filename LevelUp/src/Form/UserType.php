@@ -6,6 +6,10 @@ use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
 class UserType extends AbstractType
 {
@@ -13,17 +17,13 @@ class UserType extends AbstractType
     {
         $builder
             ->add('email')
-            ->add('password')
-            ->add('role')
+            ->add('role',ChoiceType::class,array('choices'=>['Administrateur'=> 'administrateur',
+             'Fournisseur'=>'fournisseur','Livreur'=> 'livreur']))
             ->add('nom')
             ->add('prenom')
-            ->add('adresse')
-            ->add('tel')
-            ->add('dns')
-            ->add('locked')
-            ->add('tentative')
-            ->add('limite')
-            ->add('image')
+            ->add('password',PasswordType::class)
+            
+            
         ;
     }
 

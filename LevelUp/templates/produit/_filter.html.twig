@@ -1,0 +1,18 @@
+{#<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/cerulean/bootstrap.min.css" integrity="sha384-3fdgwJw17Bi87e1QQ4fsLn4rUFqWw//KU0g8TvV6quvahISRewev6/EocKNuJmEw" crossorigin="anonymous">#}
+
+{{ form_start(form) }}
+{#<h4 style="font-weight: bold; font-size: 24px; color: #00A8B3">  Recherche</h4>#}
+{#<br>#}
+{#{{  form_row(form.q) }}#}
+<h4 style="font-weight: bold; font-size: 24px; color: #00A8B3">  Catégories</h4>
+<br>
+{{  form_row(form.categories,{'attr':{'class':'form-control','style':'font-size: 18px','style':'font-weight : bold'}}) }}
+<h4 style="font-weight: bold; font-size: 24px; color: #00A8B3">  Prix</h4>
+<div class="row-offcanvas-left">
+    {{  form_row(form.min) }}
+</div>
+<div class="row-offcanvas-left">
+    {{  form_row(form.max) }}</div>
+
+<button type="submit" class="btn btn-primary" style="font-size: 20px; margin-left: 2em; width: 160px">Filtrer</button>
+{{ form_end(form) }}

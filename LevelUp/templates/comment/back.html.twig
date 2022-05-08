@@ -1,7 +1,7 @@
 {% extends 'backbase.html.twig' %}
 
 
-{% block bodyback %}
+{% block contentback %}
     <br>
     <br>
     <h1  class="text-info"align="center" >Liste des Commmentaires </h1>
@@ -36,8 +36,8 @@
 
                 <td>
 
-                    <a href="{{ path('app_comment_deletebackcomment', {'idc': comment.idc}) }}"  class="btn btn-outline-info" >Supprimer</a>
 
+                    <a class="btn btn-outline-info">{{ include('comment/deleteback.html.twig') }}</a>
                 </td>
             </tr>
         {% else %}

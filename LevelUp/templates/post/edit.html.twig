@@ -10,6 +10,6 @@
     <h1 class='text-center' style="border-color: #0c5460">Modifier Publication</h1>
 
     {{ include('post/_form.html.twig', {'button_label': 'Update'}) }}
-    <input type="button"  class="btn btn-clear-g" onclick="window.location.href={{ path('app_post_indexFront') }};" value="RETOUR" />
+    <input type="button"   class="btn btn-clear-g" onclick="window.location.href={{ path('app_post_indexFront') }};" value="RETOUR" />
     {{ include('post/_delete_form.html.twig', {'button_label': 'SUPPRIMER'}) }}
 {% endblock %}

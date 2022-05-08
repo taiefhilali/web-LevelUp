@@ -1832,5 +1832,32 @@ a:focus, a:hover {
 .page-404 h1 {
   font-size: 200px;
 }
+.shopping-item {
+  border: 1px solid #ddd;
+  float: right;
+  font-size: 18px;
+  margin-top: 40px;
+  padding: 10px;
+  position: relative;
+}
+.cart-amunt {
+  color: #5a88ca;
+  font-weight: 700;
+}
+.product-count {
+  background: none repeat scroll 0 0 #5a88ca;
+  border-radius: 50%;
+  color: #fff;
+  display: inline-block;
+  font-size: 10px;
+  height: 20px;
+  padding-top: 2px;
+  position: absolute;
+  right: -10px;
+  text-align: center;
+  top: -10px;
+  width: 20px;
+}
+
 
 /*# sourceMappingURL=maps/style.css.map */

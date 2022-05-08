@@ -7,13 +7,15 @@
     <meta name="description" content="">
     <meta name="author" content="Dashboard">
     <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
-    <title>Dashio - Bootstrap Admin Template</title>
+    <title>LevelUp</title>
 
     <!-- Favicons -->
     <link href="{{asset('imgback/favicon.png')}}">
     <link href="{{asset('imgback/apple-touch-icon.png' )}}"rel="apple-touch-icon">
 
     <!-- Bootstrap core CSS -->
+
+
     <link href="{{asset('libback/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
     <!--external css-->
     <link href="{{asset('libback/font-awesome/css/font-awesome.css')}}" rel="stylesheet" />
@@ -23,6 +25,10 @@
     <link href="{{asset('cssback/style.css')}}" rel="stylesheet">
     <link href="{{asset('cssback/style-responsive.css')}}" rel="stylesheet">
     <script src="{{asset('libback/chart-master/Chart.js')}}"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.3.0/main.min.css" integrity="sha256-uq9PNlMzB+1h01Ij9cx7zeE2OR2pLAfRw3uUUOOPKdA=" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.3.0/main.min.js" integrity="sha256-DBxkGZLxKsLKhz054qUpBqtotG00r9AELGpSigJujLg=" crossorigin="anonymous"></script>
+    <script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>
+    <script src="//code.jquery.com/jquery.js"></script>
 
     <!-- =======================================================
       Template Name: Dashio
@@ -33,6 +39,7 @@
 </head>
 {% endblock %}
 
+{% block bodyback %}
 <body>
 <section id="container">
     <!-- **********************************************************************************************************************************************************
@@ -231,7 +238,7 @@
         </div>
         <div class="top-menu">
             <ul class="nav pull-right top-menu">
-                <li><a class="logout" href="login.html">Logout</a></li>
+                <li><a class="logout" href="{{ path('app_logout') }}">Deconnecter</ahref=></a></li>
             </ul>
         </div>
     </header>
@@ -244,22 +251,38 @@
         <div id="sidebar" class="nav-collapse ">
             <!-- sidebar menu start-->
             <ul class="sidebar-menu" id="nav-accordion">
-                <p class="centered"><a href="profile.html"><img src="img/ui-sam.jpg" class="img-circle" width="80"></a></p>
-                <h5 class="centered">Sam Soffes</h5>
+            {% set image = app.session.get('image') %}
+
+                <p class="centered"><a href="{{ path('app_account') }}"><img src="{{ asset('uploads/images/products/'~ image ~'')}}" class="img-circle centered" style="text-align: center; display: inherit;width:70px;height:70px;" ></a></p>
+                <h5 class="centered">{{app.session.get('prenom')|upper ~" "~ app.session.get('nom')|upper}}</h5>
+                {% if is_granted('ROLE_ADMIN') %}
                 <li class="mt">
-                    <a class="active" href="index.html">
+                    <a class="active" href="{{ path('app_dash') }}">
                         <i class="fa fa-dashboard"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
+                 {% endif %}
+                {% if is_granted('ROLE_ADMIN') %}
                 <li class="sub-menu">
 
                     <a href="{{ path('app_user_index') }}">
                         <i class="fa fa-desktop"></i>
                         <span>Utilisateurs</span>
                     </a>
+                </li>
+                {% endif %}
+                {% if is_granted('ROLE_ADMIN') %}
+                <li class="sub-menu">
+                    <a href="{{ path('app_post_indexpaginator') }}">
+                        <i class=" fa fa-bar-chart-o"></i>
+                        <span>Forum</span>
+                    </a>
 
                 </li>
+                {% endif %}
+                {% if is_granted('ROLE_ADMIN') %}
+
                 <li class="sub-menu">
                     <a href="{{ path('app_stock_index') }}">
                         <i class="fa fa-cogs"></i>
@@ -267,6 +290,10 @@
                     </a>
 
                 </li>
+                {% endif %}
+
+                {% if is_granted('ROLE_ADMIN') %}
+
                 <li class="sub-menu">
                     <a href="{{ path('app_commande_index') }}">
                         <i class="fa fa-book"></i>
@@ -274,6 +301,10 @@
                     </a>
 
                 </li>
+                {% endif %}
+
+                {% if is_granted('ROLE_ADMIN') %}
+
                 <li class="sub-menu">
                     <a href="{{ path('app_produit_index') }}">
                         <i class="fa fa-tasks"></i>
@@ -281,6 +312,20 @@
                     </a>
 
                 </li>
+                {% endif %}
+
+                {% if is_granted('ROLE_ADMIN') %}
+
+                <li class="sub-menu">
+                    <a href="{{ path('app_categorie_index') }}">
+                        <i class=" fa fa-ellipsis-v"></i>
+                        <span>Catégories</span>
+                    </a>
+                    </li>
+                {% endif %}
+
+                {% if is_granted('ROLE_ADMIN') %}
+
                 <li class="sub-menu">
                     <a href="{{ path('app_reclamation_index') }}">
                         <i class="fa fa-th"></i>
@@ -288,14 +333,49 @@
                     </a>
 
                 </li>
+                {% endif %}
+                {% if is_granted('ROLE_ADMIN') %}
+
+                    <li class="sub-menu">
+                        <a href="{{ path('app_livraison_index') }}">
+                            <i class="fa fa-th"></i>
+                            <span>Livraison</span>
+                        </a>
+
+                    </li>
+                {% endif %}
+
+
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="mt">
+                        <a class="active" href="{{ path('app_calendar_index') }}">
+                            <i class="fa fa-dashboard"></i>
+                            <span>Calender</span>
+                        </a>
+                    </li>
+                {% endif %}
+                {% if is_granted('ROLE_LIVREUR') %}
+
+                    <li class="sub-menu">
+                        <a href="{{ path('app_livraison_indexBack') }}">
+                            <i class="fa fa-th"></i>
+                            <span>Livraison</span>
+                        </a>
+
+                    </li>
+                {% endif %}
+                {% if is_granted('ROLE_ADMIN') %}
 
                 <li class="sub-menu">
-                    <a href="{{ path('app_post_index') }}">
-                        <i class=" fa fa-bar-chart-o"></i>
-                        <span>Forum</span>
+                    <a href="{{ path('app_commande_index') }}">
+                        <i class="fa fa-th"></i>
+                        <span>Commande</span>
                     </a>
 
                 </li>
+                {% endif %}
+
+
 
                 <li>
                     <a href="google_maps.html">
@@ -315,16 +395,13 @@
 
     <section id="main-content">
         <section class="wrapper">
-            {% block bodyback %}
+            {% block contentback %}
 
             <div class="text-center">
 
                 <div class="col-lg-9 main-chart">
                     <!--CUSTOM CHART START -->
                     <div class="border-head">
-
-
-
                         <h3>USER VISITS</h3>
                     </div>
                     <div class="custom-bar-chart">
@@ -821,5 +898,6 @@
     }
 </script>
 </body>
+{% endblock %}
 
 </html>

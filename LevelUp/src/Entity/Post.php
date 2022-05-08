@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Vangrg\ProfanityBundle\Validator\Constraints as ProfanityAssert;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 
 /**
@@ -22,6 +24,8 @@ class Post
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups ("post:read")
+
      */
     private $id;
 
@@ -32,6 +36,8 @@ class Post
      * @Assert\NotBlank(message= "Titre obligatoire" )
      * @ProfanityAssert\ProfanityCheck
      * @Assert\Length(min=7, minMessage="Le titre doit faire au moins {{ limit }} caractères.")
+     * @Groups ("post:read")
+
      */
     private $title;
 
@@ -42,6 +48,8 @@ class Post
      * @Assert\NotBlank(message= " Description obligatoire" )
      * @ProfanityAssert\ProfanityCheck
      * @Assert\Length(min=10,max=100,minMessage="La Description doit faire au moins {{ limit }} caractères.")
+     * @Groups ("post:read")
+
      */
     private $content;
 
@@ -49,6 +57,8 @@ class Post
      * @var \DateTime
      *
      * @ORM\Column(name="datep", type="date", nullable=false)
+     * @Groups ("post:read")
+
      */
     private $datep;
 
@@ -58,7 +68,10 @@ class Post
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_user", referencedColumnName="id_user")
+     *
+
      * })
+     * @Groups ("post:read")
      */
     private $idUser;
 

@@ -1,0 +1,93 @@
+{% extends 'backbase.html.twig' %}
+
+
+{% block contentback %}
+	<link href="{{asset ('/css/formedit.css')}}" media="screen" rel="stylesheet">
+<div class="registration-form">
+       {{ form_start(form,{attr:{novalidate:'novalidate'}}) }}
+            <div  class="form-icon"> 
+				<img  class="imag" src="{{ asset('uploads/images/products/'~user.image~'')}} " alt="" >
+                
+            </div>
+           
+					
+						<div class="form-group">
+		                
+							{{ form_widget(form.email,{'attr':{'class':'form-control'}}) }}
+		
+						</div>
+						{{ form_errors(form.email,{'attr':{'class':'text-danger'}}) }}
+	                 	<div class="form-group">
+		              
+							{{ form_widget(form.nom,{'attr':{'class':'form-control'}}) }}
+		
+						</div>
+						{{ form_errors(form.nom,{'attr':{'class':'text-danger'}}) }}
+		
+		
+					
+						<div class="form-group">
+		                
+							{{ form_widget(form.prenom,{'attr':{'class':'form-control'}}) }}
+						</div>
+						{{ form_errors(form.prenom,{'attr':{'class':'text-danger'}}) }}  
+						<div class="form-group">
+		               
+							{{ form_widget(form.role,{'attr':{'class':'form-control'}}) }}
+						</div>
+            <div class="form-group">
+				<button class="btn btn-block create-account">{{ button_label|default('Modifier') }}</button>
+                
+            </div>
+			
+			{{ form_end(form) }}
+
+        
+       
+    </div>
+
+	{#
+		
+		
+			<div style="justify-content: center;margin-top: 20px; padding: 10px;">
+		     <div class="form-row">
+						<!-- General Form Elements -->
+						{{ form_start(form,{attr:{novalidate:'novalidate'}}) }}
+					
+						<div class="form-group">
+		                	<label for="inputText" class="col-sm-5 col-form-label"><b>Email</b></label>
+							{{ form_widget(form.email,{'attr':{'class':'form-control'}}) }}
+		
+						</div>
+						{{ form_errors(form.email,{'attr':{'class':'text-danger'}}) }}
+		
+		
+						
+						<div class="form-group">
+		                <label for="inputText" class="col-sm-5 col-form-label">Nom</label>
+							{{ form_widget(form.nom,{'attr':{'class':'form-control'}}) }}
+		
+						</div>
+						{{ form_errors(form.nom,{'attr':{'class':'text-danger'}}) }}
+		
+		
+					
+						<div class="form-group">
+		                	<label for="inputText" class="col-sm-5 col-form-label">Prenom</label>
+							{{ form_widget(form.prenom,{'attr':{'class':'form-control'}}) }}
+						</div>
+						{{ form_errors(form.prenom,{'attr':{'class':'text-danger'}}) }}  
+						<div class="form-group">
+		                <label class="col-sm-5 col-form-label">Role</label>
+							{{ form_widget(form.role,{'attr':{'class':'form-control'}}) }}
+						</div>
+						</br>
+						<div class="form-group" style="display: flex;align-items: center;justify-content: center">
+							<button class="btn btn-primary" style="width:50%; background-color:#43cdb1;">{{ button_label|default('Enregistrer') }}</button>
+						</div>
+						{{ form_end(form) }}
+				</div>	
+		
+		</div>
+		#}
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'basepanier.html.twig' %}
+
+{% block title %}Commande index{% endblock %}
+
+
+
+
+
+{% block content %}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading">Mes Commandes</h1>
+     </div>
+</section>
+
+<div class="container mb-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date Commande</th>
+                            <th scope="col">Prix Livraison</th>
+                            <th scope="col" class="text-center">Prix produits</th>
+                            <th scope="col" class="text-right">Prix total</th>
+                            <th scope="col" class="text-left">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for cmd in commandes | reverse %}
+                    {% if (cmd.idUser.idUser == 1) %}
+                        <tr>
+                            <td>{{ cmd.dateCommande ? cmd.dateCommande|date('Y-m-d') : '' }}</td>
+                            <td>{{cmd.prixLivraison}}</td>
+                            <td>{{cmd.prixProduits}}</td>
+                            <td class="text-right">{{cmd.prixTotal}}</td>
+                           <td> <form method="post" action="{{ path('app_commande_delete', {'idCommande': cmd.idCommande}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cmd.idCommande) }}">
+                            <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>  <a class="btn  btn-sm btn-success " href="{{ path('app_detail_commande_index', {'idCommande': cmd.idCommande}) }}"><i class="fa fa-info-circle" aria-hidden="true"></i></a> 
+                            </form>
+                           </td>
+                        </tr>
+                        {%  endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="margin :20px 0 20px 660px " class="pag">
+    <a id="link">{{knp_pagination_render(commandes) }}</a>
+ </div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'backbase.html.twig' %}
+
+
+
+{% block contentback %}
+
+<head>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+   integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+   crossorigin=""/>
+   <link rel="stylesheet" href="{{asset('css/map.css')}}">
+</head>
+<form>
+     <div id="maCarte"></div>
+
+        <Label for="lat" style="margin-top: 40px; margin-left: 110px">Latitude :</Label>
+        <input type="number" step="any" value={{commande.latitude}} id="lat" name="lat" readonly />
+        
+        <Label for="lon" style="margin-left: 350px">Longitude :</Label>
+        <input type="number" value={{commande.longitude}} step="any" id="lon" name="lon" readonly />
+       
+             <div class="col mb-2">
+            <div class="row">
+                <div class="col-sm-12  col-md-6">
+                    <a class="btn btn-lg btn-block btn-light" href="{{ path('app_commande_index') }}">Retour</a>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+   integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+   crossorigin="">
+</script>
+<script>
+var carte = L.map('maCarte').setView([33.892166, 9.561555], 6);
+L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+                // Il est toujours bien de laisser le lien vers la source des données
+                attribution: 'données © <a href="//osm.org/copyright">OpenStreetMap</a>/ODbL - rendu <a href="//openstreetmap.fr">OSM France</a>',
+                minZoom: 1,
+                maxZoom: 20
+            }).addTo(carte);
+var marker = L.marker([document.querySelector("#lat").value, document.querySelector("#lon").value]).addTo(carte);
+</script>
+</form>
+{% endblock %}

@@ -1,6 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Post{% endblock %}
 
 {% block content %}
 
@@ -62,8 +61,30 @@
 
                             <a class="like" id={{ post.id}} data-id="{{ post.id }}" href="{{ path('vote',{'id': post.id}) }} ">
 
+
+
+
+
+
+
+                                <form method="get" action="{{ path('app_post_e', {'id': post.id}) }}" onsubmit="return confirm('Etes-vous sure de vouloir supprimer ce produit?');">
+                                    <button class="btn btn-danger" style="display:block; margin: 0 auto;">modifierr </button>
+                                </form>
+
+
+
+
+
+
+
+
+
+
+
+
+
                             </a>
-                            <a href="{{ path('app_post_edit',{'id': post.id}) }}"class="btn btn-outline-success btn-sm"class="fa-solid fa-heart" >Modifier</a>
+
                           <br>
 
                             {{ include('post/_delete_form.html.twig') }}

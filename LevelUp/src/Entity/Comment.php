@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 
 /**
@@ -20,6 +22,7 @@ class Comment
      * @ORM\Column(name="idc", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups ("post:read")
      */
     private $idc;
 
@@ -29,6 +32,7 @@ class Comment
      * @ORM\Column(name="contenu", type="text", length=65535, nullable=false)
      * @Assert\NotBlank(message= "Reponse obligatoire" )
      * @Assert\Length(min=5, minMessage="La Reponse doit faire au moins {{ limit }} caractères.")
+     * @Groups ("post:read")
      */
     private $contenu;
 
@@ -38,6 +42,7 @@ class Comment
      * @ORM\Column(name="label", type="string", length=255, nullable=false)
      * @Assert\NotBlank(message= "Review obligatoire" )
      *  @Assert\Length(min=3, minMessage="Le Review doit faire au moins {{ limit }} caractères.")
+     * @Groups ("post:read")
      */
     private $label;
 
@@ -48,6 +53,7 @@ class Comment
      * @Assert\NotBlank(message= "Rate obligatoire" )
      * @Assert\LessThan(5)
      * @Assert\GreaterThan(0)
+     * @Groups ("post:read")
 
      */
     private $resp;
@@ -59,6 +65,7 @@ class Comment
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_post", referencedColumnName="id")
      * })
+     * @Groups ("post:read")
      */
     private $idPost;
 
