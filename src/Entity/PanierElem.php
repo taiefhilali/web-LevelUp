@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * PanierElem
@@ -18,6 +19,7 @@ class PanierElem
      * @ORM\Column(name="id_elem", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups("post:read")
      */
     private $idElem;
 
@@ -25,6 +27,7 @@ class PanierElem
      * @var int
      *
      * @ORM\Column(name="Quantite", type="integer", nullable=false)
+     * @Groups("post:read")
      */
     private $quantite;
 
@@ -32,6 +35,7 @@ class PanierElem
      * @var \Produit
      *
      * @ORM\ManyToOne(targetEntity="Produit")
+     * @Groups("post:read")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id", referencedColumnName="id_produit")
      * })
@@ -42,6 +46,7 @@ class PanierElem
      * @var \Panier
      *
      * @ORM\ManyToOne(targetEntity="Panier")
+     * @Groups("post:read")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_panier", referencedColumnName="id_panier")
      * })

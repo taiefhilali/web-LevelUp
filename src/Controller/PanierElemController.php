@@ -17,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @Route("/panier/elem")
@@ -55,6 +56,43 @@ class PanierElemController extends AbstractController
         ]);
     }
 
+     /**
+     * @Route("/PanierElementsJSON/{idUser}", name="PanierElementsJSON", methods={"GET"})
+     */
+    public function PanierElementsJSON($idUser,NormalizerInterface $Normalizer,PanierElemRepository $panierElemRepository ,PanierRepository $panier, UserRepository $user ): Response
+    {   
+        $pan = new Panier();
+        $usr = new User();
+        $nbr = array();
+        $usr = $user->find($idUser);
+        $pan = $panier->findBy(['idUser' => $usr]);
+        $panElem = $panierElemRepository->findBy(['idPanier' => $pan]);
+        
+        $jsonContent = $Normalizer->normalize($panElem,'json',['groups'=>'post:read']);
+
+       return new Response(json_encode($jsonContent));
+    }
+
+    /**
+     * @Route("/PanierElementsJSONProducts/{idUser}", name="PanierElementsJSONProducts", methods={"GET"})
+     */
+    public function PanierElementsJSONProducts($idUser,NormalizerInterface $Normalizer,PanierElemRepository $panierElemRepository ,PanierRepository $panier, UserRepository $user ): Response
+    {   
+        $pan = new Panier();
+        $usr = new User();
+        $joint = array();
+        $usr = $user->find($idUser);
+        $pan = $panier->findBy(['idUser' => $usr]);
+        $panElem = $panierElemRepository->findBy(['idPanier' => $pan]);
+        foreach($panElem as $valeur){
+            array_push($joint, $valeur->getId());
+        }
+
+        $jsonContent = $Normalizer->normalize($joint,'json',['groups'=>'post:read']);
+
+       return new Response(json_encode($jsonContent));
+    }
+
     /**
      * @Route("/Add/{idProduit}/{idUser}", name="app_panier_elem_new", methods={"GET", "POST"})
      */
@@ -75,6 +113,30 @@ class PanierElemController extends AbstractController
         return $this->redirectToRoute('app_produit_index', [], Response::HTTP_SEE_OTHER);
     
     }
+
+      /**
+     * @Route("/AddJSON/{idProduit}/{idUser}/{quantite}", name="AjoutElementJSON", methods={"GET", "POST"})
+     */
+    public function newJSON($quantite,NormalizerInterface $Normalizer,Request $request,ProduitRepository $produit,UserRepository $user ,PanierRepository $panier,PanierElemRepository $panierElemRepository,$idProduit,$idUser): Response
+    {   $pan = new Panier();
+        $usr = new User();
+        $pr = new Produit();
+        $pr = $produit->find($idProduit);
+        $usr = $user->find($idUser);
+        $pan = $panier->findOneBy(['idUser' => $usr]);
+        $panierElem = new PanierElem();
+        $panierElem->setQuantite($quantite);
+        $panierElem->setId($pr);
+        $panierElem->setIdPanier($pan);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($panierElem);
+        $em->flush();
+        $jsonContent = $Normalizer->normalize($panierElem,'json',['groups'=>'post:read']);
+
+        return new Response("Element panier Ajoutée avec succés".json_encode($jsonContent));
+    
+    }
+
 
     /**
      * @Route("/{idElem}", name="app_panier_elem_show", methods={"GET"})
@@ -101,6 +163,22 @@ class PanierElemController extends AbstractController
         return $this->redirectToRoute('app_panier_elements', [], Response::HTTP_SEE_OTHER);
     }
 
+        /**
+     * @Route("/editJSON/{idElem}", name="editJSON", methods={"GET", "POST"})
+     */
+    public function editJSON(NormalizerInterface $Normalizer,Request $request, $idElem, PanierElemRepository $panierElemRepository): Response
+    {
+         $panierElem = new PanierElem();
+         $panierElem = $panierElemRepository->find($idElem);
+         $panierElem->setQuantite($request->get('quantite'));
+        $panierElemRepository->add($panierElem);
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+        $jsonContent = $Normalizer->normalize($panierElem,'json',['groups'=>'post:read']);
+
+        return new Response("Element panier Modifiée avec succés".json_encode($jsonContent));
+    }
+
     /**
      * @Route("/{idElem}", name="app_panier_elem_delete", methods={"POST"})
      */
@@ -111,5 +189,20 @@ class PanierElemController extends AbstractController
         }
 
         return $this->redirectToRoute('app_panier_elements', [], Response::HTTP_SEE_OTHER);
+    }
+
+        /**
+     * @Route("/deleteElementPanier/{idElem}", name="deleteElementPanier")
+     */
+    public function deleteElementPanierJSON($idElem,NormalizerInterface $Normalizer,Request $request, PanierElem $panierElem, PanierElemRepository $panierElemRepository): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+      $panElem = $panierElemRepository->find($idElem);
+      $em->remove($panElem);
+      $em->flush();
+
+      $jsonContent = $Normalizer->normalize($panElem,'json',['groups'=>'post:read']);
+
+       return new Response("Element panier supprimée avec succés".json_encode($jsonContent));
     }
 }

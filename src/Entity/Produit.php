@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Produit
@@ -18,6 +19,7 @@ class Produit
      * @ORM\Column(name="id_produit", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups("post:read")
      */
     private $idProduit;
 
@@ -25,6 +27,7 @@ class Produit
      * @var string
      *
      * @ORM\Column(name="nom", type="string", length=254, nullable=false)
+     * @Groups("post:read")
      */
     private $nom;
 
@@ -32,6 +35,7 @@ class Produit
      * @var string
      *
      * @ORM\Column(name="reference", type="string", length=254, nullable=false)
+     * @Groups("post:read")
      */
     private $reference;
 
@@ -39,6 +43,7 @@ class Produit
      * @var float
      *
      * @ORM\Column(name="prix", type="float", precision=10, scale=0, nullable=false)
+     * @Groups("post:read")
      */
     private $prix;
 
@@ -46,6 +51,7 @@ class Produit
      * @var string
      *
      * @ORM\Column(name="description", type="text", length=65535, nullable=false)
+     * @Groups("post:read")
      */
     private $description;
 
@@ -53,6 +59,7 @@ class Produit
      * @var float
      *
      * @ORM\Column(name="promotion", type="float", precision=10, scale=0, nullable=false)
+     * @Groups("post:read")
      */
     private $promotion;
 
@@ -60,6 +67,7 @@ class Produit
      * @var string
      *
      * @ORM\Column(name="image", type="string", length=254, nullable=false)
+     * @Groups("post:read")
      */
     private $image;
 
@@ -67,6 +75,7 @@ class Produit
      * @var float
      *
      * @ORM\Column(name="prix_final", type="float", precision=10, scale=0, nullable=false)
+     * @Groups("post:read")
      */
     private $prixFinal = '0';
 
@@ -74,6 +83,7 @@ class Produit
      * @var \User
      *
      * @ORM\ManyToOne(targetEntity="User")
+     * @Groups("post:read")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_user", referencedColumnName="id_user")
      * })
@@ -84,6 +94,7 @@ class Produit
      * @var \Categorie
      *
      * @ORM\ManyToOne(targetEntity="Categorie")
+     * @Groups("post:read")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_categorie", referencedColumnName="id_categorie")
      * })

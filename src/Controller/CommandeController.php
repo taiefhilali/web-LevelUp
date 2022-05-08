@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 /**
  * @Route("/commande")
  */
@@ -35,6 +36,18 @@ class CommandeController extends AbstractController
         return $this->render('commande/index.html.twig', [
             'commandes' => $commandeRepository->findAll(),
         ]);
+    }
+
+      /**
+     * @Route("/AllCommandes", name="AllCommandes",methods={"GET"})
+     */
+    public function AllCommandesJSON(NormalizerInterface $Normalizer)
+    {
+        $repository = $this->getDoctrine()->getRepository(Commande :: class);
+        $commandes = $repository->findAll();
+        $jsonContent = $Normalizer->normalize($commandes,'json',['groups'=>'post:read']);
+
+       return new Response(json_encode($jsonContent));
     }
 
    /**
@@ -56,6 +69,21 @@ class CommandeController extends AbstractController
             'commandes' => $commande,
             'panierElements' => $panierElemRepository->findBy(['idPanier' => $pan]),
         ]);
+    }
+
+     /**
+     * @Route("/ClientCommandesJSON/{idUser}", name="ClientCommandesJSON", methods={"GET"})
+     */
+    public function ClientCommandesJSON(NormalizerInterface $Normalizer,$idUser,Request $request,PaginatorInterface $paginator,PanierRepository $panier,UserRepository $user,PanierElemRepository $panierElemRepository,CommandeRepository $commandeRepository): Response
+    {
+        $pan = new Panier();
+        $usr = new User();
+        $usr = $user->find($idUser);
+        $cmd = $commandeRepository->findBy(['idUser' => $usr]);
+        $jsonContent = $Normalizer->normalize($cmd,'json',['groups'=>'post:read']);
+
+        return new Response(json_encode($jsonContent));
+        
     }
 
        /**
@@ -232,6 +260,60 @@ class CommandeController extends AbstractController
         return $this->redirectToRoute('app_produit_index', [], Response::HTTP_SEE_OTHER);
     }
 
+
+    /**
+     * @Route("/AddCmdJSON/{idUser}/{prixProduits}/{Livraison}/{prixTotal}/{mode}", name="NewCmdJSON", methods={"GET", "POST"})
+     */
+    public function newJSON( NormalizerInterface $Normalizer,\Swift_Mailer $mailer ,Request $request,$idUser,$prixProduits,
+    $mode,PanierElemRepository $panElem,PanierRepository $panier,DetailCommandeRepository $detail
+    ,$Livraison,$prixTotal ,CommandeRepository $commandeRepository ,UserRepository $user): Response
+    {   
+        
+        $pan = new Panier();
+        $cmd = new Commande();
+        $Detailcmd = new DetailCommande();
+        $usr = new User();
+        $usr = $user->find($idUser);
+        $pan = $panier->findOneBy(['idUser'=> $usr]);
+        $panierElements = $panElem->findBy(['idPanier' => $pan]);
+        
+        $commande = new Commande();
+        $commande->setIdUser($usr);
+        $commande->setDateCommande(new \DateTime());
+        $commande->setPrixProduits($prixProduits);
+        $commande->setPrixLivraison($Livraison);
+        $commande->setLatitude($request->get('latt'));
+        $commande->setLongitude($request->get('lonn'));
+        $commande->setPrixTotal($prixTotal);
+        $commande->setMode($mode);
+        $em = $this->getDoctrine()->getManager();
+            $em->persist($commande);
+            $em->flush();
+            $cmd = $commandeRepository->findOneBy(['idCommande'=> $commande->getIdCommande()]);
+             
+    foreach($panierElements as $Elem)
+    {   $Detailcmd = new DetailCommande();
+        $Detailcmd->setIdCommande($cmd);
+        $Detailcmd->setQuantite($Elem->getQuantite());
+        $Detailcmd->setId($Elem->getId());
+        $em->persist($Detailcmd);
+    }
+    $em->flush();
+    foreach($panierElements as $Elem)
+    {
+        $em->remove($Elem);
+    }
+    $em->flush();
+        
+        $jsonContent = $Normalizer->normalize($commande,'json',['groups'=>'post:read']);
+
+       return new Response("Commande Ajoutée avec succés".json_encode($jsonContent));
+    }
+
+
+
+
+
     /**
      * @Route("/{idCommande}", name="app_commande_show", methods={"GET"})
      */
@@ -260,7 +342,7 @@ class CommandeController extends AbstractController
             'commande' => $commande,
             'form' => $form->createView(),
         ]);
-    }
+    } 
        /**
      * @Route("/{idCommande}", name="app_commande_delete", methods={"POST"})
      */
@@ -271,5 +353,20 @@ class CommandeController extends AbstractController
         }
 
         return $this->redirectToRoute('app_conde_index',[], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * @Route("/deleteCommande/{idCommande}", name="deleteCmdJSON")
+     */
+    public function deleteJSON(NormalizerInterface $Normalizer,Request $request,$idCommande, CommandeRepository $commandeRepository)
+    {
+      $em = $this->getDoctrine()->getManager();
+      $commande = $commandeRepository->find($idCommande);
+      $em->remove($commande);
+      $em->flush();
+
+      $jsonContent = $Normalizer->normalize($commande,'json',['groups'=>'post:read']);
+
+       return new Response("Commande supprimée avec succés".json_encode($jsonContent));
     }
 }

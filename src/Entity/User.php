@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * User
@@ -18,6 +19,7 @@ class User
      * @ORM\Column(name="id_user", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups("post:read")
      */
     private $idUser;
 
@@ -25,6 +27,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=254, nullable=false)
+     * @Groups("post:read")
      */
     private $email;
 
@@ -32,6 +35,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="password", type="string", length=254, nullable=false)
+     * @Groups("post:read")
      */
     private $password;
 
@@ -39,6 +43,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="role", type="string", length=254, nullable=false)
+     * @Groups("post:read")
      */
     private $role;
 
@@ -46,12 +51,13 @@ class User
      * @var string
      *
      * @ORM\Column(name="nom", type="string", length=254, nullable=false)
+     * @Groups("post:read")
      */
     private $nom;
 
     /**
      * @var string
-     *
+     *@Groups("post:read")
      * @ORM\Column(name="prenom", type="string", length=254, nullable=false)
      */
     private $prenom;
@@ -60,6 +66,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="adresse", type="string", length=254, nullable=false)
+     * @Groups("post:read")
      */
     private $adresse;
 
@@ -67,6 +74,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="tel", type="string", length=254, nullable=false)
+     * @Groups("post:read")
      */
     private $tel;
 
@@ -74,6 +82,7 @@ class User
      * @var \DateTime|null
      *
      * @ORM\Column(name="dns", type="date", nullable=true)
+     * 
      */
     private $dns;
 
@@ -81,6 +90,7 @@ class User
      * @var bool|null
      *
      * @ORM\Column(name="locked", type="boolean", nullable=true)
+     * 
      */
     private $locked = '0';
 
@@ -88,6 +98,7 @@ class User
      * @var int
      *
      * @ORM\Column(name="tentative", type="integer", nullable=false)
+     * 
      */
     private $tentative = '0';
 
@@ -95,6 +106,7 @@ class User
      * @var \DateTime|null
      *
      * @ORM\Column(name="limite", type="datetime", nullable=true)
+     * 
      */
     private $limite;
 
@@ -102,6 +114,7 @@ class User
      * @var string|null
      *
      * @ORM\Column(name="image", type="string", length=254, nullable=true, options={"default"=""""})
+     * @Groups("post:read")
      */
     private $image = '""';
 

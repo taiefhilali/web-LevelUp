@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * DetailCommande
@@ -18,6 +19,7 @@ class DetailCommande
      * @ORM\Column(name="id_elemC", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups("post:read")
      */
     private $idElemc;
 
@@ -25,6 +27,7 @@ class DetailCommande
      * @var int
      *
      * @ORM\Column(name="Quantite", type="integer", nullable=false)
+     * @Groups("post:read")
      */
     private $quantite;
 
@@ -32,6 +35,7 @@ class DetailCommande
      * @var \Produit
      *
      * @ORM\ManyToOne(targetEntity="Produit")
+     * @Groups("post:read")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id", referencedColumnName="id_produit")
      * })
@@ -42,6 +46,7 @@ class DetailCommande
      * @var \Commande
      *
      * @ORM\ManyToOne(targetEntity="Commande")
+     * @Groups("post:read")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_commande", referencedColumnName="id_commande")
      * })

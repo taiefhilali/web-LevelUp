@@ -18,7 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 /**
  * @Route("/produit")
  */
@@ -72,6 +72,18 @@ class ProduitController extends AbstractController
         ]);
     }
 
+        /**
+     * @Route("/AllProducts", name="AllProducts", methods={"GET"})
+     */
+    public function ProductsJSON(NormalizerInterface $Normalizer,ProduitRepository $produitRepository)
+    {   
+       
+        $produits = $produitRepository->findAll();
+        $jsonContent = $Normalizer->normalize($produits,'json',['groups'=>'post:read']);
+
+       return new Response(json_encode($jsonContent));
+
+    }
 
     /**
      * @Route("/new", name="app_produit_new", methods={"GET", "POST"})
@@ -120,6 +132,20 @@ class ProduitController extends AbstractController
 
         ]);
     }
+
+    /**
+     * @Route("/showJSON/{idProduit}", name="JSONshow", methods={"GET"})
+     */
+    public function showJSON(NormalizerInterface $Normalizer,$idProduit,Produit $produit,ProduitRepository $produitRepository)
+    {   
+
+        $produit = new Produit();
+        $produit = $produitRepository->find($idProduit);
+        $jsonContent = $Normalizer->normalize($produit,'json',['groups'=>'post:read']);
+
+        return new Response(json_encode($jsonContent));
+    }
+
 
     /**
      * @Route("/{idProduit}/edit", name="app_produit_edit", methods={"GET", "POST"})
