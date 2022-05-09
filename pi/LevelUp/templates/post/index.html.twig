@@ -1,0 +1,66 @@
+{% extends 'backbase.html.twig' %}
+
+{% block contentback %}
+  {# #}  <br>
+    <br>
+    <h1  class="text-info"align="center" >Liste des Publications </h1>
+    <br>
+    <br> <br>
+
+
+    <br>
+    <table class="table table-sm table-hover"  >
+        <span class="border border-dark">
+
+        <thead>
+            <tr class="bg-info">
+                <th></th>
+                <th scope="col">Title</th>
+                <th scope="col">Content</th>
+                <th scope="col">Datep</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        {% for post in posts %}
+            <tr>
+<td>  <img src="https://bootdey.com/img/Content/avatar/avatar2.png" width="50" > </td>
+                <td>{{ post.title }}</td>
+                <td>{{ post.content }}</td>
+                <td>{{ post.datep ? post.datep|date('Y-m-d') : '' }}</td>
+
+                <td>
+                    {{ include('post/deleteback.html.twig') }}
+
+                    <a href="{{ path('app_comment_index_back') }}"  class="btn btn-info" >Commentaires</a>
+
+
+
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+
+                <th scope="row">1</th>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+            </span>
+    </table>
+    <nav aria-label="Page navigation example"style="alignment: center " >
+        <ul class="pagination justify-content-end text-align:center"style="alignment: center " >
+            <li class="page-item disabled align-content-center">
+                <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+            <li {{ knp_pagination_render(posts) }}
+            </li>
+            <li class="page-item"style="alignment: center ">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
+
+
+{% endblock %}

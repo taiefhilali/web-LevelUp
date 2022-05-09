@@ -1,0 +1,37 @@
+{% extends 'backbase.html.twig' %}
+
+
+{% block contentback %}
+    <h3>Commentaire</h3>
+
+    <table class="table table-success table-striped">
+        <tbody>
+        <tr>
+            <th>Contenue</th>
+            <td>{{ comment.idc }}</td>
+        </tr>
+        <tr>
+            <th>Contenue</th>
+            <td>{{ comment.contenu }}</td>
+        </tr>
+        <tr>
+            <th>Review</th>
+            <td>{{ comment.label }}</td>
+        </tr>
+        <tr>
+            <th>Rate</th>
+            <td>{{ comment.resp }}</td>
+        </tr>
+        <tr>
+            <th>Titre publication</th>
+            <td>{{ comment.idPost.id }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_comment_index_back') }}">Retour</a>
+
+    {{ include('comment/deleteback.html.twig') }}
+
+
+{% endblock %}

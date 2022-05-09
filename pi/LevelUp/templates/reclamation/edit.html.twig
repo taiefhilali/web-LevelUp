@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier Reclamation{% endblock %}
+
+{% block content %}
+    {% for message in app.flashes('success') %}
+
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+<link rel="stylesheet" href="{{asset('css/CardReclamation.css')}}">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<div class="section_our_solution">
+    <div class="row">
+        <div class="card col-6 mx-auto">
+            <div class="card-header bg-transparent">
+                <div class="card-title">
+    <h3 style="color: #00AA88" align="center" >Edit Reclamation</h3>
+                </div>
+            </div>
+            <div class="card-body">
+
+    {{ include('reclamation/_form.html.twig', {'button_label': 'Update'}) }}
+
+            </div>
+            <div class="card-footer">
+                <a href="{{ path('app_reclamation_indexFront') }}">back </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

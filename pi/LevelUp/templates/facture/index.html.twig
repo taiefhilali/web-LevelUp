@@ -1,0 +1,53 @@
+{% extends 'backbase.html.twig' %}
+
+{% block title %}Facturation{% endblock %}
+
+{% block contentback %}
+    <center> <h1 style="margin-top:50px ;font-family:sans-serif;font-size:50px;color: #00A8B3;
+	text-shadow: 4px 3px 0px #fff, 9px 8px 0px rgba(0,0,0,0.15);
+">Facturation</h1></center>
+
+
+    <table class="table" border="1" style="margin-top:90px;width:100%;
+           border:1px solid ;">
+        <thead style="background-color: #dae9f8" >
+
+            <tr style="alignment: center; tab-size: 23px; font-family: Arial; font-style:bold ; color: #0c5460">
+{#                <th>IdFacture</th>#}
+                <th>Date</th>
+                <th>PrixTotal</th>
+                <th>User</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for facture in factures|reverse %}
+            <tr>
+{#                <td>{{ facture.idFacture }}</td>#}
+                <td>{{ facture.date ? facture.date|date('Y-m-d') : '' }}</td>
+                <td>{{ facture.prixTotal }}</td>
+                <td>{{ facture.idUser.email }}</td>
+                <td>
+                   <button style="background-color: #00A8B3; border:#00A8B3" ><a href="{{ path('app_facture_show', {'idFacture': facture.idFacture}) }}"style="color: white; size: 20px;">Show</a></button>
+                   <button style="background-color: #00A8B3; border:#00A8B3"><a href="{{ path('app_facture_edit', {'idFacture': facture.idFacture}) }}"style="color: white; size: 20px;">Edit</a></button>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <center>
+        {{ knp_pagination_render(factures) }}
+    </center>
+    <center>
+<button style="background-color: #00A8B3; border:#00A8B3">  <a href="{{ path('app_facture_new') }}"style="color: white; size: 20px;">Create new</a></button>
+
+
+<button style="background-color: #00A8B3; border: #00A8B3"> <a href="{{ path('app_facture_pdf')}}"style="color: white; size: 20px;">Pdf</a></button>
+
+    <button style="background-color: #00A8B3; border: #00A8B3"> <a href="{{ path('app_facture_imprimer')}}"style="color: white; size: 20px;">Imprimer</a></button>
+    <button style="background-color: #00A8B3; border:#00A8B3"><a href="{{ path('app_facture_excel') }}"style="color: white; size: 20px;">Excel</a></button></center>
+{% endblock %}

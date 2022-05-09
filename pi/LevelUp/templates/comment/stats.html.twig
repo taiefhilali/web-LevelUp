@@ -1,0 +1,20 @@
+{% extends 'backbase.html.twig' %}
+
+{% block contentback %}
+    <div class="app-content">
+        <div class="side-app">
+            <div class="page-header">
+                <h4 class="page-title">statistiques</h4>
+
+            </div>
+            <div id="div_chart"></div>
+
+            <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+            <script type="text/javascript">
+                {{ gc_draw(piechart, 'div_chart') }}
+            </script>
+            <a href="{{ path('app_comment_index_back') }}"  class="btn btn-outline-info" >Retour vers commentaires</a>
+
+        </div>
+    </div>
+{% endblock %}

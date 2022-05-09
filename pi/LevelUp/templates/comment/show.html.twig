@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Comment{% endblock %}
+
+{% block content %}
+    <h3 style="color: #1b6d85" align="center">Comment</h3>
+
+
+
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+            <link rel="stylesheet" href="{{asset('css/sbowcomment.css')}}">
+
+
+
+<div class="friend-list" align="center">
+    <div class="row" align="center">
+        <div class="col-md-4 col-sm-6">
+            <div class="friend-card" align="center ">
+                <img src="https://via.placeholder.com/400x100/008B8B" alt="profile-cover" class="img-responsive cover">
+                <div class="card-info" ALIGN="center">
+                    <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="user" class="profile-photo-lg">
+                    <div class="friend-info"  >
+                        {# <a href="{{ path('app_comment_index') }}" class="btn btn-outline-info">Retour</a> #}
+
+                        <div  id="current_date"></div>
+
+
+
+
+                        {# <a  href="{{ path('app_comment_edit', {'idc': comment.idc}) }}" >Modifier</a> #}
+                        <h5><a href="timeline.html" class="profile-link">{{ comment.label }}</a></h5>
+                        <p>{{ comment.contenu }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        <a {{ include('comment/_delete_form.html.twig') }} </a>
+    <script>
+        document.getElementById("current_date").innerHTML = Date();
+    </script>
+    <script>
+
+        var date = new Date();
+        var currentDate = date.toISOString().slice(0,10);
+        var currentTime = date.getHours()
+
+        document.getElementById('date').value = currentDate;
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

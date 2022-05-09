@@ -1,0 +1,23 @@
+{% extends 'backbase.html.twig' %}
+
+{% block contentback %}
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/cerulean/bootstrap.min.css" integrity="sha384-3fdgwJw17Bi87e1QQ4fsLn4rUFqWw//KU0g8TvV6quvahISRewev6/EocKNuJmEw" crossorigin="anonymous">
+
+    <br>
+    {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
+    <div class="form-group" style="font-size: 18px">
+        <label for="inputText" style="size: 20px; margin-top: 1em" class="col-sm-5 col-form-label">Nom</label>
+        <br>
+        {{ form_widget(form.nomCategorie,{'attr':{'class':'form-control','style':'font-size: 15px'}}) }}
+    </div>
+    <div style="font-size: 20px; size: 20em" >
+        {{ form_errors(form.nomCategorie,{'attr':{'class':'text-danger','style':'font-size: 20px'}}) }} </div>
+    <br>
+    <div style="font-size: 18px" class="form-group">
+    <button class="btn btn-primary" style="text-align:center;font-size: 20px; display:block; margin: 0 auto; width: 400px; height: 50px">{{ button_label|default('Sauvegarder') }}</button>
+    <br>
+    <a  style="font-size: 18px" href="{{ path('app_categorie_index') }}" class="btn btn-outline-primary m-2">Retourner à la liste des Catégories</a>
+    {{ form_end(form) }}
+{% endblock %}

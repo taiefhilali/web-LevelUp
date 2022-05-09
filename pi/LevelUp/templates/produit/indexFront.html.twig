@@ -1,0 +1,171 @@
+{% extends 'base.html.twig' %}
+{% block title %}Produit index{% endblock %}
+{#   Style JS pour la recherche AJAX#}
+
+{% block content %}
+
+    <h1 style = "margin-top : 40px; text-align:center ;font-weight: bold; color:  #00A8B3; font-size: 48px;margin-left: 4em">Liste des Produits</h1>
+
+
+    <style>
+        hr {
+            border: none;
+            border-top: 3px dotted #000000;
+            color: #000000;
+            background-color: #000000;
+            height: 0.5px;
+            width: 100%;
+        }
+    </style>
+
+    <h3 style="text-align: left; margin-top: 2em; color: #00A8B3; margin-left: 1em"><b>Recherche produit :</b></h3>
+
+    <div class="sidebar-search">
+
+        <div class="input-group custom-search-form">
+
+            <input  type="text" id="search" class="form-control" placeholder="Chercher un produit..." style="display:block ; height: 2em; text-align: left; font-weight: bold; font-size: 16px; margin-left: 2em; height: 50px" size=150>
+        </div>
+        <!-- /input-group -->
+    </div>
+    <ul class="nav" id="side-menu">
+        <li>
+            {#            <br>#}
+            {#            <a href="#"> Entities<span class="fa arrow"></span></a>#}
+            <ul class="nav nav-second-level" id="entitiesNav">
+            </ul>
+        </li>
+    </ul><br>
+    {#        // Fonction de recherche AJAX + JS + Jquery#}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            var searchRequest = null;
+            $("#search").keyup(function() {
+                var minlength = 1;
+                var that = this;
+                var value = $(this).val();
+                var entitySelector = $("#entitiesNav").html('');
+                if (value.length >= minlength ) {
+                    if (searchRequest != null)
+                        searchRequest.abort();
+                    searchRequest = $.ajax({
+                        type: "GET",
+                        url: "{{ path('ajax_search_product') }}",
+                        data: {
+                            'q' : value
+                        },
+                        dataType: "text",
+                        success: function(msg){
+                            //we need to check if the value is the same
+                            if (value===$(that).val()) {
+                                var result = JSON.parse(msg);
+                                $.each(result, function(key, arr) {
+                                    $.each(arr, function(id, value) {
+                                        if (key === 'produits') {
+                                            if (id !== 'error') {
+                                                console.log(value[1]);
+                                                entitySelector.append('<b style="font-size: 18px; margin-top: 1em">'+value[0]+'</b><hr><li<b style="font-size: 18px;font-weight: bold"></b><br>'+value[1]+'<br><hr></b><a href="/produit/'+id+'">'+'<br><img src="/uploads/images/products/'+value[6]+'" style="width: 220px; height: 220px; border: 2px solid black" height="200" width="200" border="1px" alt="Image du Produit"/></a><hr></li><b style="font-size: 24px">'+value[2]);
+                                            } else {
+                                                entitySelector.append('<li class="errorLi" style="font-weight: bold;color: red; font-size: 18px">'+value+'</li>');
+
+                                            }
+                                        }
+                                    });
+                                });
+                            }
+                        }
+
+                    });
+                }
+            });
+        });
+
+    </script>
+
+
+    <div class="container" >
+        <div class="row">
+            <div class="col-3" style="margin-left: -250px; margin-top: 70px; width: 200px">
+                {% include 'produit/_filter.html.twig' with {form: form} only %}
+            </div>
+
+            <div class="col-lg-11">
+                <section size=3 class="pricing-table section" id="pricing">
+                    <div data-offset="right" class="container" style="margin-left: 8em" >
+
+                            <div class="col-12" style="border-radius: 5em">
+                                <div class="tab-content" id="pills-tabContent">
+                                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                                        {#                        <form action="{{ path('sortProduit') }}">#}
+                                        {#                            <input type="submit" value="Sort" class="btn btn-primary m-2" >#}
+                                        <div class="row">
+                                            {% for produit in products %}
+                                            <div class="col-md-6 col-sm-5 col-xs-5"  style="border-radius: 20em">
+                                                <div class="pricing-item" style="height: 600px; border-radius: 10px; font-size: 18px; font-family: sans-serif">
+                                                    <h3>{{ produit.nom }}</h3>
+                                                    <div style="height: 48px; font-size: 18px" class="pricing-item"  >
+                                                        <div class="price-header" >
+                                                            <h1 style="float: left; display: inline-block;margin-right: 1em;font-size: 26px;margin-left: 1em; text-decoration: line-through;color: gray; font-family: Helvetica">{{ produit.prix }}TND</h1>
+                                                            <h1 style="float: right; display: inline-block; font-size: 26px; margin-right: 1em; font-family: Helvetica"> {{ produit.prixFinal }}TND</h1>
+                                                            <br>
+                                                        </div>
+                                                        <div class="progress" data-percent="45%">
+                                                            <div class="progress-bar"></div>
+                                                        </div>
+                                                        <br>
+                                                        {#                                            <p>{{ produit.description }}</p>#}
+                                                        {#                                            <div class="progress" data-percent="45%">#}
+                                                        {#                                                <div class="progress-bar"></div>#}
+                                                        {#                                            </div>#}
+                                                        <img src="{{ asset('uploads/images/products/' ~ produit.getImage())}}" height="225" width="225" alt="Chargement image produit ◴">
+                                                        <div class="progress" data-percent="45%">
+                                                            <div class="progress-bar"></div>
+                                                        </div>
+                                                        <p>{{ produit.description }}</p>
+                                                        <br>
+                                                        <div class="progress" data-percent="45%">
+                                                            <div class="progress-bar"></div>
+                                                        </div>
+                                                        <div><a class="btn btn-main" style="display:block ; margin-bottom: 2.5em; background-color: #00F9E4 ;color: #000000  " href="{{ path('app_produit_showpanier',{'idProduit': produit.idProduit}) }}">Details</a></div>
+                                                       <div> <h1 style="float: right; font-weight: bold; font-size: 16px;size: 15px; color: red; font-family: 'Comic Sans MS'"> Remise: {{ produit.promotion }} %</h1></div>
+                                                        <div class="progress" data-percent="45%">
+                                                            <div class="progress-bar"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End container -->
+                </section>
+                <div style="margin-left: 30em">
+                    {{ knp_pagination_render(products) }}
+                </div>
+            </div>
+        </div>
+
+{#        API Bot#}
+        <!--Start of Tawk.to Script-->
+        <script type="text/javascript">
+            var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+            (function(){
+                var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+                s1.async=true;
+                s1.src='https://embed.tawk.to/6266fff07b967b11798c74c2/1g1h5fhjh';
+                s1.charset='UTF-8';
+                s1.setAttribute('crossorigin','*');
+                s0.parentNode.insertBefore(s1,s0);
+            })();
+        </script>
+        <!--End of Tawk.to Script-->
+    </div>
+
+
+
+{% endblock %}

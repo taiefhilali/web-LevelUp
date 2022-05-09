@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+
+    <form method="get" action="{{ path('app_comment_new') }}" onsubmit="return confirm('Etes-vous sure de vouloir ajouter cette commentaire?');">
+        <button class="btn btn-outline-info" style="display:block; margin: 0 auto;">TAPER VOTRE COMMENTAIRE ICI</button>
+    </form>
+
+
+    <link rel="stylesheet" href="{{asset('css/cardComment.css')}}">
+<h1 style="color: rgba(0,95,71,0.71)" align="center">Commentaires </h1>
+    <div class="container bootstrap snippets bootdey">
+    <div class="row">
+
+        {% for comment in comments %}
+
+        <div class="col-md-12">
+            <div class="blog-comment">
+                <h3 class="text-success"></h3>
+                <hr/>
+                <ul class="comments">
+                    <li class="clearfix">
+                        <img src="https://bootdey.com/img/Content/user_1.jpg" class="avatar" alt="">
+                        <div class="post-comments">
+                            {# <a href="{{ path('app_comment_new') }}" class="btn btn-clear btn-sm"class="pull-right" class="fa fa-heart" aria-hidden="true"  > Ajouter  </a> #}
+                            <form method="get" action="{{ path('app_comment_edit', {'idc': comment.idc}) }}" onsubmit="return confirm('Etes-vous sure de vouloir modifier cette reponse?');">
+                                <button class="btn btn-outline-warning" style="display:block; margin: 0 auto;">Modifier </button>
+                            </form>
+                            {{ include('comment/_delete_form.html.twig') }}
+
+                            <form method="get" action="{{ path('app_post_indexFront') }}" onsubmit="return confirm('Etes-vous sure de vouloir retouner vers les posts ?');">
+                                <button class="btn btn-outline-success" style="display:block; margin: 0 auto;">Retour </button>
+                            </form>
+
+
+                            <p class="meta"  id="current_date" > </p>
+                          <h5>{{ comment.label  }}</h5>
+                            <p>
+                                {{ comment.contenu }}
+
+                            </p>
+                        </div>
+
+
+                        <ul class="comments">
+                            <li class="clearfix">
+                                <img src="https://bootdey.com/img/Content/user_3.jpg" class="avatar" alt="">
+                                <div class="post-comments">
+                                        <p class="meta">MAY,09,2022
+                                            hazembayoudh886@gmail.com says : <i class="pull-right"><a href="#"><small>Reply</small></a></i></p>
+                                        <p>
+                                            {{ comment.contenu }}
+
+                                        </p>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endfor%}
+    <script>
+        document.getElementById("current_date").innerHTML = Date();
+    </script>
+    <script>
+
+        var date = new Date();
+        var currentDate = date.toISOString().slice(0,10);
+        var currentTime = date.getHours() + ':' + date.getMinutes();
+
+        document.getElementById('date').value = currentDate;
+    </script>
+</div>
+
+{% endblock %}
+
+
+
+
+
+
+

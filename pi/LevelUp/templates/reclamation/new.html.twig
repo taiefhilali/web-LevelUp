@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Reclamation{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" href="{{asset('css/CardReclamation.css')}}">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<div class="section_our_solution">
+    <div class="row">
+        <div class="card col-6 mx-auto">
+            <div class="card-header bg-transparent">
+<div class="card-title">
+    <h3 style="color: #00AA88" align="center" >Ajouter une  Reclamation</h3>
+
+</div>
+            </div>
+            <div class="card-body">
+
+    {{ include('reclamation/_form.html.twig') }}
+            </div>
+            <div class="card-footer">
+                <a href="{{ path('app_reclamation_indexFront') }}">back </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

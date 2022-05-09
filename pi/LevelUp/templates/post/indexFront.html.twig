@@ -1,0 +1,310 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}**Post**{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{asset('css/font-awesome.css')}}">
+    <link rel="stylesheet" href="{{asset('css/all.min.css')}}">
+
+    <div class="input-group rounded ">
+
+        <div class="input-group custom-search-form"><i class="fa fa-search" style="font-size:36px;"></i>
+
+            <input type="text" id="search" class="form-control" placeholder="Search here">
+        </div>
+
+        <!-- /input-group -->
+    </div>
+    <link rel="stylesheet" href="{{asset('css/cardPost.css')}}">
+
+
+    <ul class="nav" id="side-menu">
+        <li>
+            <a href="#"> Entities<span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level" id="entitiesNav">
+            </ul>
+        </li>
+    </ul><br><br><br><br>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+
+    </script>
+
+
+        <!--Start of Tawk.to Script-->
+        <script type="text/javascript">
+            var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+            (function(){
+            var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+            s1.async=true;
+            s1.src='https://embed.tawk.to/626071a57b967b11798bb185/1g14bns4b';
+            s1.charset='UTF-8';
+            s1.setAttribute('crossorigin','*');
+            s0.parentNode.insertBefore(s1,s0);
+        })();
+    </script>
+    <!--End of Tawk.to Script-->
+
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            var searchRequest = null;
+            $("#search").keyup(function() {
+                var minlength = 1;
+                var that = this;
+                var value = $(this).val();
+                var entitySelector = $("#entitiesNav").html('');
+                if (value.length >= minlength ) {
+                    if (searchRequest != null)
+                        searchRequest.abort();
+                    searchRequest = $.ajax({
+                        type: "GET",
+                        url: "{{ path('ajax_search') }}",
+                        data: {
+                            'q' : value
+                        },
+                        dataType: "text",
+                        success: function(msg){
+                            //we need to check if the value is the same
+                            if (value===$(that).val()) {
+                                var result = JSON.parse(msg);
+                                $.each(result, function(key, arr) {
+                                    $.each(arr, function(id, value) {
+                                        if (key === 'posts') {
+                                            if (id !== 'error') {
+                                                console.log(value[1]);
+                                                entitySelector.append('<li><b>'+value[1]+'</b><a href="/post/'+id+'">'+'<img src="/uploads/post/'+value[0]+'" style="width: 50px; height: 50px"/>'+'</a></li>');
+                                            } else {
+                                                entitySelector.append('<li class="errorLi">'+value+'</li>');
+                                            }
+                                        }
+                                    });
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+
+
+<br>
+    <br>
+
+    <br>
+    <br>
+    <br>
+    <br>
+<div class="col-12 text-center">
+    <div class="heading">
+        <h1 class="section-title">Latest Posts</h1>
+        <h4 class="sub-title">You can also post your own thoughts</h4>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+
+
+
+
+
+    <a href="{{ path('app_post_new') }}" class="btn btn-outline-secondary" style="color: #1b809e"  > AJOUTER  </a>
+
+    <div class="album py-5 bg-light">
+    <div class="container">
+
+
+    <div class="wrapper" >
+
+        {% for post in posts %}
+            <br>
+
+            <div class="container">
+
+
+            <div class="blog_post">
+
+
+                <div class="img-circle img-sm" alt="Profile Picture"  style="text-align:center;">
+                    <img  src="https://bootdey.com/img/Content/avatar/avatar2.png">
+                </div>
+                <div class="container_copy" id={{post.id}} name={{post.idUser.email}}>
+                    <h5>{{ post.idUser.email}}</h5>
+
+                    <h1>{{ post.datep ? post.datep|date('Y-m-d') : '' }}</h1>
+                    <br>
+
+                    <h3>{{ post.title }}</h3>
+                    <br>
+
+                    <p>{{ post.content }}</p>
+
+
+                </div>
+                <br>
+                <br>
+
+
+                <a class="btn btn-outline-secondary btn-sm" href="{{ path('app_post_show', {'id': post.id}) }}">Detail</a>
+                <span>  <i class="fa fa-heart-o" style="font-size:12px;color:red" aria-hidden="true"></i></span> <a  class="btn btn-outline-danger btn-sm"  name="like"  id={{ post.id}} data-id="{{ post.id }}" href="{{ path('vote',{'id': post.id}) }} ">
+
+
+                    </a>
+
+                <a href="{{ path('app_comment_index',{'id': post.id}) }}"class="btn btn-outline-success btn-sm" >Commentaires</a>
+
+
+            </div>
+            </div>
+        {% endfor%}
+        <br>
+    </div>
+
+
+    </div>
+</div>
+    <script
+
+            src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js" integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ==" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+
+
+    </script>
+
+
+
+    <script>
+        window.onload = function () {
+            let post = document.getElementsByClassName("container_copy")
+
+            var j = -1;
+            for (var i = 0; i < post.length; i++) {
+                varid = post[i].getAttribute("id")
+
+                axios
+                    .get('http://localhost:8082/api/rating/' + varid)
+                    .then(function (response) {
+                        console.log(response.data);
+                        if (response.data.Rating) {
+                            document.querySelector(
+                                'input[value="' + Math.round(response.data.Rating) + '"]'
+                            ).checked = true;
+                            document.getElementById('rate_value').textContent =
+                                'Score :' + Math.round(response.data.Rating);
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
+
+        }
+
+
+        let radioVal;
+        let radarray=[]
+        let rating= document.getElementsByClassName('rate')
+        var j=-1;
+        for(var i=0;i<rating.length;i++) {
+            (function(){
+            let radios = rating[i].querySelectorAll('input[name="rate"]');
+            var c = -1;
+            radios.forEach((radio,index) => {
+                console.log(index)
+
+                radio.addEventListener('click', function () {
+                   /*
+                    radioVal = radio.value;
+                    console.log(rating,i,index);
+                    axios
+                        .post('http://localhost:8082/api/rating/create', {
+                            id_user: 933,
+                            id_post: 2,
+                            rating: radioVal,
+                        })
+                        .then((res) => {
+                            if (res.data.message) {
+                                alert(res.data.message);
+                            } else {
+                                alert(res.data);
+                            }
+                        })
+                        .catch((err) => console.error(err));*/
+                    c=c+1
+                    test(radio.value,rating[c])
+                });
+            });
+
+            }())
+
+
+            function test (val1,val2){
+
+                       radioVal = val1;
+                       console.log(val2.getAttribute("user-id"),val2.id);
+                       axios
+                           .post('http://localhost:8082/api/rating/create', {
+                               id_user: val2.getAttribute("user-id"),
+                               id_post: val2.id,
+                               rating: radioVal,
+                           })
+                           .then((res) => {
+                               if (res.data.message) {
+                                   alert(res.data.message);
+                               } else {
+                                   alert(res.data);
+                               }
+                           })
+                           .catch((err) => console.error(err));
+
+
+            }
+
+        }
+
+
+/*
+        radios.forEach((radio) => {
+            let  pid =rating[i].getAttribute("data-id")
+            let userid = rating[i].getAttribute("user-id")
+
+            radio.addEventListener('click', function () {
+                radioVal = radio.value;
+                console.log(i);
+
+
+            });
+        });*/
+
+
+    </script>
+
+    <script>
+
+            test= document.getElementsByName('like')
+        var j=-1;
+        for(var i=0;i<test.length;i++)
+        {
+            varid=test[i].getAttribute("data-id")
+
+            axios.get('/vote/'+varid+'/check').then(function (res){
+                j+=1
+                if(res['data'].data==0){
+
+
+                    test[j].innerText='like('+res['data'].count+')'
+
+
+
+                }else{
+                    test[j].innerText='dislike('+res['data'].count+')'     }
+
+            })
+        }
+
+    </script>
+</div>
+{% endblock  %}

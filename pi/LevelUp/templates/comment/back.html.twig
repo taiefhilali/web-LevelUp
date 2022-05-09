@@ -1,0 +1,61 @@
+{% extends 'backbase.html.twig' %}
+
+
+{% block contentback %}
+    <br>
+    <br>
+    <h1  class="text-info"align="center" >Liste des Commmentaires </h1>
+    <br>
+    <br>
+    <br>
+
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <table class="table table-sm table-hover"  >
+        <span class="border border-dark">
+
+        <thead>
+
+      <tr  class="bg-info">
+          <th></th>
+            <th>Review</th>
+            <th>Commentaire</th>
+            <th>Rate</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for comment in comments %}
+            <tr>
+
+<td>  <img src="https://bootdey.com/img/Content/avatar/avatar1.png" width="50" ></td>
+                <td>{{ comment.label }}</td>
+                <td>{{ comment.contenu }}</td>
+                <td>{{ comment.resp }}</td>
+
+                <td>
+
+
+                    <a class="btn btn-outline-info">{{ include('comment/deleteback.html.twig') }}</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+  <button style="color: #0c5460" >
+
+    <a href="{{ path('app_post_indexpaginator') }}"  class="btn btn-outline-info" >Retour vers posts</a>
+      <a href="{{ path('app_comment_statistique') }}"  class="btn btn-outline-info" > statistique</a>
+
+
+  </button>
+
+{% endblock %}

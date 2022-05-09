@@ -1,0 +1,38 @@
+
+
+
+<div class="registration-form">
+
+    {{ form_start(form,{attr:{novalidate:'novalidate'}}) }}
+
+    <div class="form-group">
+        <label for="inputText" class="col-sm-5 col-form-label"><b>Date</b></label>
+        {{ form_widget(form.date) }}
+
+    </div>
+    {{ form_errors(form.date,{'attr':{'class':'text-danger'}}) }}
+    <div class="form-group">
+        <label for="inputText" class="col-sm-5 col-form-label"><b>Prix</b></label>
+        {{ form_widget(form.prixTotal) }}
+
+    </div>
+    {{ form_errors(form.prixTotal,{'attr':{'class':'text-danger'}}) }}
+    <div class="form-group">
+        <label for="inputText" class="col-sm-5 col-form-label"><b>User</b></label>
+        {{ form_widget(form.idUser) }}
+
+    </div>
+    {{ form_errors(form.idUser,{'attr':{'class':'text-danger'}}) }}
+
+    <div class="form-group">
+        <button class="btn btn-block create-account">{{ button_label|default('Enregistrer') }}</button>
+
+    </div>
+
+    {{ form_end(form) }}
+
+</div>
+
+
+
+

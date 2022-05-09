@@ -1,0 +1,75 @@
+<style type="text/css">
+    .Titre{
+        color: #217e6b;
+        margin-left : 200px;
+    }
+    .littleTitle{
+        color : #2B4646;
+    }
+    .client{
+        color : #169696;
+        margin-left : 30px;
+    }
+    .info{
+        color : #000000;
+    }
+    #customers {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+    #customers td, #customers th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+    #customers tr:nth-child(even){background-color: #f2f2f2;}
+    #customers tr:hover {background-color: #ddd;}
+    #customers th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #04AA6D;
+        color: white;
+    }
+    #image {
+        margin-left : 10px;
+        width : 100px;
+        height : 100px;
+    }
+
+</style>
+
+<h1 class="Titre"> <img id="image"  src='images/image.jpg' /> Facture</h1>
+<br />
+<h2 class="littleTitle"> Fournisseur Informations  :</h2>
+<br />
+<h3 class="client">Nom et Prenom :       <span class="info"> {{ user.nom}} ~ {{ user.prenom }}</span></h3>
+<h3 class="client">Adresse Fournisseur :      <span class="info"> {{ user.adresse }}</span></h3>
+<h3 class="client">Email Fournisseur :      <span class="info"> {{ user.email }}</span></h3>
+<br/>
+<h2 class="littleTitle">Facture Informations  :</h2>
+<br />
+<table id="customers">
+    <thead>
+    <tr>
+          <th scope="col">Date du jour</th>
+        <th scope="col">Prix Total</th>
+        <th> </th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for fact in facture  %}
+        <tr>
+
+            <td>{{ fact.date ? fact.date|date('Y-m-d') : '' }}</td>
+            <td>{{fact.prixTotal}}</td>
+
+            <td class="text-right">
+            </td>
+        </tr>
+    {% endfor %}
+
+    </tbody>
+</table>
+<br />
+<br />

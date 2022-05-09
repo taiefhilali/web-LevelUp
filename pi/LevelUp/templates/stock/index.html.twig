@@ -1,0 +1,58 @@
+{% extends 'backbase.html.twig' %}
+
+{% block title %}Stock index{% endblock %}
+
+{% block contentback %}
+    <h1 style="margin-top:50px ;font-family:sans-serif;font-size:50px;color: #00A8B3;
+	text-shadow: 4px 3px 0px #fff, 9px 8px 0px rgba(0,0,0,0.15);
+" class="centered"> Stocks</h1>
+
+    {% for message in app.flashes('info') %}
+    <div class="alert alert.success">
+        {{ message }}
+    </div>
+    {% endfor %}
+
+    <table  style="margin-top:90px;width:100%;
+           border:1px solid ;"class="table" border="1">
+        <thead style="background-color: #dae9f8" >
+            <tr  style="alignment: center; tab-size: 23px; font-family: Arial; font-style:italic ; color: #0c5460">
+
+                <th>Reference produit</th>
+                <th>Nom</th>
+                <th>Quantite</th>
+                <th>Etat</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for stock in stocks|reverse %}
+            <tr>
+                <td>{{ stock.id.reference }}</td>
+                <td>{{ stock.nom }}</td>
+                <td>{{ stock.quantite }}</td>
+                <td>{{ stock.etat }}</td>
+
+                <td>
+                    <button style="background-color: #00A8B3; border:#00A8B3"><a href="{{ path('app_stock_show', {'id': stock.id.idProduit}) }}"style="color: white; size: 20px;">show</a></button>
+                    <button style="background-color: #00A8B3; border:#00A8B3"><a href="{{ path('app_stock_edit', {'id': stock.id.idProduit}) }}"style="color: white; size: 20px;">edit</a></button>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+<center>
+    {{ knp_pagination_render(stocks) }}
+</center>
+<center>
+    <button style="background-color: #00A8B3; border:#00A8B3"> <a href="{{ path('app_stock_new') }}"style="color: white; size: 20px;">Create new</a></button>
+    <button style="background-color: #00A8B3; border:#00A8B3"> <a href="{{ path('app_stock_message') }}"style="color: white; size: 20px;">envoyer message</a></button>
+
+    <button style="background-color: #00A8B3; border:#00A8B3"><a href="{{ path('app_stock_map') }}"style="color: white; size: 20px;">map</a></button>
+
+</center>
+{% endblock %}

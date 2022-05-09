@@ -1,0 +1,11 @@
+{% extends 'basepanier.html.twig' %}
+
+{% block title %}New Commande{% endblock %}
+
+{% block content %}
+    <h1>Create new Commande</h1>
+
+    {{ include('commande/_form.html.twig') }}
+
+    <a href="{{ path('app_commande_index') }}">back to list</a>
+{% endblock %}

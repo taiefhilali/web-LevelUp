@@ -1,0 +1,12 @@
+
+{% extends 'backbase.html.twig' %}
+
+
+{% block contentback %}
+
+{{ form_start(form,{'attr': {'novalidate': 'novalidate'}}) }}
+{{ form_widget(form) }}
+
+    <button class="btn btn-primary">{{ button_label|default('Affecter') }}</button>
+{{ form_end(form) }}
+{% endblock  %}

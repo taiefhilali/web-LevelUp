@@ -1,0 +1,72 @@
+security:
+    encoders:
+        App\Entity\User:
+            algorithm: auto
+
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+      
+        main:
+            anonymous: lazy
+            provider: app_user_provider
+            entry_point: App\Security\LoginFormAuthenticator
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
+                    - App\Security\GoogleAuthenticator
+            logout:
+                path: app_logout
+                target: /login
+
+            two_factor:
+                auth_form_path: 2fa_login    # The route name you have used in the routes.yaml
+                check_path: 2fa_login_check 
+                trusted_parameter_name: _trusted
+                # where to redirect after logout
+                # target: app_any_route
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#firewalls-authentication
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+      - { path: ^/user, roles: ROLE_ADMIN }
+      - { path: ^/dash, roles: ROLE_ADMIN }
+      - { path: ^/post/indexFront, roles: ROLE_CLIENT }
+      - { path: ^/post/new, roles: ROLE_CLIENT }
+      - { path: ^/post/paginatorpost, roles: ROLE_ADMIN }
+      - { path: ^/comment/addcomment, roles: ROLE_CLIENT }
+      - { path: ^/comment/b, roles: ROLE_ADMIN }
+      - { path: ^/comment/testcommment\d+$ , roles: ROLE_CLIENT }
+      - { path: ^/reclamation/indexFront, roles: ROLE_CLIENT }
+      - { path: ^/reclamation/new, roles: ROLE_CLIENT }
+      - { path: ^/livraison/indexBack, roles: ROLE_LIVREUR }
+      - { path: ^/livraison/, roles: ROLE_ADMIN}
+      - { path: ^/livraison/new, roles: ROLE_ADMIN}
+      - { path: ^/reclamation/, roles: ROLE_ADMIN}
+      - { path: ^/facture, roles: ROLE_FOURNISSEUR}
+      - { path: ^/stock, roles: ROLE_FOURNISSEUR}
+      - { path: ^/produit, roles: ROLE_ADMIN}
+      - { path: ^/produit/productFront, roles: ROLE_CLIENT}
+      - { path: ^/categorie, roles: ROLE_ADMIN}
+      - { path: ^/panier/elem, roles: ROLE_CLIENT}
+      - { path: ^/commande, roles: ROLE_CLIENT}
+      - { path: ^/commande/commandes, roles: ROLE_ADMIN}
+      - { path: ^/detail/commande, roles: ROLE_CLIENT}
+
+
+    
+    

@@ -1,0 +1,96 @@
+{% extends 'basepanier.html.twig' %}
+
+{% block title %}DetailCommande index{% endblock %}
+
+
+
+{% block content %}
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading">Panier</h1>
+     </div>
+</section>
+
+<div class="container mb-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col"> </th>
+                            <th scope="col">Product</th>
+                            <th scope="col">Description</th>
+                            <th scope="col" class="text-center">Quantity</th>
+                            <th scope="col" class="text-right">Price</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% set i=0 %}
+                     {% set liv=0 %}
+                     {% set Total=0 %}
+                    {% for pan in detail_commandes | reverse %}
+                        {% set i=i+ (pan.quantite * pan.id.prix) %}
+                        <tr>
+                            <td><img src="https://dummyimage.com/50x50/55595c/fff" /> </td>
+                            <td>{{pan.id.nom}}</td>
+                            <td>{{pan.id.description}}</td>
+                            <td>{{pan.quantite}}</td>
+                            <td class="text-right">{{pan.id.prix}}</td>
+                        </tr>
+                        {% endfor %}
+                        {% if ( i > 100) %}
+                        {% set liv=0 %}
+                        {% set Total=i+liv %}
+                        {% else %}
+                        {% set liv=10 %}
+                        {% set Total=liv+i %}
+                        {% endif %}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>Total des produits</td>
+                            <td class="text-right">{{ i }} DN</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>Livraison </td>
+                            <td class="text-right">{{ liv }} DN</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><strong>Total</strong></td>
+                            <td class="text-right"><strong>{{ Total }} DN</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col mb-2">
+            <div class="row">
+                <div class="col-sm-12  col-md-6">
+                    <a class="btn btn-lg btn-block btn-light" href="{{ path('app_conde_index') }}">Retour</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+{% endblock %}

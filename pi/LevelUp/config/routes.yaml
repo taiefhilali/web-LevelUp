@@ -1,0 +1,14 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+# /app/config/routes.yaml
+captcha_routing:
+  resource: "@CaptchaBundle/Resources/config/routing.yml"
+
+ajax_search:
+  path:    /search
+  defaults: { _controller: App\Controller\PostController::searchAction}
+
+
+
+

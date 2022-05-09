@@ -1,0 +1,13 @@
+{% extends 'basepanier.html.twig' %}
+
+{% block title %}Edit PanierElem{% endblock %}
+
+{% block content %}
+    <h1>Edit PanierElem</h1>
+
+    {{ include('panier_elem/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_panier_elem_index') }}">back to list</a>
+
+    {{ include('panier_elem/_delete_form.html.twig') }}
+{% endblock %}

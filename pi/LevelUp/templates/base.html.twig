@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="zxx"> <!--<![endif]-->
+{% block headback %}
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="description" content="Bingo One page parallax responsive HTML Template ">
+
+        <meta name="author" content="Themefisher.com">
+
+        <title>LevelUP</title>
+
+        <!-- Mobile Specific Meta
+          ================================================== -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Favicon -->
+        <link href="{{asset('img/favicon.png')}}">
+        <link rel="stylesheet" href="{{asset('plugins/themefisher-font.v-2/style.css')}}"/>
+        <!-- bootstrap.min css -->
+        <link  href="{{asset('plugins/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet">
+        <!-- Slick Carousel -->
+        <link rel="stylesheet" href="{{asset('plugins/slick-carousel/slick/slick.css')}}">
+        <link rel="stylesheet" href="{{asset('plugins/slick-carousel/slick/slick-theme.css')}}">
+        <!-- Main Stylesheet -->
+        <link rel="stylesheet" href="{{asset('css/style.css')}}">
+
+
+
+    </head>
+{% endblock  %}
+
+
+<body id="body">
+
+<!--
+ Start Preloader
+ ==================================== -->
+
+<!--
+End Preloader
+==================================== -->
+
+
+
+
+<!--
+Fixed Navigation
+==================================== -->
+<section class="header  navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <nav class="navbar navbar-expand-lg">
+                   <ul>
+
+                       <li>
+
+                           <a class="logo"><b>LEVEL<span>UP</span></b></a>
+                       </li>
+                   </ul>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="tf-ion-android-menu"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ml-auto">
+
+
+
+                            {% if is_granted('ROLE_CLIENT')  %}
+
+                            {% else %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ path('app_login') }}">se connecter</a>
+                                </li>
+                            {% endif %}
+
+                            {% if is_granted('ROLE_CLIENT')  %}
+
+                            {% else %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ path('app_inscription') }}"> S'inscrire </a>
+                                </li>
+                            {% endif %}
+
+
+                            {% if is_granted('ROLE_CLIENT')  %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{path('app_produit_index_front')}}" class="sr-only">Produits</a>
+                                </li>
+                            {% endif %}
+                            {% if is_granted('ROLE_CLIENT')  %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{path('app_post_indexFront')}}" class="sr-only">Forum</a>
+                                </li>
+                            {% endif %}
+                            {% if is_granted('ROLE_CLIENT') %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ path('app_accountClient') }}">Mon Compte</a>
+                                </li>
+                            {% endif %}
+
+
+                            {% if is_granted('ROLE_CLIENT')  %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ path('app_reclamation_indexFront') }}">Reclmation</a>
+                                </li>
+                            {% endif %}
+                            {% if is_granted('ROLE_CLIENT') %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ path('app_logout') }}">Decconecter</a>
+                                </li>
+                            {% endif %}
+                            {% if is_granted('ROLE_CLIENT') %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ path('app_basepanier') }}">Panier</a>
+                                </li>
+                            {% endif %}
+
+
+                        </ul>
+                    </div>
+                </nav>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--
+Welcome Slider
+==================================== -->
+{% block content %}
+
+
+{% endblock  %}
+
+
+<!-- end Footer Area
+========================================== -->
+
+
+
+<!--
+Essential Scripts
+=====================================-->
+
+<!-- Main jQuery -->
+<script src="plugins/jquery/dist/jquery.min.js')}}"></script>
+<!-- Bootstrap -->
+<script src="plugins/bootstrap/dist/js/popper.min.js"></script>
+<script src="plugins/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Owl Carousel -->
+<script src="plugins/slick-carousel/slick/slick.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<!-- Smooth Scroll js -->
+<script src="plugins/smooth-scroll/dist/js/smooth-scroll.min.js"></script>
+
+<!-- Custom js -->
+<script src="js/script.js"></script>
+
+</body>
+
+
+</html>

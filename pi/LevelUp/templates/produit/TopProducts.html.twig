@@ -1,0 +1,50 @@
+{% extends 'basepanier.html.twig' %}
+
+
+
+ {% block content %}
+<link rel="stylesheet" href="{{asset('css/card.css')}}">
+
+<section id="team" class="pb-5">
+    <div class="container">
+        <h5 class="section-title h1">Top Products</h5>
+        
+        <div class="row">
+        {% set i = 0 %}
+        {%  for pro in products %}
+            <!-- Team member -->
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+                    <div class="mainflip">
+                        <div class="frontside">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <p><img class=" img-fluid" src="{{asset('images/Image1.png')}}" alt="card image"></p>
+                                    <h4 class="card-title">{{pro.nom}}</h4>
+                                    <p class="card-text">Prix : {{pro.prix}} DN</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="backside">
+                            <div class="card">
+                                <div class="card-body text-center mt-4">
+                                    <h4 class="card-title">Description</h4>
+                                    <p class="card-text">{{pro.description}}</p>
+                                    <a href="{{ path('app_produit_show',{'idProduit': pro.idProduit}) }}" class="btn btn-primary btn-sm">Details </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% set i = i + 1 %}
+             {% endfor %}
+            <!-- ./Team member -->
+        </div>
+    </div>
+</section>
+<div style="margin :20px 0 20px 660px " class="pag">
+    <a id="link">{{knp_pagination_render(products) }}</a>
+ </div>
+
+ {%  endblock %}

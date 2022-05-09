@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+
+
+{% block content %}
+
+
+	<link href="{{asset ('/css/inscri.css')}}" media="screen" rel="stylesheet">
+
+
+	
+	<script src="//code.jquery.com/jquery.js"></script>
+    <!-- Load Flashy default JavaScript -->
+    <script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>
+	{{ include('@MercurySeriesFlashy/flashy.html.twig') }}
+	<link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700' rel='stylesheet'>
+	<link rel="stylesheet" href="{{ asset('bundles/mercuryseriesflashy/css/flashy.css') }}">
+
+
+		
+	     
+	<section class="vh-100 bg-image" style="background-image: url('https://static.vecteezy.com/ti/vecteur-libre/p2/2534933-toile-de-fond-flou-degrade-bleu-clair-vectoriel.jpg');">
+	<br>	<div class="container c">
+			<h3 style="text-align:center;">Inscription</h3>
+			<div class="content">
+				{% import "Macros/form_elements.html.twig" as formElements %}
+				{{ form_start(form,{attr:{novalidate:'novalidate'}}) }}
+				<div class="user-details">
+					<div class="input-box">
+						<span class="details">Prenom</span>
+						{{ form_widget(form.prenom,{'attr':{'class':'form-control'}}
+						)}}
+						{{ form_errors(form.prenom,{'attr':{'class':'text-danger'}}) }}
+					</div>
+					<div class="input-box">
+						<span class="details">Nom</span>
+						{{ form_widget(form.nom,{'attr':{'class':'form-control'}}) }}
+						{{ form_errors(form.nom,{'attr':{'class':'text-danger'}}) }}
+					</div>
+					<div class="input-box">
+						<span class="details">Email</span>
+						{{ form_widget(form.email,{'attr':{'class':'form-control'}}) }}
+						{{ form_errors(form.email,{'attr':{'class':'text-danger'}}) }}
+					</div>
+					<div class="input-box">
+						<span class="details">Telephone</span>
+						{{ form_widget(form.tel,{'attr':{'class':'form-control'}}) }}
+						{{ form_errors(form.tel,{'attr':{'class':'text-danger'}}) }}
+					</div>
+					<div class="input-box">
+						<span class="details">Mot de passe</span>
+						{{ form_widget(form.password,{'attr':{'class':'form-control'}}) }}
+						{{ form_errors(form.password,{'attr':{'class':'text-danger'}}) }}
+					</div>
+					<div class="input-box">
+						<span class="details">Confirmer mot de passe</span>
+						{{ form_widget(form.repeatPassword,{'attr':{'class':'form-control'}}) }}
+						{{ form_errors(form.repeatPassword,{'attr':{'class':'text-danger'}}) }}
+					</div>
+					<div class="input-box">
+						<span class="details">Date de naissance</span>
+						{{ form_widget(form.dns,{'attr':{'class':'form-control'}}) }}
+						{{ form_errors(form.dns,{'attr':{'class':'text-danger'}}) }}
+					</div>
+
+					<div class="input-box">
+						<span class="details">Adresse</span>
+						{{ form_widget(form.adresse,{'attr':{'class':'form-control'}}) }}
+						{{ form_errors(form.adresse,{'attr':{'class':'text-danger'}}) }}
+					</div>
+					<div class="input-box">
+						<span class="details">Sexe</span>
+						{{ form_widget(form.sexe,{'attr':{'class':'form-control'}}) }}
+
+					</div>
+					<div class="input-box">
+						<span class="details">Image</span>
+						{{ form_widget(form.imageFile,{'attr':{'class':'form-control'}}) }}
+						{{ form_errors(form.imageFile,{'attr':{'class':'text-danger'}}) }}
+
+					</div>
+					<div class="ibox" >
+
+						{{formElements.recaptcha("6Lf-fLYeAAAAAKNUuUdE4DJ1TpFMyeR15McHtch9")}}
+
+
+					</div>
+
+				
+				</div>
+				
+	<button class="btn">{{ button_label|default('Enregistrer') }}</button>
+			</div>
+</div>			
+</div>
+		
+
+
+			{{ form_end(form) }}
+			<br>
+		</section>
+	
+		
+{% endblock %}

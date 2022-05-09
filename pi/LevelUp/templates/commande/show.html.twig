@@ -1,0 +1,38 @@
+{% extends 'basepanier.html.twig' %}
+
+{% block title %}Commande{% endblock %}
+
+{% block content %}
+    <h1>Commande</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>IdCommande</th>
+                <td>{{ commande.idCommande }}</td>
+            </tr>
+            <tr>
+                <th>PrixLivraison</th>
+                <td>{{ commande.prixLivraison }}</td>
+            </tr>
+            <tr>
+                <th>DateCommande</th>
+                <td>{{ commande.dateCommande ? commande.dateCommande|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>PrixProduits</th>
+                <td>{{ commande.prixProduits }}</td>
+            </tr>
+            <tr>
+                <th>PrixTotal</th>
+                <td>{{ commande.prixTotal }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_commande_index') }}">back to list</a>
+
+    <a href="{{ path('app_commande_edit', {'idCommande': commande.idCommande}) }}">edit</a>
+
+    {{ include('commande/_delete_form.html.twig') }}
+{% endblock %}

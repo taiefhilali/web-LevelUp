@@ -1,0 +1,35 @@
+{% extends 'backbase.html.twig' %}
+
+{% block title %}Stock{% endblock %}
+
+{% block contentback%}
+    <h1>Stock</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Reference produit</th>
+                <td>{{ stock.id.reference }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ stock.nom }}</td>
+            </tr>
+            <tr>
+                <th>Quantite</th>
+                <td>{{ stock.quantite }}</td>
+            </tr>
+            <tr>
+                <th>Etat</th>
+                <td>{{ stock.etat }}</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_stock_index') }}">back to list</a>
+
+    <a href="{{ path('app_stock_edit', {'id': stock.id.idProduit}) }}">edit</a>
+
+    {{ include('stock/_delete_form.html.twig') }}
+{% endblock %}

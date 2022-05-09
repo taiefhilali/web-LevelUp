@@ -1,0 +1,26 @@
+{% extends 'basepanier.html.twig' %}
+
+{% block title %}DetailCommande{% endblock %}
+
+{% block content %}
+    <h1>DetailCommande</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>IdElemc</th>
+                <td>{{ detail_commande.idElemc }}</td>
+            </tr>
+            <tr>
+                <th>Quantite</th>
+                <td>{{ detail_commande.quantite }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_detail_commande_index') }}">back to list</a>
+
+    <a href="{{ path('app_detail_commande_edit', {'idElemc': detail_commande.idElemc}) }}">edit</a>
+
+    {{ include('detail_commande/_delete_form.html.twig') }}
+{% endblock %}

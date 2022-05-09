@@ -1,0 +1,108 @@
+   <style type="text/css">
+    .Titre{
+     color: #217e6b;
+     margin-left : 200px;
+    }
+    .littleTitle{
+        color : #2B4646;
+    }
+    .client{
+        color : #169696;
+        margin-left : 30px;
+    }
+    .info{
+        color : #000000;
+    }
+    #customers {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#customers td, #customers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
+#image{
+    margin-left : 430px;
+    width : 100px;
+    height : 100px;
+}
+    </style>
+
+        <h1 class="Titre"> <img  src='images/Image1.png' /> Facture</h1>
+   <br />
+   <h2 class="littleTitle">Client Informations  :</h2>
+   <br />
+    <h3 class="client">Nom client :       <span class="info"> {{ user.nom }}</span></h3> 
+    <h3 class="client">Prenom client :       <span class="info"> {{ user.prenom }}</span></h3> 
+    <h3 class="client">Adresse client :      <span class="info"> {{ user.adresse }}</span></h3>  
+    <br />
+   <h2 class="littleTitle">Commande Informations  :</h2>
+    <br />
+                <table id="customers">
+                    <thead>
+                        <tr>
+                            <th scope="col">Product</th>
+                            <th scope="col">Description</th>
+                            <th scope="col" class="text-center">Quantity</th>
+                            <th scope="col" class="text-right">Price</th>
+                            <th> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for pan in panierElements  %}
+                        <tr>
+                            
+                            <td>{{pan.id.nom}}</td>
+                            <td>{{pan.id.description}}</td>
+                            <td>
+                           {{pan.quantite}}
+                            </td>
+                            <td class="text-right">{{pan.id.prix}}</td>
+                            <td class="text-right">
+                             </td>
+                        </tr>
+                        {% endfor %}
+                    
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>Total des produits</td>
+                            <td class="text-right">{{ cmd.prixProduits }} DN</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>Livraison </td>
+                            <td class="text-right">{{ cmd.prixLivraison }} DN</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><strong>Total</strong></td>
+                            <td class="text-right"><strong>{{ cmd.prixTotal }} DN</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+<br />
+<br />
+<img id="image"  src='images/sign.jpg' />

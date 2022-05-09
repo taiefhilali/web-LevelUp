@@ -1,0 +1,37 @@
+{% extends 'backbase.html.twig' %}
+
+{% block title %}Tables des Catégories{% endblock %}
+
+{% block contentback %}
+    <h1 style="text-align:center ;font-weight: bold; color:  #00A9CC">Gestion des Catégories</h1>
+    <div><td> <a href="{{ path('app_categorie_new') }}" class="btn btn-primary m-2" size="150" aria-setsize="150" class="btn btn-primary m-2" style="display:block ; margin-bottom: 2.5em;">Ajouter une Catégorie</a></td></div>
+    <table class="table" border = 3>
+        <thead>
+            <tr>
+{#                <th>Id_Catégorie</th>#}
+                <th>Nom Catégorie</th>
+{#                <th>Ajout</th>#}
+                <th style="text-align:center">Modification</th>
+                <th style="text-align:center">Suppression</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for categorie in categories|reverse %}
+            <tr>
+{#                <td>{{ categorie.idCategorie }}</td>#}
+                <td>{{ categorie.nomCategorie }}</td>
+{#                <td><a href="{{ path('app_categorie_show', {'idCategorie': categorie.idCategorie}) }}" class="btn rounded-pill btn-success" >Ajouter la Catégorie</a></td>#}
+                  <td><a href="{{ path('app_categorie_edit', {'idCategorie': categorie.idCategorie}) }}" class="btn rounded-pill btn-success" style="display:block; margin: 0 auto;">Modifier la Catégorie</a></td>
+                <td><a href="{{ path('app_categorie_show', {'idCategorie': categorie.idCategorie}) }}" class="btn rounded-pill btn-danger" style="display:block; margin: 0 auto;">Supprimer la Catégorie</a></td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <form action="{{ path('app_categorie_new') }}">
+    </form>
+
+{% endblock %}

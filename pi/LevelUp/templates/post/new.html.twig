@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% block title %}Ajouter Publication{% endblock %}
+
+{% block content %}
+    <h1  class="text-info"align="center" >Formulaire Publication </h1>
+
+    {{ include('post/_form.html.twig') }}
+
+    <a href="{{ path('app_post_indexFront') }}" class="btn btn-outline-info">Retour</a>
+{% endblock %}

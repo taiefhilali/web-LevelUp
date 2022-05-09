@@ -1,0 +1,35 @@
+{% extends 'basepanier.html.twig' %}
+
+{% block title %}PanierElem index{% endblock %}
+
+{% block content %}
+    <h1>PanierElem index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>IdElem</th>
+                <th>Quantite</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for panier_elem in panier_elems %}
+            <tr>
+                <td>{{ panier_elem.idElem }}</td>
+                <td>{{ panier_elem.quantite }}</td>
+                <td>
+                    <a href="{{ path('app_panier_elem_show', {'idElem': panier_elem.idElem}) }}">show</a>
+                    <a href="{{ path('app_panier_elem_edit', {'idElem': panier_elem.idElem}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_panier_elem_new') }}">Create new</a>
+{% endblock %}

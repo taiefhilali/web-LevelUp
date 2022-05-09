@@ -1,0 +1,199 @@
+{% extends 'backbase.html.twig' %}
+
+{% block title %}Table des Produits{% endblock %}
+
+{% block contentback %}
+{#   Style JS pour la recherche AJAX#}
+   <style>
+       hr {
+    border: none;
+    border-top: 3px dotted #000000;
+    color: #000000;
+    background-color: #000000;
+    height: 0.5px;
+    width: 100%;
+    }
+    </style>
+
+    <h1 style="text-align:center ;font-weight: bold; color:  #00A9CC; font-size: 38px">Gestion des Produits</h1>
+
+{#    Old search with Sort#}
+{#    <form action="{{ path('Recherche') }}">#}
+{#        <input type="text" placeholder="Chercher un produit ..." name="nom" size="167" style="margin-bottom:1.5em" height=50 >#}
+{#        <input type="submit" value="Chercher" class="btn btn-primary m-2" >#}
+
+    <h3 style="font-weight: bold; margin-bottom: 1em;margin-top: 2em;text-align: center"><b>Le nombre totale des produits est :</b> {{ produits.getTotalItemCount }}</h3>
+    <h3 style="text-align: left; margin-top: 2em; color: #00A8B3"><b>Recherche :</b></h3>
+
+    <div class="sidebar-search">
+
+        <div class="input-group custom-search-form">
+
+            <input  type="text" id="search" class="form-control" placeholder="Chercher un produit..." style="display:block ; margin-bottom: 0.5em; height: 2em; text-align: left; font-weight: bold; font-size: 16px" size=188>
+        </div>
+        <!-- /input-group -->
+    </div>
+    <ul class="nav" id="side-menu">
+        <li>
+{#            <br>#}
+{#            <a href="#"> Entities<span class="fa arrow"></span></a>#}
+            <ul class="nav nav-second-level" id="entitiesNav">
+            </ul>
+        </li>
+    </ul><br>
+{#        // Fonction de recherche AJAX + JS + Jquery#}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            var searchRequest = null;
+            $("#search").keyup(function() {
+                var minlength = 1;
+                var that = this;
+                var value = $(this).val();
+                var entitySelector = $("#entitiesNav").html('');
+                if (value.length >= minlength ) {
+                    if (searchRequest != null)
+                        searchRequest.abort();
+                    searchRequest = $.ajax({
+                        type: "GET",
+                        url: "{{ path('ajax_search_product') }}",
+                        data: {
+                            'q' : value
+                        },
+                        dataType: "text",
+                        success: function(msg){
+                            //we need to check if the value is the same
+                            if (value===$(that).val()) {
+                                var result = JSON.parse(msg);
+                                $.each(result, function(key, arr) {
+                                    $.each(arr, function(id, value) {
+                                        if (key === 'produits') {
+                                            if (id !== 'error') {
+                                                console.log(value[1]);
+                                                entitySelector.append('<b style="font-size: 24px">'+value[0]+'<hr></b><li><b style="font-size: 24px">'+value[1]+'<hr></b><a href="/produit/'+id+'">'+'<img src="/uploads/images/products/'+value[6]+'" style="width: 220px; height: 220px; border: 2px solid black" height="200" width="200" border="1px" alt="Image du Produit"/>'+'<hr></a></li><b style="font-size: 24px">'+value[2]+'</b><li><hr><b style="font-size: 24px">'+value[4]+'<hr></b><hr>');
+                                            } else {
+                                                entitySelector.append('<li class="errorLi" style="font-weight: bold;color: red; font-size: 18px">'+value+'</li>');
+
+                                            }
+                                        }
+                                    });
+                                });
+                            }
+                        }
+
+                    });
+                }
+            });
+        });
+
+    </script>
+
+
+    <div><a href="{{ path('app_produit_new') }}" class="btn rounded-pill btn-success" size="150" aria-setsize="150" class="btn btn-primary m-2" style="display:block ; margin-bottom: 2.5em; height: 2.5em; text-align: center">Ajouter un Produit  <i class="fa fa-plus" aria-hidden="true"></i></a></div>
+
+    </form>
+
+    {% for message in app.flashes('info') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <table class="table" border="2" >
+
+        <thead>
+            <tr>
+              {#                <th>ID_Produit</th>  #}{#to be hidden #}
+                <th>Nom</th>
+                <th>Réference</th>
+                <th>Prix</th>
+                <th style="text-align:center">Description</th>
+                <th style="text-align:center">Fournisseur</th>
+                <th>Promotion</th>
+                <th style="text-align:center">Image</th>
+                <th>Prix Final</th>
+                <th>Catégorie</th>
+                <th style="text-align:center">Modification</th>
+                <th style="text-align:center">Suppression</th>
+                <th  style="text-align:center">Code à bar</th>
+                <th style="text-align:center">Code QR</th>
+{#                <th>translate</th>#}
+                {#           EMPLACEMENT METIER PRIX FINAL     <th>Actions Button</th>#}
+            </tr>
+        </thead>
+        <tbody>
+        {% set compteur=0 %}
+        {% for produit in produits %}
+            {% set compteur=compteur+1 %}
+            <tr>
+{#                <td>{{ produit.idProduit }}</td>#}
+                <td>{{ produit.nom }}</td>
+                <td>{{ produit.reference }}</td>
+                <td>{{ produit.prix }}</td>
+                <td id="mess">{{ produit.description }}</td>
+                {# Usr input here #}
+                <td>{{ produit.idUser.email }}</td>
+                <td>{{ produit.promotion }}</td>
+                <td> <img src="{{ asset('uploads/images/products/' ~ produit.getImage())}}" height="120" width="120" alt="Chargement image produit ◴"></td>
+                <td>{{ produit.prixFinal }}</td>
+                <td>{{ produit.idCategorie.nomCategorie }}</td>
+                <td><a href="{{ path('app_produit_edit', {'idProduit': produit.idProduit}) }}" class="btn rounded-pill btn-primary">Modifier Produit  <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                {% for message in app.flashes('info') %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                <td><a href="{{ path('app_produit_show', {'idProduit': produit.idProduit}) }}" class="btn rounded-pill btn-danger">Supprimer le Produit  <i class="fa fa-trash-o" aria-hidden="true"></i></a></td>
+                {% for message in app.flashes('info') %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                <td><a href="{{ path('barcode', {'idProduit': produit.idProduit}) }}" class="btn rounded-pill btn-danger" style="background-color: #9999FF; border-color: black">Générer</a></td>
+
+                <td><a onclick="showQr(this.id)" id="qr{{ compteur }}" class="btn rounded-pill btn-primary" style="background-color: #00A8B3;">Générer code QR</a>
+                    <img id="image_qr{{ compteur }}" style="width: 120px;height: 120px; display: none;"
+                                                                                                   src="{{ qr_code_data_uri("*** Produit : "~produit.nom~"\n*** Reference : "~produit.reference~"\n*** Prix : "~produit.prix~"\n*** Categorie : "~produit.idCategorie.nomCategorie~"\n*** Fournisseur : "~produit.idUser.email) }}" /></td>
+{#               <img id="image_qr" style="width: 120px;height: 120px" src="{{ qr_code_data_uri(produit.nom) }}" />#}
+{#                href="{{ path('qr_function', {'idProduit': produit.idProduit})}}#}
+
+                <script >
+                        function showQr(id) {
+                            var qr = document.getElementById(id);
+                            var img = document.getElementById('image_'+id);
+                            // console.log(qr);
+                            console.log(img);
+                            if (img.style.display == "none") {
+                                img.style.display = "block";
+                                qr.style.display="none";
+                            } else {
+                                img.style.display = "none";
+                            }
+                            console.log(img);
+                        }
+
+                </script>
+
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div><a href="{{ path('stats') }} " class="btn btn-primary m-2" style="display:block ; margin-bottom: 2.5em;">Statistiques  <i class="fa fa-bar-chart-o" aria-hidden="true"></i></a></div>
+{#    <i class="fa fa-tasks"></i>#}
+    <div><a  href="{{ path('excel') }}" class="btn btn-primary m-2" style="display:block ; margin-bottom: 2.5em; background-color: #00A8B3;">Générer Excel  <i class="fa fa-table" aria-hidden="true"></i></a></div>
+{#    <form action="{{ path('excel') }}">#}
+{#        <input type="submit" value="excel" class="btn btn-primary rounded-pill m-2" size="505" style="display:block ; margin-bottom: 2.5em;">#}
+{#    </form>#}
+    </div>
+    <div style="text-align: center">
+        {{ knp_pagination_render(produits) }}
+    </div>
+{#    {{ knp_pagination_sortable(produits, 'Title A-Z', 'produit.nom', {}, {'direction': 'desc'}) }}#}
+{% endblock %}
+

@@ -1,0 +1,30 @@
+{% extends 'backbase.html.twig' %}
+
+{% block title %}Catégorie{% endblock %}
+
+{% block contentback %}
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <h1 style="text-align: center; margin-bottom: 1em; color: #00A8B3">Détails catégorie</h1>
+
+    <table class="table" border = 2>
+{#        <tbody> #}
+{#            <tr>#}
+{#                <th>IdCategorie</th>#}
+{#                <td>{{ categorie.idCategorie }}</td>#}
+{#            </tr>#}
+            <tr>
+                <th>Nom Catégorie</th>
+                <td>{{ categorie.nomCategorie }}</td>
+            </tr>
+{#        </tbody>#}
+    </table>
+
+
+{#    <a href="{{ path('app_categorie_edit', {'idCategorie': categorie.idCategorie}) }}">Modifier</a>#}
+
+    {{ include('categorie/_delete_form.html.twig') }}
+
+    <a style="display:block ; margin-bottom: 2.5em;text-align: left" class="btn rounded-pill btn-outline-info" href="{{ path('app_categorie_index') }}">Retourner à la liste des Catégories</a>
+
+{% endblock %}

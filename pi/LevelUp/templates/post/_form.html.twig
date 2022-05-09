@@ -1,0 +1,19 @@
+
+
+{{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+{{ form_row(form.title, {'label': 'Sujet de la publication'}) }}
+{{ form_row(form.content, {'label': 'Description de la publication'}) }}
+{{ form_row(form.datep, {'label': 'Date de la publication'}) }}
+ {# render the captcha field to the form in the view #}
+{{ form_row(form.captchaCode) }}
+
+    {{ form_widget(form) }}
+<style>
+    button.btn {
+        align-content: baseline;
+        solid-color: #1b6d85;
+    }
+
+</style>
+<button class="btn btn-outline-info">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

@@ -1,0 +1,97 @@
+{% extends 'backbase.html.twig' %}
+
+{% block contentback %}
+{#    {% form_theme form 'bootstrap_4_layout.html.twig' %}#}
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/cerulean/bootstrap.min.css" integrity="sha384-3fdgwJw17Bi87e1QQ4fsLn4rUFqWw//KU0g8TvV6quvahISRewev6/EocKNuJmEw" crossorigin="anonymous">
+{#    <!-- Font Awesome -->#}
+{#    <link#}
+{#            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"#}
+{#            rel="stylesheet"#}
+{#    />#}
+{#    <!-- Google Fonts -->#}
+{#    <link#}
+{#            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"#}
+{#            rel="stylesheet"#}
+
+{#    />#}
+{#    <!-- MDB -->#}
+{#    <link#}
+{#            href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.css"#}
+{#            rel="stylesheet"#}
+{#    />#}
+
+    <br>
+    {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
+    <div style="font-size: 18px" class="form-group" >
+    <label for="inputText" style="size: 20px" class="col-sm-5 col-form-label"><b>Nom</b></label>
+        <br>
+    {{  form_widget(form.nom,{'attr':{'class':'form-control','style':'font-size: 15px'}}) }}
+    <div style="font-size: 20px; size: 20em" >
+    {{ form_errors(form.nom,{'attr':{'class':'text-danger','style':'font-size: 20px'}}) }}
+    </div>
+
+    <div style="font-size: 18px" class="form-group">
+        <label for="inputText" class="col-sm-5 col-form-label"><b>Référence</b></label>
+        <br>
+        {{ form_widget(form.reference,{'attr':{'class':'form-control','style':'font-size: 15px'}}) }}
+    </div>
+    <div style="font-size: 20px; size: 20em" >
+    {{ form_errors(form.reference,{'attr':{'class':'text-danger','style':'font-size: 20px'}}) }}
+
+
+    <div style="font-size: 18px" class="form-group">
+        <label  class="col-sm-5 col-form-label"><b>Prix</b></label>
+        <br>
+        {{ form_widget(form.prix,{'attr':{'class':'form-control','style':'font-size: 15px'}}) }}
+    </div>
+    <div style="font-size: 20px; size: 20em" >
+    {{ form_errors(form.prix,{'attr':{'class':'text-danger','style':'font-size: 20px'}}) }}
+
+
+    <div style="font-size: 18px" class="form-group">
+        <label class="col-sm-5 col-form-label"><b>Description</b></label>
+        <br>
+        {{ form_widget(form.description,{'attr':{'class':'form-control','style':'font-size: 15px'}}) }}
+    </div>
+    <div style="font-size: 20px; size: 20em" >
+    {{ form_errors(form.description,{'attr':{'class':'text-danger','style':'font-size: 20px'}}) }}
+    </div>
+
+    <div style="font-size: 18px" class="form-group">
+        <label class="col-sm-5 col-form-label"><b>Promotion</b></label>
+        <br>
+        {{ form_widget(form.promotion,{'attr':{'class':'form-control','style':'font-size: 15px'}}) }}
+    </div>
+    <div style="font-size: 20px; size: 20em" >
+    {{ form_errors(form.promotion,{'attr':{'class':'text-danger','style':'font-size: 20px'}}) }}
+    <br>
+    <div style="font-size: 18px" class="form-group">
+        <label class="col-sm-5 col-form-label"><b>Image</b></label>
+        <br>
+        {{ form_widget(form.imageFile,{'attr':{'class':'form-control','style':'font-size: 15px'}}) }}
+    </div>
+{#    {{ form_errors(form.imageFile,{'attr':{'class':'text-danger'}}) }}#}
+
+    <br>
+    <div style="font-size: 18px" class="form-group">
+        <label style="font-size: 18px" class="col-sm-5 col-form-label"><b>Fournisseur</b></label>
+        <br>
+        {{ form_widget(form.idUser,{'attr':{'class':'form-control','style':'font-size: 15px'}}) }}
+    </div>
+    <br>
+    <div style="font-size: 18px" class="form-group">
+        <label class="col-sm-5 col-form-label"><b>Catégorie</b> </label>
+        <br>
+        {{ form_widget(form.idCategorie,{'attr':{'class':'form-control','style':'font-size: 15px'}}) }}
+    </div>
+    {{ form_errors(form.idCategorie,{'attr':{'class':'text-danger'}}) }}
+
+    <div style="font-size: 18px" class="form-group">
+        <button class="btn btn-primary" style="text-align:center;font-size: 20px; display:block; margin: 0 auto; width: 500px; height: 60px">{{ button_label|default('Ajouter') }}</button>
+
+    </div>
+
+    <a style="display:block; margin: 0 auto;" href="{{ path('app_produit_index') }}">Retourner à la liste des produits</a>
+{{ form_end(form) }}
+{% endblock %}

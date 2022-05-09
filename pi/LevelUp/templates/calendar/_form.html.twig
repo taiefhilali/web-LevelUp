@@ -1,0 +1,44 @@
+{{ form_start(form) }}
+<label>
+    Title
+</label>
+{{ form_widget(form.title) }}
+<label>
+   Start
+</label>
+{{ form_widget(form.start) }}
+
+<label>
+    End
+</label>
+{{ form_widget(form.end) }}
+
+<label>
+    Description
+</label>
+{{ form_widget(form.description) }}
+
+<label>
+    All day
+</label>
+{{ form_widget(form.allDay) }}
+
+<label>
+    BackgroundColor
+</label>
+{{ form_widget(form.backgroundColor) }}
+
+<label>
+    BorderColor
+</label>
+{{ form_widget(form.borderColor) }}
+
+<label>
+    TextColor
+</label>
+{{ form_widget(form.textColor) }}
+
+
+    <button class="btn">{{ button_label|default('Save') }}</button>
+
+{{ form_end(form) }}

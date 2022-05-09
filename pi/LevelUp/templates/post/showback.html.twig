@@ -1,0 +1,32 @@
+{% extends 'backbase.html.twig' %}
+
+{% block contentback %}
+<h1  class="text-info"align="center" >Publication </h1>
+
+<table class="table table-sm table-hover" border="1">
+    <tbody>
+    <tr>
+        <th>Id</th>
+        <td>{{ post.id }}</td>
+    </tr>
+    <tr>
+        <th>Title</th>
+        <td>{{ post.title }}</td>
+    </tr>
+    <tr>
+        <th>Content</th>
+        <td>{{ post.content }}</td>
+    </tr>
+    <tr>
+        <th>Datep</th>
+        <td>{{ post.datep ? post.datep|date('Y-m-d') : '' }}</td>
+    </tr>
+    <tr>
+        <th>User</th>
+        <td>{{ post.idUser.idUser }}</td>
+    </tr>
+    {{ include('post/deleteback.html.twig') }}
+
+    </tbody>
+</table>
+{% endblock %}

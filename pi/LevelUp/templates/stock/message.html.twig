@@ -1,0 +1,22 @@
+{% extends 'backbase.html.twig' %}
+
+{% block title %}envoyer message {% endblock %}
+
+{% block contentback %}
+    {#<h1 class="centered">Liste des Stocks</h1>  #}
+    <head>
+        <title>Send SMS using Twilio</title>
+    </head>
+    <body>
+    <h1 style="margin-top:50px ;font-family:sans-serif;font-size:50px;color: #00A8B3;
+	text-shadow: 4px 3px 0px #fff, 9px 8px 0px rgba(0,0,0,0.15);
+" class="centered"> Message</h1>
+    <p style="font-size:25px" ;class="centered"> Enter your message </p>
+    <form action="StockController.php" method="GET">
+        <textarea name="message" style="font-size:25px"></textarea>
+        <input style="background-color: #00A8B3; border:#00A8B3"type="submit" name="submit" value="Send"
+    </form>
+
+    </body>
+
+{% endblock %}

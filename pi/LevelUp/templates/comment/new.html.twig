@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}New Comment{% endblock %}
+
+{% block content %}
+    <h1  class="text-info"align="center" >Formulaire Commentaire</h1>
+
+
+    {{ include('comment/_form.html.twig') }}
+{{ comment.idc }}
+
+    {# <a href="{{ path('app_comment_show',{'idc':idc}) }}">back to list</a> #}
+{% endblock %}

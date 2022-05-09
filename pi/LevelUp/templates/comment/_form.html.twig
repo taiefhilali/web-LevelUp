@@ -1,0 +1,18 @@
+
+{% extends 'base.html.twig' %}
+
+
+{% block content %}
+
+{{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+{{ form_row(form.label, {'label': 'Review'}) }}
+{{ form_row(form.contenu, {'label': 'La reponse'}) }}
+{{ form_row(form.resp, {'label': 'Rate {/5}'}) }}
+{{ form_row(form.idPost, {'label': 'Titre de publication'}) }}
+
+    {{ form_widget(form) }}
+
+    <button type="submit" class="btn btn-info" >{{ button_label|default('Save') }}</button>
+
+{{ form_end(form) }}
+{% endblock %}

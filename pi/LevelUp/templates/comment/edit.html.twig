@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}Edit Comment{% endblock %}
+
+{% block content %}
+    <h5 align="center" style="color:#1b6d85 " > Comment</h5>
+
+    {{ include('comment/_form.html.twig', {'button_label': 'Update'}) }}
+    <input type="submit"  class="btn btn-info" onclick="window.location.href={{ path('app_comment_indexback',{'idc': comment.idc})}};" value="RETOUR" />
+    {{ include('comment/_delete_form.html.twig', {'button_label': 'SUPPRIMER'}) }}
+{% endblock %}
