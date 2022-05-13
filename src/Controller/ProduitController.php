@@ -3,7 +3,13 @@
 namespace App\Controller;
 
 use App\Data\SearchData;
+use App\Entity\Categorie;
+use App\Entity\User;
 use App\Form\SearchFormType;
+use App\Repository\CategorieRepository;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Picqer\Barcode\BarcodeGeneratorHTML;
 use App\Entity\Produit;
 use App\Form\ProduitType;
@@ -25,6 +31,9 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Endroid\QrCode\Builder\BuilderInterface;
 use Endroid\QrCode\QrCode;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 
 /**
@@ -43,14 +52,159 @@ class ProduitController extends AbstractController
         $produit= $paginator->paginate(
             $donnees_rev,
             $request->query->getInt('page',1),4
-
         );
         return $this->render('produit/index.html.twig',['produits'=>$produit]);
-//        return $this->render('produit/index.html.twig', [
-//            'produits' => $produitRepository->findAll(),
-//        ]
-
     }
+
+    //Fonction du suppression d'un Produit avec JSON Mobile
+    /**
+     * @param Request $request
+     * @param NormalizerInterface $normalizer
+     * @param $id
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @Route("/deleteProductJson/{id}", name="deleteProductJson")
+     */
+    public function deleteProductJson(Request $request,NormalizerInterface $normalizer,$id){
+        $em = $this->getDoctrine()->getManager();
+        $produit = $em->getRepository(Produit::class)->find($id);
+        $em->remove($produit);
+        $em->flush();
+        $jsonContent =$normalizer->normalize($produit,'json',['groups'=>'productsgroup']);
+        return new Response("Le produit a été supprimé avec succées!".json_encode($jsonContent));
+    }
+    // Affichage produit Mobile JSON
+    /**
+     * @param NormalizerInterface $normalizer
+     * @return Response
+     * @throws ExceptionInterface
+     * @Route("/ProductsList",name="ProductsList")
+     */
+    public function getProductsJson(NormalizerInterface $normalizer){
+        $repo = $this->getDoctrine()->getRepository(Produit::class);
+        $produits = $repo->findAll();
+        $jsonProduits = $normalizer->normalize($produits,'json',['groups'=>'productsgroup']);
+        return new Response(json_encode($jsonProduits));
+    }
+
+    //categories jointure (Affichage)
+    /**
+     * @param NormalizerInterface $normalizer
+     * @return Response
+     * @throws ExceptionInterface
+     * @Route("/CategoriesListJoint",name="CategoriesListJoint")
+     */
+    public function getCategoriesJson(NormalizerInterface $normalizer){
+        $repo = $this->getDoctrine()->getRepository(Produit::class);
+        $repo2 = $this->getDoctrine()->getRepository(Categorie::class);
+        $produits = $repo->findAll();
+        $cat = array();
+        foreach($produits as $val){
+            $categorie = $repo2->findOneBy([ 'idCategorie' => $val->getIdCategorie()]);
+            array_push($cat, $categorie);
+        }
+        $jsonProduits = $normalizer->normalize($cat,'json',['groups'=>'productsgroup']);
+        return new Response(json_encode($jsonProduits));
+    }
+    //categories jointure (Add)
+    /**
+     * @param NormalizerInterface $normalizer
+     * @return Response
+     * @throws ExceptionInterface
+     * @Route("/listCategories",name="listCategories")
+     */
+    public function listCategories(NormalizerInterface $normalizer){
+        $repo = $this->getDoctrine()->getRepository(Categorie::class);
+        $categories = $repo->findAll();
+        $jsonCategories = $normalizer->normalize($categories,'json',['groups'=>'productsgroup']);
+        return new Response(json_encode($jsonCategories));
+    }
+
+    /**
+     * @param NormalizerInterface $normalizer
+     * @return Response
+     * @throws ExceptionInterface
+     * @Route("/FournisseurJoint",name="UserJoint")
+     */
+    public function getFournisseursJson(NormalizerInterface $normalizer){
+        $repo = $this->getDoctrine()->getRepository(Produit::class);
+        $repo2 = $this->getDoctrine()->getRepository(User::class);
+        $produits = $repo->findAll();
+        $usr = array();
+        foreach($produits as $val){
+            $user = $repo2->findOneBy([ 'idUser' => $val->getIdUser()]);
+            array_push($usr, $user);
+        }
+        $jsonProduits = $normalizer->normalize($usr,'json',['groups'=>'productsgroup']);
+        return new Response(json_encode($jsonProduits));
+    }
+
+    /**
+     * @param NormalizerInterface $normalizer
+     * @param Request $request
+     * @return Response
+     * @throws ExceptionInterface
+     * @Route("/addProduitJson/add/{idUser}/{idCategorie}" , name="addProduitjson")
+     */
+    public function addProduitJson(NormalizerInterface $normalizer, Request $request, UserRepository $usr, CategorieRepository $cat
+    ,$idUser,$idCategorie){
+        $em=$this->getDoctrine()->getManager();
+        $produit = new Produit();
+        $user = new User();
+        $user = $usr->find($idUser);
+        $categorie = new Categorie();
+        $categorie = $cat->find($idCategorie);
+        $produit->setNom($request->get('nom'));
+        $produit->setReference($request->get('reference'));
+        $produit->setPrix($request->get('prix'));
+        $produit->setDescription($request->get('description'));
+        $produit->setPromotion($request->get('promotion'));
+        $produit->setImage($request->get('image'));
+        $produit->setPrixFinal($request->get('prixFinal'));
+        $produit->setIdUser($user);
+        $produit->setIdCategorie($categorie);
+        $em->persist($produit);
+        $em->flush();
+        $json_content = $normalizer->normalize($produit, 'json',['groups'=>'productsgroup']);
+        return new Response(json_encode($json_content));
+    }
+// Fonction Modification json mobile
+
+    /**
+     * @param NormalizerInterface $normalizer
+     * @param Request $request
+     * @param UserRepository $usr
+     * @param CategorieRepository $cat
+     * @param $idUser
+     * @param $idCategorie
+     * @return Response
+     * @throws ExceptionInterface
+     * @Route("/modifierProduitJson/modifier/{idProduit}/{idUser}/{idCategorie}" , name="modifierProduitjson")
+     */
+    public function modifierProduitJson(NormalizerInterface $normalizer, Request $request, UserRepository $usr, CategorieRepository $cat
+        ,$idUser,$idCategorie, $idProduit){
+        $em=$this->getDoctrine()->getManager();
+        $produit = new Produit();
+        $user = new User();
+        $user = $usr->find($idUser);
+        $categorie = new Categorie();
+        $categorie = $cat->find($idCategorie);
+        $produit=$em->getRepository(Produit::class)->find($idProduit);
+        $produit->setNom($request->get('nom'));
+        $produit->setReference($request->get('reference'));
+        $produit->setPrix($request->get('prix'));
+        $produit->setDescription($request->get('description'));
+        $produit->setPromotion($request->get('promotion'));
+        $produit->setImage($request->get('image'));
+        $produit->setPrixFinal($request->get('prixFinal'));
+        $produit->setIdUser($user);
+        $produit->setIdCategorie($categorie);
+        $em->flush();
+        $json_content = $normalizer->normalize($produit, 'json',['groups'=>'productsgroup']);
+        return new Response(json_encode($json_content));
+    }
+
+
     // Recherche Ajax
 
     /**
@@ -294,6 +448,7 @@ class ProduitController extends AbstractController
 
 
 
+
     /**
      * @Route("/{idProduit}/edit", name="app_produit_edit", methods={"GET", "POST"})
      */
@@ -349,18 +504,6 @@ class ProduitController extends AbstractController
         echo $generator->getBarcode(($produit->getReference()), $generator::TYPE_CODE_39);
         return $this->render('produit/testbarcode.html.twig',[$generator]);
     }
-
-//    public function countNumberProducts()
-//    {
-//       // requete SQL
-//        $entityManager=$this->getEntityManger();
-//        $query = $entityManager->createQuery('SELECT categorie.nom_categorie, COUNT(categorie.nom_categorie) as nbr_produits FROM categorie, produit WHERE (categorie.id_categorie = produit.id_categorie) GROUP BY categorie.nom_categorie');
-//        $req=$query->getResult();
-//    }
-
-
-
-
 
 
 }

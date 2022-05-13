@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 
 /**
@@ -28,6 +29,7 @@ class Produit
      * @ORM\Column(name="id_produit", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups ("productsgroup")
      */
     private $idProduit;
 
@@ -40,6 +42,7 @@ class Produit
      *      maxMessage =" doit etre <=40" )
      * @Assert\NotBlank(message="⚠ Le champ nom est obligatoire!")
      * @ORM\Column(name="nom", type="string", length=254, nullable=false)
+     * @Groups ("productsgroup")
      */
 
     private $nom;
@@ -53,7 +56,7 @@ class Produit
      *      minMessage = "La longueur du nom doit être supérieur à 2 et inférieur à 20!",
      *      maxMessage =" doit etre <=20" )
      * @ORM\Column(name="reference", type="string", length=254, nullable=false)
-     *
+     * @Groups ("productsgroup")
      */
 //    add a regex pattern constraint
     private $reference;
@@ -64,6 +67,7 @@ class Produit
      * @Assert\NotBlank(message="⚠ Le prix est obligatoire!")
      * @Assert\Positive(message="⚠ Le prix doit être positive!")
      * @ORM\Column(name="prix", type="float", precision=10, scale=0, nullable=false)
+     * @Groups ("productsgroup")
      */
     private $prix;
 
@@ -77,6 +81,7 @@ class Produit
      *      minMessage = "⚠ La longueur de la déscription doit être supérieur à 5",
      *      maxMessage ="doit etre <=500" )
      * @ORM\Column(name="description", type="text", length=65535, nullable=false)
+     * @Groups ("productsgroup")
      */
     private $description;
 
@@ -86,12 +91,14 @@ class Produit
      * @Assert\NotBlank(message="⚠ Veuillez remplir le champ promotion!")
      * @Assert\GreaterThan (-1, message="⚠ La promotion doit être positive!")
      * @ORM\Column(name="promotion", type="float", precision=10, scale=0, nullable=false)
+     * @Groups ("productsgroup")
      */
     private $promotion;
 
     /**
      * @var string
      * @ORM\Column(name="image", type="string", length=254, nullable=false)
+     * @Groups ("productsgroup")
      */
     private $image;
 //    Image file attribute (bundle vich)
@@ -105,6 +112,7 @@ class Produit
      * @var float
      *
      * @ORM\Column(name="prix_final", type="float", precision=10, scale=0, nullable=false)
+     * @Groups ("productsgroup")
      */
     private $prixFinal = '0';
 
@@ -115,6 +123,7 @@ class Produit
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_user", referencedColumnName="id_user")
      * })
+     * @Groups ("productsgroup")
      */
     private $idUser;
 
@@ -126,6 +135,7 @@ class Produit
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_categorie", referencedColumnName="id_categorie")
      * })
+     * @Groups ("productsgroup")
      */
     private $idCategorie;
 

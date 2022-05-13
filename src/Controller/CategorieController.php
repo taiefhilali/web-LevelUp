@@ -3,12 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\Categorie;
+use App\Entity\Produit;
+use App\Entity\User;
 use App\Form\CategorieType;
 use App\Repository\CategorieRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @Route("/categorie")
@@ -24,6 +29,79 @@ class CategorieController extends AbstractController
             'categories' => $categorieRepository->findAll(),
         ]);
     }
+
+    // Affichage produit Mobile JSON
+    /**
+     * @param NormalizerInterface $normalizer
+     * @return Response
+     * @throws ExceptionInterface
+     * @Route("/CategoriesList",name="CategoriesList")
+     */
+    public function getCategoriesJson(NormalizerInterface $normalizer){
+        $repo = $this->getDoctrine()->getRepository(Categorie::class);
+        $categories = $repo->findAll();
+        $jsonCategories = $normalizer->normalize($categories,'json',['groups'=>'productsgroup']);
+        return new Response(json_encode($jsonCategories));
+    }
+    //Fonction du suppression d'une catégorie avec JSON Mobile
+    /**
+     * @param Request $request
+     * @param NormalizerInterface $normalizer
+     * @param $id
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @Route("/deleteCategorieJson/{id}", name="deleteCategorieJson")
+     */
+    public function deleteCategorieJson(Request $request,NormalizerInterface $normalizer,$id){
+        $em = $this->getDoctrine()->getManager();
+        $categorie = $em->getRepository(Categorie::class)->find($id);
+        $em->remove($categorie);
+        $em->flush();
+        $jsonContent =$normalizer->normalize($categorie,'json',['groups'=>'productsgroup']);
+        return new Response("La catégorie a été supprimé avec succées!".json_encode($jsonContent));
+    }
+
+    /**
+     * @param NormalizerInterface $normalizer
+     * @param Request $request
+     * @return Response
+     * @throws ExceptionInterface
+     * @Route("/addCategorieJson/add" , name="addCategorieJson")
+     */
+    public function addCategorieJson(NormalizerInterface $normalizer, Request $request
+       ){
+        $em=$this->getDoctrine()->getManager();
+        $categorie = new Categorie();
+        $categorie->setNomCategorie($request->get('nomCategorie'));
+        $em->persist($categorie);
+        $em->flush();
+        $json_content = $normalizer->normalize($categorie, 'json',['groups'=>'productsgroup']);
+        return new Response(json_encode($json_content));
+    }
+
+    /**
+     * @param NormalizerInterface $normalizer
+     * @param Request $request
+     * @param $idCategorie
+     * @return Response
+     * @throws ExceptionInterface
+     * @Route("/editCategorieJson/edit/{idCategorie}" , name="editCategorieJson")
+     */
+    public function editCategorieJson(NormalizerInterface $normalizer, Request $request, $idCategorie
+    ){
+        $em=$this->getDoctrine()->getManager();
+        $categorie = new Categorie();
+        $categorie=$em->getRepository(Categorie::class)->find($idCategorie);
+        $categorie->setNomCategorie($request->get('nomCategorie'));
+        $em->flush();
+        $json_content = $normalizer->normalize($categorie, 'json',['groups'=>'productsgroup']);
+        return new Response(json_encode($json_content));
+    }
+
+
+
+
+
 
     /**
      * @Route("/new", name="app_categorie_new", methods={"GET", "POST"})
