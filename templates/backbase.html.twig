@@ -245,61 +245,35 @@
         <div id="sidebar" class="nav-collapse ">
             <!-- sidebar menu start-->
             <ul class="sidebar-menu" id="nav-accordion">
-                <p class="centered"><a href="profile.html"><img src="img/ui-sam.jpg" class="img-circle" width="80"></a></p>
-                <h5 class="centered">Sam Soffes</h5>
+                <p class="centered"><a href="profile.html"><img src="img/siw.jpg" class="img-circle" width="80"></a></p>
+                <h5 class="centered">Siwar Tabbena</h5>
                 <li class="mt">
-                    <a class="active" href="index.html">
+                    <a href="index.html">
                         <i class="fa fa-dashboard"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
                 <li class="sub-menu">
 
-                    <a href="{{ path('app_user_index') }}">
-                        <i class="fa fa-desktop"></i>
-                        <span>Utilisateurs</span>
-                    </a>
 
-                </li>
 
 
 
                 <li class="sub-menu">
-                    <a href="{{ path('app_commande_index') }}">
-                        <i class="fa fa-book"></i>
-                        <span>Commandes</span>
-                    </a>
-
-                </li>
-                <li class="sub-menu">
-                    <a href="{{ path('app_produit_index') }}">
-                        <i class="fa fa-tasks"></i>
-                        <span>Produits</span>
-                    </a>
-
-                </li>
-                <li class="sub-menu">
-                    <a href="{{ path('app_reclamation_index') }}">
-                        <i class="fa fa-th"></i>
-                        <span>Reclamation</span>
-                    </a>
-
-                </li>
-
-                <li class="sub-menu">
-                    <a href="{{ path('app_post_index') }}">
+                    <a  href="{{ path('app_stock_index') }}">
                         <i class=" fa fa-bar-chart-o"></i>
-                        <span>Forum</span>
+                        <span>Stock</span>
                     </a>
 
                 </li>
-
-                <li>
-                    <a href="google_maps.html">
-                        <i class="fa fa-map-marker"></i>
-                        <span>Google Maps </span>
+                <li class="sub-menu">
+                    <a  href="{{ path('app_facture_index') }}">
+                        <i class=" fa fa-book"></i>
+                        <span>Facture</span>
                     </a>
-                </li>
+
+
+
             </ul>
             <!-- sidebar menu end-->
         </div>

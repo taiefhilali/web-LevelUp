@@ -5,11 +5,13 @@
 {% block contentback %}
     <link href="{{asset ('/css/formedit.css')}}" media="screen" rel="stylesheet">
 
-    <h1>Edit Facture</h1>
+    <h1 style="margin-top:50px ;font-family:sans-serif;font-size:50px;color: #00A8B3;
+	text-shadow: 4px 3px 0px #fff, 9px 8px 0px rgba(0,0,0,0.15);
+" class="centered">Modifier Facture</h1>
 
-    {{ include('facture/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('facture/_form.html.twig', {'button_label': 'Modifier'}) }}
 
-    <a href="{{ path('app_facture_index') }}">back to list</a>
+   <center><button style="background-color: #00A8B3; border: #00A8B3"><a href="{{ path('app_facture_index') }}"style="color: white; size: 20px;">Retour</a></button></center>
 
     {{ include('facture/_delete_form.html.twig') }}
 {% endblock %}

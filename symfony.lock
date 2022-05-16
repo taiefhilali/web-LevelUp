@@ -79,20 +79,47 @@
     "doctrine/sql-formatter": {
         "version": "1.1.2"
     },
+    "dompdf/dompdf": {
+        "version": "v1.2.2"
+    },
     "egulias/email-validator": {
         "version": "3.1.2"
     },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.7"
     },
+    "illuminate/collections": {
+        "version": "v8.83.11"
+    },
+    "illuminate/contracts": {
+        "version": "v8.83.11"
+    },
+    "illuminate/macroable": {
+        "version": "v8.83.11"
+    },
+    "illuminate/support": {
+        "version": "v8.83.11"
+    },
+    "knplabs/knp-components": {
+        "version": "v3.4.0"
+    },
+    "knplabs/knp-paginator-bundle": {
+        "version": "v5.8.0"
+    },
     "laminas/laminas-code": {
         "version": "4.5.1"
+    },
+    "mercuryseries/flashy": {
+        "version": "1.0.4"
     },
     "monolog/monolog": {
         "version": "1.27.0"
     },
     "myclabs/deep-copy": {
         "version": "1.11.0"
+    },
+    "nesbot/carbon": {
+        "version": "2.58.0"
     },
     "nikic/php-parser": {
         "version": "v4.13.2"
@@ -103,6 +130,12 @@
     "phar-io/version": {
         "version": "3.2.1"
     },
+    "phenx/php-font-lib": {
+        "version": "0.5.4"
+    },
+    "phenx/php-svg-lib": {
+        "version": "0.4.1"
+    },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
     },
@@ -111,6 +144,9 @@
     },
     "phpdocumentor/type-resolver": {
         "version": "1.6.1"
+    },
+    "phpoffice/phpspreadsheet": {
+        "version": "1.0.0"
     },
     "phpspec/prophecy": {
         "version": "v1.15.0"
@@ -155,6 +191,12 @@
     },
     "psr/log": {
         "version": "1.1.4"
+    },
+    "psr/simple-cache": {
+        "version": "1.0.1"
+    },
+    "sabberworm/php-css-parser": {
+        "version": "8.4.0"
     },
     "sebastian/cli-parser": {
         "version": "1.0.1"
@@ -215,6 +257,9 @@
         "files": [
             "./config/packages/sensio_framework_extra.yaml"
         ]
+    },
+    "swiftmailer/swiftmailer": {
+        "version": "v6.3.0"
     },
     "symfony/asset": {
         "version": "v4.4.40"
@@ -492,6 +537,20 @@
     "symfony/stopwatch": {
         "version": "v4.4.38"
     },
+    "symfony/swiftmailer-bundle": {
+        "version": "3.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "2.5",
+            "ref": "f0b2fccdca2dfd97dc2fd5ad216d5e27c4f895ac"
+        },
+        "files": [
+            "./config/packages/dev/swiftmailer.yaml",
+            "./config/packages/swiftmailer.yaml",
+            "./config/packages/test/swiftmailer.yaml"
+        ]
+    },
     "symfony/translation": {
         "version": "4.4",
         "recipe": {
@@ -581,6 +640,12 @@
     },
     "twig/twig": {
         "version": "v3.3.9"
+    },
+    "twilio/sdk": {
+        "version": "6.36.1"
+    },
+    "voku/portable-ascii": {
+        "version": "1.6.1"
     },
     "webmozart/assert": {
         "version": "1.10.0"

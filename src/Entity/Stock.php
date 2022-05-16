@@ -52,6 +52,20 @@ class Stock
      *   @ORM\JoinColumn(name="id", referencedColumnName="id_produit")
      * })
      */
+   // private $latitude;
+
+   // /**
+     //* @var float
+     //*
+     //* @ORM\Column(name="longitude", type="float",precision=14, scale=0, nullable=false)
+     //*/
+    //private $longitude;
+
+    ///**
+    // * @var string
+     //*
+     //* @ORM\Column(name="mode", type="string", length=255, nullable=false)
+     //*/
     private $id;
 
     public function getNom(): ?string
@@ -89,6 +103,8 @@ class Stock
 
         return $this;
     }
+
+
 
     public function getId(): ?Produit
     {

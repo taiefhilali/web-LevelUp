@@ -3,28 +3,30 @@
 {% block title %}Facture{% endblock %}
 
 {% block contentback %}
-    <h1>Facture</h1>
+    <h1  style="margin-top:50px ;font-family:sans-serif;font-size:50px;color: #00A8B3;
+	text-shadow: 4px 3px 0px #fff, 9px 8px 0px rgba(0,0,0,0.15);
+" class="centered">Facture</h1>
 
     <table class="table">
         <tbody>
-            <tr>
-                <th>IdFacture</th>
-                <td>{{ facture.idFacture }}</td>
-            </tr>
+        <tr>
+            <th>Utilisateurs</th>
+            <td>{{ facture.idUser.email }}</td>
+        </tr>
             <tr>
                 <th>Date</th>
                 <td>{{ facture.date ? facture.date|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
-                <th>PrixTotal</th>
+                <th>Prix Total</th>
                 <td>{{ facture.prixTotal }}</td>
             </tr>
         </tbody>
     </table>
+<center>
+    <button style="background-color: #00A8B3; border: #00A8B3"><a href="{{ path('app_facture_index') }}"style="color: white; size: 20px;">Retour</a></button>
 
-    <a href="{{ path('app_facture_index') }}">back to list</a>
-
-    <a href="{{ path('app_facture_edit', {'idFacture': facture.idFacture}) }}">edit</a>
+<button style="background-color: #00A8B3; border: #00A8B3"> <a href="{{ path('app_facture_edit', {'idFacture': facture.idFacture}) }}"style="color: white; size: 20px;">Modifier</a></button></center>
 
     {{ include('facture/_delete_form.html.twig') }}
 {% endblock %}

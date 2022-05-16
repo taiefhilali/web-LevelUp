@@ -3,13 +3,15 @@
 {% block title %}Stock{% endblock %}
 
 {% block contentback%}
-    <h1>Stock</h1>
+    <h1  style="margin-top:50px ;font-family:sans-serif;font-size:50px;color: #00A8B3;
+	text-shadow: 4px 3px 0px #fff, 9px 8px 0px rgba(0,0,0,0.15);
+" class="centered">Stock</h1>
 
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ stock.id.idProduit }}</td>
+                <th>Reference produit</th>
+                <td>{{ stock.id.reference }}</td>
             </tr>
             <tr>
                 <th>Nom</th>
@@ -27,9 +29,10 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_stock_index') }}">back to list</a>
+<center>
+    <button style="background-color: #00A8B3; border: #00A8B3"><a href="{{ path('app_stock_index') }}"style="color: white; size: 20px;">Retour</a></button>
 
-    <a href="{{ path('app_stock_edit', {'id': stock.id.idProduit}) }}">edit</a>
+    <button style="background-color: #00A8B3; border: #00A8B3"> <a href="{{ path('app_stock_edit', {'id': stock.id.idProduit}) }}"style="color: white; size: 20px;">Modifier</a></button></center>
 
     {{ include('stock/_delete_form.html.twig') }}
 {% endblock %}

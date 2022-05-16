@@ -1,30 +1,36 @@
 {% extends 'backbase.html.twig' %}
 
-{% block title %}Facture index{% endblock %}
+{% block title %}Facturation{% endblock %}
 
 {% block contentback %}
-    <h1>Facture index</h1>
+    <center> <h1 style="margin-top:50px ;font-family:sans-serif;font-size:50px;color: #00A8B3;
+	text-shadow: 4px 3px 0px #fff, 9px 8px 0px rgba(0,0,0,0.15);
+">Facturation</h1></center>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>IdFacture</th>
+
+    <table class="table" border="1" style="margin-top:90px;width:100%;
+           border:1px solid ;">
+        <thead style="background-color: #dae9f8" >
+
+            <tr style="alignment: center; tab-size: 23px; font-family: Arial; font-style:italic ; color: #0c5460">
+{#                <th>IdFacture</th>#}
                 <th>Date</th>
-                <th>PrixTotal</th>
-                <th>User</th>
+                <th>Prix Total</th>
+                <th>Utilisateurs</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for facture in factures|reverse %}
+        {% for facture in factures %}
             <tr>
-                <td>{{ facture.idFacture }}</td>
+{#                <td>{{ facture.idFacture }}</td>#}
                 <td>{{ facture.date ? facture.date|date('Y-m-d') : '' }}</td>
                 <td>{{ facture.prixTotal }}</td>
                 <td>{{ facture.idUser.email }}</td>
                 <td>
-                    <a href="{{ path('app_facture_show', {'idFacture': facture.idFacture}) }}">show</a>
-                    <a href="{{ path('app_facture_edit', {'idFacture': facture.idFacture}) }}">edit</a>
+                   <button style="background-color: #00A8B3; border:#00A8B3" ><a href="{{ path('app_facture_show', {'idFacture': facture.idFacture}) }}"style="color: white; size: 20px;">Détails</a></button>
+                   <button style="background-color: #00A8B3; border:#00A8B3"><a href="{{ path('app_facture_edit', {'idFacture': facture.idFacture}) }}"style="color: white; size: 20px;">Modifier</a></button>
+                    <button style="background-color: #00A8B3; border: #00A8B3"> <a href="{{ path('app_facture_pdf',{'idFacture': facture.idFacture})}}"style="color: white; size: 20px;">Pdf</a></button>
                 </td>
             </tr>
         {% else %}
@@ -34,6 +40,11 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_facture_new') }}">Create new</a>
+    <center>
+        {{ knp_pagination_render(factures) }}
+    </center>
+    <center>
+<button style="background-color: #00A8B3; border:#00A8B3">  <a href="{{ path('app_facture_new') }}"style="color: white; size: 20px;">Ajouter</a></button>
+    <button style="background-color: #00A8B3; border: #00A8B3"> <a href="{{ path('app_facture_imprimer')}}"style="color: white; size: 20px;">Imprimer</a></button>
+    <button style="background-color: #00A8B3; border:#00A8B3"><a href="{{ path('app_facture_excel') }}"style="color: white; size: 20px;">Exporter</a></button></center>
 {% endblock %}
